@@ -1,0 +1,1 @@
+controller_joint_names: [soldier_joint_1,soldier_joint_2,elbow_joint_1,elbow_joint_2,wrist_joint_1,wrist_joint_2,wrist_joint_3,finger_joint_1,finger_joint_2]

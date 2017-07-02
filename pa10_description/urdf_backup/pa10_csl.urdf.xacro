@@ -1,0 +1,299 @@
+<?xml version="1.0" ?>
+
+<robot name="pa10_csl"  xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+	<xacro:property name="arm_eps"            value="0.02" />
+	<xacro:property name="joint_1_max_effort" value="39.0"/> <!-- NOT THE ACTUAL VALUE -->
+	<xacro:property name="joint_2_max_effort" value="39.0"/>
+	<xacro:property name="joint_3_max_effort" value="39.0"/>
+	<xacro:property name="joint_4_max_effort" value="39.0"/>
+	<xacro:property name="joint_5_max_effort" value="39.0"/>
+	<xacro:property name="joint_6_max_effort" value="39.0"/>
+	<xacro:property name="joint_7_max_effort" value="39.0"/>
+
+	<!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="$(find pa10_description)/urdf/pa10csl.gazebo" />
+	<!-- Import Rviz colors -->
+  <xacro:include filename="$(find pa10_description)/urdf/materials.xacro" />
+
+
+	<!-- LINKS -->
+
+	<link name="world"/>
+
+	<link name="base_link">
+		<visual>    
+			<origin rpy="0 0 3.14" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl/S1.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.34 0.35 0.36 1.0"/>
+      </material>
+    </visual>
+		<collision>
+      <origin rpy="0 0 3.14" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl_collision/S1_collision.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
+  </link>
+
+	<link name="soldier_link_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.117"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl/S2.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.33 0.96 0.53 1.5"/>
+      </material>
+    </visual>
+		<collision>
+      <origin rpy="0 0 0" xyz="0 0 0.117"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl_collision/S2_collision.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
+	</link>
+
+
+
+	<link name="soldier_link_2">
+    <visual>
+      <origin rpy="-1.57079 0 3.14159" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl/S3.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.34 0.35 0.36 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="-1.57079 0 3.14159" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl_collision/S3_collision.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
+  </link>
+
+
+	<link name="soldier_to_elbow_link"/>
+	
+
+
+	<link name="elbow_link_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl/E1.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.33 0.96 0.53 1.5"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl_collision/E1_collision.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
+  </link>
+
+
+  <link name="elbow_link_2">
+    <visual>
+      <origin rpy="1.57079 0 0" xyz="0 0.003 0"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl/E2.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.34 0.35 0.36 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="-1.57079 0 0" xyz="0 0.003 0"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl_collision/E2_collision.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
+  </link>
+
+
+	<link name="wrist_link_1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.195"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl/W1.stl" scale="1 1 1"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.33 0.96 0.53 1.5"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="0 0 0" xyz="0 0 0.195"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl_collision/W1_collision.stl" scale="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
+  </link>
+
+	<link name="wrist_link_2">
+    <visual>
+      <origin rpy="1.57079 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl/W2.stl"  scale="1 1 1"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.34 0.35 0.36 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin rpy="1.57079 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="package://pa10_description/pa10_stl_collision/W2_collision.stl"  scale="1 1 1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <mass value="1"/>
+      <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+    </inertial>
+  </link>
+
+	<link name="wrist_link_3"/>
+
+
+
+	<!--   JOINTS    -->		
+
+
+	
+	<joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+  </joint>
+
+	<joint name="soldier_joint_1" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.2"/>
+    <parent link="base_link"/>
+    <child link="soldier_link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="${joint_1_max_effort}" lower="-3.089" upper="3.089" velocity="1.0"/>
+		<safety_controller k_position="20"
+                       k_velocity="20"
+                       soft_lower_limit="${-3.089 + arm_eps}"
+                       soft_upper_limit="${ 3.089 - arm_eps}" />
+  </joint>
+
+	<joint name="soldier_joint_2" type="revolute">
+    <origin rpy="-1.57079 0 0" xyz="0 0 0.117"/>
+    <parent link="soldier_link_1"/>
+    <child link="soldier_link_2"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="${joint_2_max_effort}" lower="-1.64" upper="1.64" velocity="1.0"/>
+		<safety_controller k_position="20"
+                       k_velocity="20"
+                       soft_lower_limit="${-1.64 + arm_eps}"
+                       soft_upper_limit="${ 1.64 - arm_eps}" />
+		
+  </joint>
+
+	<joint name="soldier_to_elbow_joint" type="fixed">
+		<origin rpy="1.57079 0 0" xyz="0 0 0"/>	
+		<parent link="soldier_link_2"/>
+    <child link="soldier_to_elbow_link"/>
+	</joint>
+
+	<joint name="elbow_joint_1" type="revolute">
+    <origin rpy="0 0 0" xyz="0 0 0.317"/>
+    <parent link="soldier_to_elbow_link"/>
+    <child link="elbow_link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="${joint_3_max_effort}" lower="-3.036" upper="3.036" velocity="1.0"/>
+		<safety_controller k_position="20"
+                       k_velocity="20"
+                       soft_lower_limit="${-3.036 + arm_eps}"
+                       soft_upper_limit="${ 3.036 - arm_eps}" />
+  </joint>
+
+	<joint name="elbow_joint_2" type="revolute">
+    <origin rpy="-1.57079  0 0" xyz="0 0 0.133"/>
+    <parent link="elbow_link_1"/>
+    <child link="elbow_link_2"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="${joint_4_max_effort}" lower="-2.39" upper="2.39" velocity="1.0"/>
+		<safety_controller k_position="20"
+                       k_velocity="20"
+                       soft_lower_limit="${-2.39 + arm_eps}"
+                       soft_upper_limit="${ 2.39 - arm_eps}" />
+  </joint>
+
+	<joint name="wrist_joint_1" type="revolute">
+    <origin rpy="1.57079 0 0" xyz="0 -0.285 0 "/>
+    <parent link="elbow_link_2"/>
+    <child link="wrist_link_1"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="${joint_5_max_effort}" lower="-4.45" upper="4.45" velocity="1.0"/>
+		<safety_controller k_position="20"
+                       k_velocity="20"
+                       soft_lower_limit="${-4.45 + arm_eps}"
+                       soft_upper_limit="${ 4.45 - arm_eps}" />
+  </joint>
+
+	<joint name="wrist_joint_2" type="revolute">
+    <origin rpy="-1.57079 0 0" xyz="0 0 0.195"/>
+    <parent link="wrist_link_1"/>
+    <child link="wrist_link_2"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="${joint_6_max_effort}" lower="-2.878" upper="2.878" velocity="1.0"/>
+		<safety_controller k_position="20"
+                       k_velocity="20"
+                       soft_lower_limit="${-2.878 + arm_eps}"
+                       soft_upper_limit="${ 2.878 - arm_eps}" />
+  </joint>
+
+	<joint name="wrist_joint_3" type="revolute">
+    <origin rpy="1.57079 0 0" xyz="0 -0.07 0"/>
+    <parent link="wrist_link_2"/>
+    <child link="wrist_link_3"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="${joint_7_max_effort}" lower="-4.448" upper="4.448" velocity="1.0"/>
+		<safety_controller k_position="20"
+                       k_velocity="20"
+                       soft_lower_limit="${-4.448 + arm_eps}"
+                       soft_upper_limit="${ 4.448 - arm_eps}" />
+  </joint>
+
+</robot>

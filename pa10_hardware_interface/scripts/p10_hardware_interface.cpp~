@@ -1,0 +1,388 @@
+#include <vector>
+#include <string>
+
+#include <hardware_interface/joint_command_interface.h>
+#include <hardware_interface/joint_state_interface.h>
+#include <hardware_interface/robot_hw.h>
+#include <controller_manager/controller_manager.h>
+
+#include <iostream>
+#include <ros/ros.h>
+#include "sensor_msgs/JointState.h"
+
+
+#include "std_msgs/Float64MultiArray.h"
+#include <geometry_msgs/Twist.h>
+#include <pa10_remote/pa10remote.h>
+
+#define PI acos(-1)
+using namespace std;
+using namespace Eigen;
+
+//global var
+double qdot[7];
+
+class pa10 : public hardware_interface::RobotHW
+{
+public:
+  ros::Publisher pub; //publisher to pub the f/t mesurements
+  ros::NodeHandle n_; 
+  
+public:
+  
+  pa10() 
+ 	{ 
+   // connect and register the joint state interface
+   hardware_interface::JointStateHandle state_handle_1("soldier_joint_1", &pos[0], &vel[0], &eff[0]);
+	 jnt_state_interface.registerHandle(state_handle_1);
+
+	 hardware_interface::JointStateHandle state_handle_2("soldier_joint_2", &pos[1], &vel[1], &eff[1]);
+	 jnt_state_interface.registerHandle(state_handle_2);
+
+	 hardware_interface::JointStateHandle state_handle_3("elbow_joint_1", &pos[2], &vel[2], &eff[2]);
+	 jnt_state_interface.registerHandle(state_handle_3);
+
+	 hardware_interface::JointStateHandle state_handle_4("elbow_joint_2", &pos[3], &vel[3], &eff[3]);
+	 jnt_state_interface.registerHandle(state_handle_4);
+
+	 hardware_interface::JointStateHandle state_handle_5("wrist_joint_1", &pos[4], &vel[4], &eff[4]);
+	 jnt_state_interface.registerHandle(state_handle_5);
+
+	 hardware_interface::JointStateHandle state_handle_6("wrist_joint_2", &pos[5], &vel[5], &eff[5]);
+	 jnt_state_interface.registerHandle(state_handle_6);
+
+	 hardware_interface::JointStateHandle state_handle_7("wrist_joint_3", &pos[6], &vel[6], &eff[6]);
+   jnt_state_interface.registerHandle(state_handle_7);
+   
+   
+   registerInterface(&jnt_state_interface);
+
+   // connect and register the joint position interface
+   hardware_interface::JointHandle vel_handle_1(jnt_state_interface.getHandle("soldier_joint_1"), &cmd[0]);
+	 jnt_vel_interface.registerHandle(vel_handle_1);
+
+	 hardware_interface::JointHandle vel_handle_2(jnt_state_interface.getHandle("soldier_joint_2"), &cmd[1]);
+	 jnt_vel_interface.registerHandle(vel_handle_2);
+
+	 hardware_interface::JointHandle vel_handle_3(jnt_state_interface.getHandle("elbow_joint_1"), &cmd[2]);
+	 jnt_vel_interface.registerHandle(vel_handle_3);                                                       
+                                                                                                                  
+	 hardware_interface::JointHandle vel_handle_4(jnt_state_interface.getHandle("elbow_joint_2"), &cmd[3]);
+	 jnt_vel_interface.registerHandle(vel_handle_4);                                                       
+                                                                                                                  
+	 hardware_interface::JointHandle vel_handle_5(jnt_state_interface.getHandle("wrist_joint_1"), &cmd[4]);
+	 jnt_vel_interface.registerHandle(vel_handle_5);                                                       
+                                                                                                                  
+	 hardware_interface::JointHandle vel_handle_6(jnt_state_interface.getHandle("wrist_joint_2"), &cmd[5]);
+	 jnt_vel_interface.registerHandle(vel_handle_6);                                                       
+                                                                                                                  
+	 hardware_interface::JointHandle vel_handle_7(jnt_state_interface.getHandle("wrist_joint_3"), &cmd[6]);
+   jnt_vel_interface.registerHandle(vel_handle_7);
+   
+
+   registerInterface(&jnt_vel_interface);
+ 
+   n_ = ros::NodeHandle();
+
+  }
+  
+  ////////////////////////////
+  /* PA10 RELATED FUNCTIONS */
+  ////////////////////////////
+  
+  
+  /* INITIALIZATION */
+  void pa10CommInit()
+  {
+
+     int status;
+     struct addrinfo host_info;       // The struct that getaddrinfo() fills up with data.
+     struct addrinfo *host_info_list; // Pointer to the to the linked list of host_info's.
+
+ 
+     memset(&host_info, 0, sizeof host_info);
+
+     std::cout << "Setting up the structs..."  << std::endl;
+
+     host_info.ai_family = AF_UNSPEC;     // IP version not specified. Can be both.
+     host_info.ai_socktype = SOCK_STREAM; // Use SOCK_STREAM for TCP or SOCK_DGRAM for UDP.
+
+     status = getaddrinfo("147.102.51.71", "4534", &host_info, &host_info_list);
+     
+     if (status != 0){  
+         std::cout << "getaddrinfo error" << gai_strerror(status) ;
+         exit(0);
+     }
+
+     std::cout << "Creating a socket..."  << std::endl;
+     
+     //the socket discriptor
+     socketfd = socket(host_info_list->ai_family, host_info_list->ai_socktype, host_info_list->ai_protocol);
+ 
+     if (socketfd == -1){
+         std::cout << "socket error\n" ;
+         exit(0);
+     }
+
+     std::cout << "Connecting..."  << std::endl;
+     status = connect(socketfd, host_info_list->ai_addr, host_info_list->ai_addrlen);
+
+     if (status == -1){
+         std::cout << "connect error\n" ;
+         exit(0);
+      }
+
+     std::cout << "Connection with PA 10 PC Established !!!";
+
+     std::cout << "sending message..."  << std::endl;
+     char *msg = "I040"; 
+     int len;
+     ssize_t bytes_sent;
+     len = strlen(msg);
+
+     bytes_sent = send(socketfd, msg, len, 0);
+
+     //return socketfd;
+	}
+  
+  
+  /////////////////////////
+  /* GET PA10 JOINT DATA */
+  /////////////////////////
+  void getPA10data()
+  {
+     float pa10data[7];
+
+     std::cout << "Waiting to receive data..."  << std::endl;
+     ssize_t bytes_received2;
+     char incomming_data_buffer2[1000];
+     bytes_received2 = recv(socketfd,incomming_data_buffer2,1000, 0);
+
+     if (bytes_received2 == 0){
+         std::cout << "host shut down." << std::endl ;
+         exit(0);
+     }
+
+     if (bytes_received2 == -1){
+         std::cout << "receive error!" << std::endl ;
+         exit(0);
+     }
+         
+
+
+     std::cout << bytes_received2 << " bytes received :" << std::endl ;
+     std::cout << incomming_data_buffer2 << std::endl;
+     incomming_data_buffer2[bytes_received2 -2] = '\0';
+
+     std::cout << "Bypassed Get Angles !!!" << "\n";
+
+     char *mstring;
+     mstring = (char *)malloc(20 * sizeof(char));
+
+     char *mstart,*mend;
+
+     if(incomming_data_buffer2[0]=='I')
+         mstart = &(incomming_data_buffer2[7]);
+     else
+         mstart = &(incomming_data_buffer2[1]);
+         
+
+     for (int count=0; count<7; count++){
+         mend = strchr(mstart,97);
+         strncpy(mstring,mstart,(int)(mend - mstart));
+         //cout << "OK" << "\n";
+         strcat(mstring,"\0");
+         pa10data[count]=atof(mstring);
+         mstart=mend+1;
+         }
+
+     std::cout << "PA10: " << " q1: " << pa10data[0] << " q2: " << pa10data[1]
+                           << " q3: " << pa10data[2] << " q4: " << pa10data[3]
+                           << " q5: " << pa10data[4] << " q6: " << pa10data[5]
+                           << " q7: " << pa10data[6] << "\n";
+
+     for (int i = 0; i < 7; i++)
+         // fill position pos[],vel[] and eff[] with joints state
+         pos[i] = pa10data[i];
+         // the effort is unavailable
+         eff[i] = 0.0;
+	}
+
+  
+  ///////////////////////////////////
+  /* SEND TO PA10 THE DESIRED DATA */
+  ///////////////////////////////////
+  void setPA10data(double* qdot)
+  {
+
+     float DOF1 = qdot[0]*180/PI;
+     float DOF2 = qdot[1]*180/PI;
+     float DOF3 = qdot[2]*180/PI;
+     float DOF4 = qdot[3]*180/PI;
+     float DOF5 = qdot[4]*180/PI;
+     float DOF6 = qdot[5]*180/PI;
+     float DOF7 = qdot[6]*180/PI;
+
+
+     std::string result;
+     std::stringstream convert;
+     convert<<"M"<<DOF1<<"a"<<DOF2<<"a"<<DOF3<<"a"<<DOF4<<"a"<<DOF5<<"a"<<DOF6<<"a"<<DOF7<<"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+     result=convert.str();
+
+     //std::cout << "Result:" << result << std::endl;
+
+     char *msg2 = new char[result.size()+1];
+     msg2[result.size()]=0;
+     memcpy(msg2,result.c_str(),result.size());
+     int len2;
+     ssize_t bytes_sent2;
+     len2 = strlen(msg2);
+
+     bytes_sent2 = send(socketfd, msg2, len2, 0);
+
+     std::cout << "Send Message !!!" << "\n";
+	}
+
+  
+  void updateQdot(const std_msgs::Float64MultiArrayConstPtr& msg)
+	{
+     int i = 0;
+     // print all the remaining numbers
+     for(std::vector<double>::const_iterator it = msg->data.begin(); it != msg->data.end(); ++it)
+		 {
+			qdot[i] = *it;
+			i++;
+		 }
+	}
+	
+  
+  ////////////////////////
+  /* Set Controller Type*/
+  ////////////////////////
+  void setControllerType(std::string cntr_type)
+  {
+  	//define the type of the controller --> the command type
+  	controller_type = cntr_type;
+  }
+  
+  
+  ///////////////////////////////////////////////////////////////////
+  /* Fuction which computes joint velocities using joint positions */
+	///////////////////////////////////////////////////////////////////
+  void postovel(double cmd_[9])
+  {
+  	for (int i=0;i<7;++i) 
+			{
+				//compute velocity commands
+			  cmd_vel[i]=(cmd_[i]-cmd_prev[i])*100.0;
+				//update previous commands
+				cmd_prev[i] = cmd_[i];
+			}
+	}	
+
+
+	
+	///////////////////
+	/* Read Function*/
+	//////////////////
+	void read()
+	{	
+		// Read position velocity torque from the robot
+		pa10::getPA10data();		
+	}
+	
+	///////////////////
+  /* Write Function*/
+  ///////////////////
+  void write()
+  {
+  	
+  	// if you want velocity commands
+		if (controller_type=="VelocityJointInterface") 
+		{
+			// send the commands to pa10
+  		pa10::setPA10data(cmd);
+		}
+  	
+  	// if you want velocity commands
+		else if (controller_type=="PositionJointInterface") 
+		{
+			//convert position commands to velocities
+  		pa10::postovel(cmd);
+  		// send the commands to pa10
+  		pa10::setPA10data(cmd_vel);
+		}
+  	
+  	else 
+  	{
+  		std::cout << "No Supported Controller!" << std::endl ;
+      exit(0);
+  	}
+  }
+	
+	
+	
+  ros::Time get_time() { return ros::Time::now(); } ;
+  ros::Duration get_period() { ros::Duration(0.1);};
+
+
+private:
+  hardware_interface::JointStateInterface jnt_state_interface;
+  hardware_interface::PositionJointInterface jnt_vel_interface;
+  double cmd[7] = {0.0};
+  double cmd_prev[7] = {0.0};
+  double cmd_vel[7] = {0.0};
+  double pos[7] = {0.0};
+  double vel[7] = {0.0};
+  double eff[7] = {0.0};
+  std::string controller_type;
+  bool VelControllWithPoseCommand;
+  int socketfd ; // The socket descripter
+};
+
+
+int main(int argc, char **argv)
+{
+  ros::init(argc, argv, "pa10_hardware_interface");
+  ros::NodeHandle nh;
+  ros::Rate loop_rate(10.0);
+
+  pa10 robot;
+  
+  //initialize control manager
+  controller_manager::ControllerManager cm(&robot,nh);
+  
+  //define the type of the controller --> the command type
+  robot.setControllerType("PositionJointInterface");
+  
+  //Initialize Communication with PA10
+  robot.pa10CommInit();
+
+  
+  while (ros::ok())
+  {
+  	//time loop starts
+  	double start =ros::Time::now().toSec();  
+    
+    // read robot data
+    robot.read();
+    
+    // update data
+    cm.update(robot.get_time(), robot.get_period());
+    
+    //send data to the robot
+    robot.write();
+    
+    ros::spinOnce();
+	  loop_rate.sleep();
+    
+    // time loop ends
+    double end =ros::Time::now().toSec();
+    //print dt
+    printf("Loop dt:%lf\n", end-start);
+    
+    loop_rate.sleep();
+  }
+  
+ return 0;
+}

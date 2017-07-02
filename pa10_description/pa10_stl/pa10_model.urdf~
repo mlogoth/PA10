@@ -1,0 +1,31 @@
+<robot name="pa10_mitsubishi">
+  <link name="S1">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="~/pa10_stl/S1.stl"/>
+
+
+<!-- podemos usar tambien en vez de mesh que requiere un archivo, cilindros cajas o esferas!!! -->
+
+      </geometry>
+      <material name="">
+        <color rgba="0.34 0.35 0.36 1.0"/>
+      </material>
+    </visual>
+  </link>
+<link name="S2">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0.317"/>
+      <geometry>
+        <mesh filename="~/pa10_stl/S2.stl"/>
+
+
+<!-- podemos usar tambien en vez de mesh que requiere un archivo, cilindros cajas o esferas!!! -->
+
+      </geometry>
+      <material name="">
+        <color rgba="0.34 0.35 0.36 1.0"/>
+      </material>
+    </visual>
+  </link>

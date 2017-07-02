@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <cstdlib>
+#include <cstdio>
+#include <sys/time.h>
+#include <math.h>
+#include <fcntl.h>
+#include <string.h>
+#include <cstring>      // Needed for memset
+
+#include <netdb.h>  
+#include <sys/types.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/socket.h> // Needed for the socket functions
+#include <sys/stat.h>
+
+#include <eigen3/Eigen/Dense>
+#include <eigen3/Eigen/Geometry> 
+
+using namespace Eigen;
+
+MatrixXd pa10FKDHModified (VectorXd);
+MatrixXd pa10Jacobian(VectorXd);
+
+

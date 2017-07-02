@@ -1,0 +1,131 @@
+#include <vector>
+#include <string>
+
+#include <hardware_interface/joint_command_interface.h>
+#include <hardware_interface/joint_state_interface.h>
+#include <hardware_interface/robot_hw.h>
+#include <controller_manager/controller_manager.h>
+
+#include <iostream>
+#include <ros/ros.h>
+#include "sensor_msgs/JointState.h"
+
+class pa10 : public hardware_interface::RobotHW
+{
+public:
+
+  ros::NodeHandle n_;
+  
+  //bool nlyPositionFeedback = true;
+
+  pa10() 
+ { 
+   // connect and register the joint state interface
+   hardware_interface::JointStateHandle state_handle_1("soldier_joint_1", &pos[0], &vel[0], &eff[0]);
+	 jnt_state_interface.registerHandle(state_handle_1);
+
+	 hardware_interface::JointStateHandle state_handle_2("soldier_joint_2", &pos[1], &vel[1], &eff[1]);
+	 jnt_state_interface.registerHandle(state_handle_2);
+
+	 hardware_interface::JointStateHandle state_handle_3("elbow_joint_1", &pos[2], &vel[2], &eff[2]);
+	 jnt_state_interface.registerHandle(state_handle_3);
+
+	 hardware_interface::JointStateHandle state_handle_4("elbow_joint_2", &pos[3], &vel[3], &eff[3]);
+	 jnt_state_interface.registerHandle(state_handle_4);
+
+	 hardware_interface::JointStateHandle state_handle_5("wrist_joint_1", &pos[4], &vel[4], &eff[4]);
+	 jnt_state_interface.registerHandle(state_handle_5);
+
+	 hardware_interface::JointStateHandle state_handle_6("wrist_joint_2", &pos[5], &vel[5], &eff[5]);
+	 jnt_state_interface.registerHandle(state_handle_6);
+
+	 hardware_interface::JointStateHandle state_handle_7("wrist_joint_3", &pos[6], &vel[6], &eff[6]);
+   jnt_state_interface.registerHandle(state_handle_7);
+   
+   registerInterface(&jnt_state_interface);
+
+   // connect and register the joint position interface
+   hardware_interface::JointHandle vel_handle_1(jnt_state_interface.getHandle("soldier_joint_1"), &cmd[0]);
+	 jnt_vel_interface.registerHandle(vel_handle_1);
+
+	 hardware_interface::JointHandle vel_handle_2(jnt_state_interface.getHandle("soldier_joint_2"), &cmd[1]);
+	 jnt_vel_interface.registerHandle(vel_handle_2);
+
+	 hardware_interface::JointHandle vel_handle_3(jnt_state_interface.getHandle("elbow_joint_1"), &cmd[2]);
+	 jnt_vel_interface.registerHandle(vel_handle_3);                                                       
+                                                                                                                  
+	 hardware_interface::JointHandle vel_handle_4(jnt_state_interface.getHandle("elbow_joint_2"), &cmd[3]);
+	 jnt_vel_interface.registerHandle(vel_handle_4);                                                       
+                                                                                                                  
+	 hardware_interface::JointHandle vel_handle_5(jnt_state_interface.getHandle("wrist_joint_1"), &cmd[4]);
+	 jnt_vel_interface.registerHandle(vel_handle_5);                                                       
+                                                                                                                  
+	 hardware_interface::JointHandle vel_handle_6(jnt_state_interface.getHandle("wrist_joint_2"), &cmd[5]);
+	 jnt_vel_interface.registerHandle(vel_handle_6);                                                       
+                                                                                                                  
+	 hardware_interface::JointHandle vel_handle_7(jnt_state_interface.getHandle("wrist_joint_3"), &cmd[6]);
+   jnt_vel_interface.registerHandle(vel_handle_7);
+
+   registerInterface(&jnt_vel_interface);
+  }
+   
+  n_ = ros::NodeHandle();
+  //subscriber to joint states
+  ros::Subscriber sub = n_.subscribe("joint_states", 1, &pa10::updateJointState, this);
+
+  //call back function
+  void updateJointState(sensor_msgs::JointState msg) 
+  {
+	    
+	    pos = msg.position;
+	    vel = msg.velocity;
+	    eff = msg.>effort;
+      
+      std::cout<<"Actual Joint States: \nPosition:"<<pos[0]<<" "<<pos[1]<<" "<<pos[2]<<" "<<pos[3]<<" "<<pos[4]<<" "<<pos[5]<<" "<<pos[6]<<"\n"
+			std::cout<<"\nVelocity:"<<vel[0]<<" "<<vel[1]<<" "<<vel[2]<<" "<<vel[3]<<" "<<vel[4]<<" "<<vel[5]<<" "<<vel[6]<<"\n"
+      /*if (OnlyPositionFeedback) {
+          memcpy(prev_pos,pos,sizeof(double)*7);
+          for(int i=0; i<7; ++i) {
+						vel[i] = (pos[i]-prev_pos[i]) / dt;
+						}                    
+        }*/
+
+	}
+  // Write Function
+  void write()
+  {
+    std::cout<<"Velocity joints Commands: "<<cmd[0]<<" "<<cmd[1]<<" "<<cmd[2]<<" "<<cmd[3]<<" "<<cmd[4]<<" "<<cmd[5]<<" "<<cmd[6]<<"\n";
+  }
+
+private:
+  hardware_interface::JointStateInterface jnt_state_interface;
+  hardware_interface::VelocityJointInterface jnt_vel_interface;
+  double cmd[7];
+  double pos[7];
+	double prev_pos[7];
+  double vel[7];
+  double eff[7];
+	double dt;
+	//bool OnlyPositionFeedback;
+};
+
+
+int main(int argc, char **argv)
+{
+  ros::init(argc, argv, "pa10_hardware_interface");
+  ros::NodeHandle nh;
+  
+  pa10 robot;
+  
+  controller_manager::ControllerManager cm(&robot);
+  ros::AsyncSpinner spinner;
+  spinner.start();
+  while (true)
+  {
+     robot.read();
+     cm.update(robot.get_time(), robot.get_period());
+     robot.write();
+     sleep();
+  }
+ spinner.stop();
+}

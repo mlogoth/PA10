@@ -1,0 +1,37 @@
+joint_names: [soldier_joint_1,soldier_joint_2,elbow_joint_1,elbow_joint_2,wrist_joint_1,wrist_joint_2,wrist_joint_3,finger_joint_1,finger_joint_2]
+
+# Publish all joint states -----------------------------------
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
+
+# Position Controllers ---------------------------------------
+arm_controller:
+  type: position_controllers/JointGroupPositionController
+  joints:
+     - soldier_joint_1
+     - soldier_joint_2
+     - elbow_joint_1
+     - elbow_joint_2
+     - wrist_joint_1
+     - wrist_joint_2
+     - wrist_joint_3
+  gains: 
+    soldier_joint_1: {p: 3000, d: 5, i: 1,   i_clamp: 3, torque_clamp: 60}
+    soldier_joint_2: {p: 3000, d: 5, i: 1,   i_clamp: 3, torque_clamp: 60}
+    elbow_joint_1: {p: 3000, d: 5, i: 1,   i_clamp: 3, torque_clamp: 60}
+    elbow_joint_2: {p: 3000, d: 5, i: 1,   i_clamp: 3, torque_clamp: 60}
+    wrist_joint_1: {p: 500,  d: 1, i: 0.1, i_clamp: 3, torque_clamp: 60}
+    wrist_joint_2: {p: 500,  d: 1, i: 0.1, i_clamp: 3, torque_clamp: 60}
+    wrist_joint_3: {p: 500,  d: 1, i: 0.1, i_clamp: 3, torque_clamp: 60}
+
+
+gripper_controller:
+  type: position_controllers/JointGroupPositionController
+  joints:
+     - finger_joint_1
+     - finger_joint_2
+
+  gains:  
+     finger_joint_1: &gripper_finger_gains {p: 2000,  d: 0,  i: 0, p_gain: 2000}
+     finger_joint_2: *gripper_finger_gains

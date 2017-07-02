@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: pa10_description
+    relative_path: urdf/pa10_csl.urdf.xacro
+  SRDF:
+    relative_path: config/pa10_csl.srdf
+  CONFIG:
+    author_name: Michalis Logothetis
+    author_email: logothm@gmail.com
+    generated_timestamp: 1497090195

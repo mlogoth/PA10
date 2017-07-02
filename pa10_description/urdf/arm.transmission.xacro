@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="arm_simple_transmission" params="name reduction" >
+    
+    <transmission name="${name}_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      
+      <actuator name="${name}_motor" >
+        <mechanicalReduction>${reduction}</mechanicalReduction>
+      </actuator>
+      
+      <joint name="${name}">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+    
+    </transmission>
+  </xacro:macro>
+
+</robot>

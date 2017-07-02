@@ -1,0 +1,24 @@
+controller_manager_ns: controller_manager
+
+controller_list:
+  - name: arm_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - soldier_joint_1
+      - soldier_joint_2
+      - elbow_joint_1
+      - elbow_joint_2
+      - wrist_joint_1
+      - wrist_joint_2
+      - wrist_joint_3
+
+  - name: gripper_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - finger_joint_1
+      - finger_joint_2
+

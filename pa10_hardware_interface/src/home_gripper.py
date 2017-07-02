@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+
+import rospy
+import actionlib
+from control_msgs.msg import FollowJointTrajectoryAction, FollowJointTrajectoryGoal
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from sensor_msgs.msg import JointState
+
+joint_names_gripper = ["finger_joint_1", "finger_joint_2"]
+joint_names_Arm = ["soldier_joint_1","soldier_joint_2","elbow_joint_1","elbow_joint_2","wrist_joint_1","wrist_joint_2","wrist_joint_3"]
+closed_gripper  = [-0.039, -0.039]
+home_arm= [.0 for i in range(0, 7)]
+
+if __name__ == "__main__":
+  rospy.init_node("home_initialize")
+  rospy.loginfo("Waiting for gripper_controller...")
+  client = actionlib.SimpleActionClient("gripper_controller/command", FollowJointTrajectoryAction)
+  client.wait_for_server()
+  rospy.loginfo("...connected.")
+
+  rospy.wait_for_message("/joint_states", JointState)
+
+  trajectory = JointTrajectory()
+  trajectory.joint_names = joint_names_gripper
+  trajectory.points.append(JointTrajectoryPoint())
+  trajectory.points[0].positions = closed_gripper
+  trajectory.points[0].velocities = [0.0 for i in joint_names_gripper]
+  trajectory.points[0].accelerations = [0.0 for i in joint_names_gripper]
+  trajectory.points[0].time_from_start = rospy.Duration(2.0)
+
+  rospy.loginfo("Opening gripper...")
+  goal = FollowJointTrajectoryGoal()
+  goal.trajectory = trajectory
+  goal.goal_time_tolerance = rospy.Duration(0.0)
+
+  client.send_goal(goal)
+  client.wait_for_result(rospy.Duration(5.0))
+  rospy.loginfo("Gripper opened.")
+
+  ### ARM CONTROLL ###
+
+  rospy.loginfo("Waiting for arm_controller...")
+  client = actionlib.SimpleActionClient("arm_controller/command", FollowJointTrajectoryAction)
+  client.wait_for_server()
+  rospy.loginfo("...connected.")
+
+  rospy.wait_for_message("/joint_states", JointState)
+
+  trajectory = JointTrajectory()
+  trajectory.joint_names = joint_names_Arm
+  trajectory.points.append(JointTrajectoryPoint())
+  trajectory.points[0].positions = home_arm
+  trajectory.points[0].velocities = [0.0 for i in joint_names_Arm]
+  trajectory.points[0].accelerations = [0.0 for i in joint_names_Arm]
+  trajectory.points[0].time_from_start = rospy.Duration(2.0)
+
+  rospy.loginfo("Initializing Arm...")
+  goal = FollowJointTrajectoryGoal()
+  goal.trajectory = trajectory
+  goal.goal_time_tolerance = rospy.Duration(0.0)
+
+  client.send_goal(goal)
+  client.wait_for_result(rospy.Duration(10.0))
+  rospy.loginfo("Arm initialized.")

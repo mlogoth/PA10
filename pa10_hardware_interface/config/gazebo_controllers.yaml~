@@ -1,0 +1,46 @@
+joint_names: [S1,S2,E1,E2,W1,W2,W3,finger_joint_1,finger_joint_2]
+
+# Publish all joint states -----------------------------------
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
+
+# Position Controllers ---------------------------------------
+arm_controller:
+  #type: position_controllers/JointGroupPositionController
+  type: "velocity_controllers/JointTrajectoryController"
+  #type: "position_controllers/JointTrajectoryController"
+  #type: "effort_controllers/JointTrajectoryController"
+
+  joints:
+     - S1
+     - S2
+     - E1
+     - E2
+     - W1
+     - W2
+     - W3
+  gains: 
+     S1: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
+     S2: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
+     E1: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
+     E2: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
+     W1: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
+     W2: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
+     W3: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
+
+  constraints:
+     goal_time: 0.5                    # Override default
+     state_publish_rate:  50            # Override default
+     action_monitor_rate: 20            # Override default
+     stop_trajectory_duration: 0 # Override default
+
+gripper_controller:
+  #type: "position_controllers/JointTrajectoryController"
+  type: "velocity_controllers/JointTrajectoryController"
+  joints:
+     - finger_joint_1
+     - finger_joint_2
+  gains:  
+     finger_joint_1: &gripper_finger_gains {p: 1.0, d: 0.05, i: 0.1, i_clamp: 1.0}
+     finger_joint_2: *gripper_finger_gains
