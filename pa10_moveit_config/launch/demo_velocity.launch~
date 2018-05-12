@@ -21,7 +21,7 @@
     <arg name="fake_execution" value="false"/>
     <arg name="info" value="true"/>
     <arg name="debug" value="$(arg debug)"/>
-    <arg name="camera" default="false" />
+    <arg name="camera" default="true" />
   </include>
 
   <!-- Run Rviz and load the default config to see the state of the move_group node -->

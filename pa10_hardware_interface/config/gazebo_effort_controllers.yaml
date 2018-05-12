@@ -8,9 +8,9 @@ joint_state_controller:
 # Position Controllers ---------------------------------------
 arm_controller:
   #type: position_controllers/JointGroupPositionController
-  type: "velocity_controllers/JointTrajectoryController"
+  #type: "velocity_controllers/JointTrajectoryController"
   #type: "position_controllers/JointTrajectoryController"
-  #type: "effort_controllers/JointTrajectoryController"
+  type: "effort_controllers/JointTrajectoryController"
 
   joints:
      - S1
@@ -21,13 +21,13 @@ arm_controller:
      - W2
      - W3
   gains: 
-     S1: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
-     S2: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
-     E1: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
-     E2: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
-     W1: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
-     W2: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
-     W3: {p: 10.0, i: 0.2, d: 0.05, i_clamp: 2.5}
+     S1: {p: 130.0, i: 20.2, d: 80.05, i_clamp: 0.5}
+     S2: {p: 130.0, i: 20.2, d: 80.05, i_clamp: 0.5}
+     E1: {p: 130.0, i: 20.2, d: 80.05, i_clamp: 0.5}
+     E2: {p: 130.0, i: 20.2, d: 80.05, i_clamp: 0.5}
+     W1: {p: 130.0, i: 20.2, d: 80.05, i_clamp: 0.5}
+     W2: {p: 130.0, i: 20.2, d: 80.05, i_clamp: 0.5}
+     W3: {p: 130.0, i: 20.2, d: 80.05, i_clamp: 0.5}
 
   constraints:
      goal_time: 0.5                    # Override default
@@ -36,8 +36,8 @@ arm_controller:
      stop_trajectory_duration: 0 # Override default
 
 gripper_controller:
-  #type: "position_controllers/JointTrajectoryController"
-  type: "velocity_controllers/JointTrajectoryController"
+  type: "effort_controllers/JointTrajectoryController"
+  #type: "velocity_controllers/JointTrajectoryController"
   joints:
      - finger_joint_1
      - finger_joint_2

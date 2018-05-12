@@ -35,7 +35,6 @@
   </include>
 
   <!-- Sensors Functionality -->
-  
   <group if="$(arg camera)">
   	<include ns="move_group" file="$(find pa10_moveit_config)/launch/sensor_manager.launch.xml" if="$(arg allow_trajectory_execution)">
     	<arg name="moveit_sensor_manager" value="pa10" />

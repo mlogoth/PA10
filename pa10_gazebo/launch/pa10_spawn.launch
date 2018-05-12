@@ -5,12 +5,12 @@
 	
 
   <!-- PID gains -->
-  <rosparam command="load" file="$(find pa10_controller_configuration_gazebo)/config/pids.yaml"/>
+<!--  <rosparam command="load" file="$(find pa10_controller_configuration_gazebo)/config/pids.yaml"/>-->
 
-  <rosparam command="load" file="$(find pa10_controller_configuration_gazebo)/config/pa10_hardware_gazebo.yaml"/>
+<!--  <rosparam command="load" file="$(find pa10_controller_configuration_gazebo)/config/pa10_hardware_gazebo.yaml"/>-->
 
   <!-- Joint trajectory controllers -->
-  <rosparam command="load" file="$(find pa10_controller_configuration_gazebo)/config/joint_trajectory_controllers.yaml"/>
+<!--  <rosparam command="load" file="$(find pa10_controller_configuration_gazebo)/config/joint_trajectory_controllers.yaml"/>-->
 
   <!-- Robot model -->
   <!-- Robot description -->

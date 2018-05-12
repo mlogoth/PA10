@@ -6,18 +6,18 @@
 	<!-- JOINTS EFFORT LIMITS -->
 	<!-- NOT THE ACTUAL VALUE -->
 	<xacro:property name="arm_eps"            value="0.02" />
-	<xacro:property name="joint_1_max_effort" value="39.0"/> 
-	<xacro:property name="joint_2_max_effort" value="39.0"/>
-	<xacro:property name="joint_3_max_effort" value="39.0"/>
-	<xacro:property name="joint_4_max_effort" value="39.0"/>
-	<xacro:property name="joint_5_max_effort" value="39.0"/>
-	<xacro:property name="joint_6_max_effort" value="39.0"/>
-	<xacro:property name="joint_7_max_effort" value="39.0"/>
+	<xacro:property name="joint_1_max_effort" value="150.0"/> 
+	<xacro:property name="joint_2_max_effort" value="150.0"/>
+	<xacro:property name="joint_3_max_effort" value="150.0"/>
+	<xacro:property name="joint_4_max_effort" value="150.0"/>
+	<xacro:property name="joint_5_max_effort" value="150.0"/>
+	<xacro:property name="joint_6_max_effort" value="150.0"/>
+	<xacro:property name="joint_7_max_effort" value="150.0"/>
 	
 	<!-- JOINTS POSITION LIMITS -->
 	<!-- Real Values: [177, 94, 174, 137, 255, 165, 255] (deg)-->
 	<xacro:property name="joint_1_max_position" value="${170.0 *pi/180.0}"/> 
-	<xacro:property name="joint_2_max_position" value="${ 90.0 *pi/180.0}"/>
+	<xacro:property name="joint_2_max_position" value="${90.0 *pi/180.0}"/>
 	<xacro:property name="joint_3_max_position" value="${170.0 *pi/180.0}"/>
 	<xacro:property name="joint_4_max_position" value="${130.0 *pi/180.0}"/>
 	<xacro:property name="joint_5_max_position" value="${250.0 *pi/180.0}"/>
@@ -34,6 +34,24 @@
 	<xacro:property name="joint_6_max_velocity" value="${1.8*pi}"/>
 	<xacro:property name="joint_7_max_velocity" value="${1.8*pi}"/>
 
+    <!-- JOINT DYNAMICS DAMPING + FRICTION-->
+    <!-- >> !! Not Real Values !! << -->
+    <!-- DAMPING -->
+	<xacro:property name="joint_1_damping" value="0.01"/> 
+	<xacro:property name="joint_2_damping" value="0.01"/>
+	<xacro:property name="joint_3_damping" value="0.01"/>
+	<xacro:property name="joint_4_damping" value="0.01"/>
+	<xacro:property name="joint_5_damping" value="0.01"/>
+	<xacro:property name="joint_6_damping" value="0.01"/>
+	<xacro:property name="joint_7_damping" value="0.01"/>
+	<!-- FRICTION -->
+	<xacro:property name="joint_1_friction" value="2.0"/> 
+	<xacro:property name="joint_2_friction" value="2.0"/>
+	<xacro:property name="joint_3_friction" value="2.0"/>
+	<xacro:property name="joint_4_friction" value="2.0"/>
+	<xacro:property name="joint_5_friction" value="2.0"/>
+	<xacro:property name="joint_6_friction" value="2.0"/>
+	<xacro:property name="joint_7_friction" value="2.0"/>
 
 
 	<!-- Import all Gazebo-customization elements, including Gazebo colors -->
@@ -66,7 +84,7 @@
     </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 1"/>
-      <mass value="1"/>
+      <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
   </link>
@@ -92,7 +110,7 @@
     </collision>
     <inertial>
       <origin rpy="0 0 3.14" xyz="0 0 0"/>
-      <mass value="1"/>
+      <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
   </link>
@@ -115,7 +133,7 @@
     </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0.117"/>
-      <mass value="1"/>
+      <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
 	</link>
@@ -140,7 +158,7 @@
     </collision>
     <inertial>
       <origin rpy="-1.57079 0 3.14159" xyz="0 0 0"/>
-      <mass value="1"/>
+      <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
   </link>
@@ -149,7 +167,7 @@
 	<link name="link_shoulder_to_elbow">
 		<inertial>
       <origin rpy="0 0 0" xyz="0 0 1"/>
-      <mass value="1"/>
+      <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
 	</link>
@@ -174,7 +192,7 @@
     </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
-      <mass value="1"/>
+      <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
   </link>
@@ -198,7 +216,7 @@
     </collision>
     <inertial>
       <origin rpy="1.57079 0 0" xyz="0 0.003 0"/>
-      <mass value="1"/>
+      <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
   </link>
@@ -222,7 +240,7 @@
     </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0.195"/>
-      <mass value="1"/>
+      <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
   </link>
@@ -245,7 +263,7 @@
     </collision>
     <inertial>
       <origin rpy="1.57079 0 0" xyz="0 0 0"/>
-      <mass value="1"/>
+      <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
   </link>
@@ -281,7 +299,7 @@
     </collision>
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 -0.045"/>
-      <mass value="0.5"/>
+      <mass value="0.001"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
   </link>
@@ -340,15 +358,18 @@
 	<!--   JOINTS    -->		
   <!--************ -->
 
-	
-	<joint name="fixed" type="fixed">
-    <origin rpy="${-pi/2.0} 0 0" xyz="0 0 1.35"/>	
+
+  <joint name="fixed" type="fixed">
+
+    <!-- origin rpy="${-pi/2.0} 0 0" xyz="0 0 1.35"/ -->
+    <origin rpy="0 0 0" xyz="0 0 0.0"/>
     <parent link="world"/>
     <child link="base_link"/>
   </joint>
   
   <joint name="kinect" type="fixed">
-    <origin rpy="${-15.0*pi/180.0} 0 0" xyz="0.148 -0.48 -0.05"/>	
+    <!-- origin rpy="${-15.0*pi/180.0} 0 0" xyz="0.148 -0.48 -0.05"/ -->
+    <origin rpy="${-125.0*pi/180.0} 0 ${pi}" xyz="0.148 0.48 1.8"/>
     <parent link="base_link"/>
     <child link="kinect2_rgb_optical_frame"/>
   </joint>
@@ -369,10 +390,11 @@
     <child link="link_shoulder_1"/>
     <axis xyz="0 0 1"/>
     <limit effort="${joint_1_max_effort}" lower="${-joint_1_max_position}" upper="${joint_1_max_position}" velocity="${joint_1_max_velocity}"/>
-		<safety_controller k_position="20"
+    <safety_controller k_position="20"
                        k_velocity="20"
                        soft_lower_limit="${-joint_1_max_position + arm_eps}"
                        soft_upper_limit="${ joint_1_max_position - arm_eps}" />
+    <dynamics damping="${joint_1_damping}" friction="${joint_1_friction}" />
   </joint>
 
 	<joint name="S2" type="revolute">
@@ -385,6 +407,7 @@
                        k_velocity="20"
                        soft_lower_limit="${-joint_2_max_position + arm_eps}"
                        soft_upper_limit="${ joint_2_max_position - arm_eps}" />
+    <dynamics damping="${joint_2_damping}" friction="${joint_2_friction}" />
 		
   </joint>
 
@@ -404,6 +427,7 @@
                        k_velocity="20"
                        soft_lower_limit="${-joint_3_max_position + arm_eps}"
                        soft_upper_limit="${ joint_3_max_position - arm_eps}" />
+    <dynamics damping="${joint_3_damping}" friction="${joint_3_friction}" />
   </joint>
 
 	<joint name="E2" type="revolute">
@@ -416,6 +440,7 @@
                        k_velocity="20"
                        soft_lower_limit="${-joint_4_max_position + arm_eps}"
                        soft_upper_limit="${ joint_4_max_position - arm_eps}" />
+    <dynamics damping="${joint_4_damping}" friction="${joint_4_friction}" />
   </joint>
 
 	<joint name="W1" type="revolute">
@@ -428,6 +453,7 @@
                        k_velocity="20"
                        soft_lower_limit="${-joint_5_max_position + arm_eps}"
                        soft_upper_limit="${ joint_5_max_position - arm_eps}" />
+  <dynamics damping="${joint_5_damping}" friction="${joint_5_friction}" />
   </joint>
 
 	<joint name="W2" type="revolute">
@@ -440,6 +466,7 @@
                        k_velocity="20"
                        soft_lower_limit="${-joint_6_max_position + arm_eps}"
                        soft_upper_limit="${ joint_6_max_position - arm_eps}" />
+    <dynamics damping="${joint_6_damping}" friction="${joint_6_friction}" />
   </joint>
 
 	<joint name="W3" type="revolute">
@@ -452,6 +479,7 @@
                        k_velocity="20"
                        soft_lower_limit="${-joint_7_max_position + arm_eps}"
                        soft_upper_limit="${ joint_7_max_position - arm_eps}" />
+    <dynamics damping="${joint_7_damping}" friction="${joint_7_friction}" />
   </joint>
 
 	
@@ -499,15 +527,15 @@
 	<!--    TRANSMITIONS     -->
 	<!-- ******************* -->
 
-	<xacro:arm_simple_transmission name="S1" reduction="1.0" />
-	<xacro:arm_simple_transmission name="S2" reduction="1.0" />
-	<xacro:arm_simple_transmission name="E1" reduction="1.0" />
-	<xacro:arm_simple_transmission name="E2" reduction="1.0" />
-	<xacro:arm_simple_transmission name="W1" reduction="1.0" />
-	<xacro:arm_simple_transmission name="W2" reduction="1.0" />
-	<xacro:arm_simple_transmission name="W3" reduction="1.0" />
-	<xacro:arm_simple_transmission name="finger_joint_1" reduction="1.0" />
-	<xacro:arm_simple_transmission name="finger_joint_2" reduction="1.0" />
-	 
+	<xacro:arm_simple_transmission name="S1" reduction="10" />
+	<xacro:arm_simple_transmission name="S2" reduction="10" />
+	<xacro:arm_simple_transmission name="E1" reduction="10" />
+	<xacro:arm_simple_transmission name="E2" reduction="10" />
+	<xacro:arm_simple_transmission name="W1" reduction="10" />
+	<xacro:arm_simple_transmission name="W2" reduction="10" />
+	<xacro:arm_simple_transmission name="W3" reduction="10" />
+	<xacro:arm_simple_transmission name="finger_joint_1" reduction="1" />
+	<xacro:arm_simple_transmission name="finger_joint_2" reduction="1" />
+	
 
 </robot>

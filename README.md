@@ -60,6 +60,22 @@ roslaunch pa10_moveit_config demo_velocity.launch
 3) Move the robot end effector using MoveIt framework.
 
 ## Gazebo
-:bangbang:
+You can launch Gazebo using the launch file- 
 
-** Not ready Yet **
+```sh
+roslaunch pa10_gazebo pa10.launch
+```
+
+The launch file :
+1. Launches Gazebo
+2. Loads the robot model in Gazebo
+3. Launched ros_control controller for the robot
+
+The controller is set to launch a joint trajectory controller.
+
+## Gazebo + MoveIt
+To run the Gazebo + Pa10 Controllers + MoveIt :
+```sh
+roslaunch pa10_gazebo pa10_moveit.launch rviz:=true
+```
+Set the argument ```rviz := true``` to launch RViz. 
