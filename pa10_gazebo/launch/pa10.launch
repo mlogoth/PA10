@@ -3,13 +3,11 @@
     <arg name="world"  default="empty"/>
     <arg name="paused" default="false"/>
     <arg name="gui" default="true"/>
-    <arg name="gzpose" default="-x 0 -y 0 -z 0.5 -R 0.0 -P 0.0 -Y 0.0"/>
     <arg name="debug" default="false"/>
-
+    
     <env name="LC_NUMERIC" value="C" />
 
     <env name="GAZEBO_MODEL_PATH" value="$(find pa10_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)"/>
-
 
     <!-- startup simulated world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -18,30 +16,11 @@
         <arg name="debug" value="$(arg debug)"/>
     </include>
 
-
-    <!-- spawn robot in simulation -->
+    <!-- spawn 1st pa10 -->
     <include file="$(find pa10_gazebo)/launch/pa10_spawn.launch">
-        <arg name="gzpose" value="$(arg gzpose)"/>
+        <arg name="robot_name" value="pa10"/>
+        <arg name="multiple" value="true"/>
+        <arg name="gzpose" default="-x 0 -y 1.5 -z 0.5 -R 0.0 -P 0.0 -Y 0.0"/>
     </include>
-
-    <!-- Load parameters of Gazebo Controllers -->
-    <rosparam file="$(find pa10_hardware_interface)/config/gazebo_position_controllers.yaml" command="load"/>
-
-    <!-- load the controllers -->
-    <node name="pa10_trajectory_controller" pkg="controller_manager" type="spawner" respawn="false"
-        output="screen" args="
-        joint_state_controller 
-        arm_controller
-        gripper_controller"
-     />
-
-    <!-- convert joint states to TF transforms for rviz, etc -->
-    <node name="pa10_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
-    </node>
-
-    <!-- Go to Home Position -->
-    <node name="pa10_home_position" pkg="pa10_hardware_interface" type="home_arm.py" output="screen">
-    </node>
-
 
 </launch>

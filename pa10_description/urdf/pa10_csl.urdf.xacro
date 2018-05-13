@@ -2,6 +2,12 @@
 
 <robot name="pa10"  xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+    <xacro:arg name="multiple" default="false"/> <!-- If multiple robots will be used -->
+    <xacro:arg name="namespace" default=""/> <!-- namespace of the robot -->
+    <xacro:property name="is_multiple" value="$(arg multiple)" />
+    <xacro:property name="nsp" value="$(arg namespace)" />
+
+
 	<xacro:property name="pi" value="3.1415926535897931" />
 	<!-- JOINTS EFFORT LIMITS -->
 	<!-- NOT THE ACTUAL VALUE -->
@@ -55,7 +61,7 @@
 
 
 	<!-- Import all Gazebo-customization elements, including Gazebo colors -->
-  <xacro:include filename="$(find pa10_description)/urdf/pa10csl.gazebo" />
+  <xacro:include filename="$(find pa10_description)/urdf/pa10csl.gazebo.urdf.xacro" />
 	<!-- Import Rviz colors -->
   <xacro:include filename="$(find pa10_description)/urdf/materials.xacro" />
 	<!-- Import Transmitions -->

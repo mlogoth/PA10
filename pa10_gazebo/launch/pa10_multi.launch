@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="world"  default="empty"/>
+    <arg name="paused" default="false"/>
+    <arg name="gui" default="true"/>
+    <arg name="debug" default="false"/>
+    
+    <env name="LC_NUMERIC" value="C" />
+
+    <env name="GAZEBO_MODEL_PATH" value="$(find pa10_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+
+    <!-- startup simulated world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find pa10_gazebo)/worlds/$(arg world).world"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="debug" value="$(arg debug)"/>
+    </include>
+
+
+    <!-- spawn 1st pa10 -->
+    <include file="$(find pa10_gazebo)/launch/pa10_spawn.launch">
+        <!-- if it is multiple set it true and define the robot name -->
+        <arg name="multiple" value="true"/>
+        <arg name="robot_name" value="pa10_1"/>
+        <!-- robot pose wrt gazebo map frame -->
+        <arg name="pose_x" value="0.0"/>
+        <arg name="pose_y" value="0.0"/>
+        <arg name="pose_z" value="0.5"/>
+        <arg name="roll" value="0.0"/>
+        <arg name="pitch" value="0.0"/>
+        <arg name="yaw" value="0.0"/>
+        <!-- launch moveit framework -->
+        <arg name="moveit" value="true"/>
+        <arg name="use_rviz" value="false"/>
+        <arg name="use_camera" value="false"/>
+    </include>
+    
+    <!-- spawn 2nd pa10 -->
+    <include file="$(find pa10_gazebo)/launch/pa10_spawn.launch">
+        <!-- if it is multiple set it true and define the robot name -->
+        <arg name="multiple" value="true"/>
+        <arg name="robot_name" value="pa10_2"/>
+        <!-- robot pose wrt gazebo map frame -->
+        <arg name="pose_x" value="0.0"/>
+        <arg name="pose_y" value="1.5"/>
+        <arg name="pose_z" value="0.5"/>
+        <arg name="roll" value="0.0"/>
+        <arg name="pitch" value="0.0"/>
+        <arg name="yaw" value="0.0"/>
+        <!-- launch moveit framework -->
+        <arg name="moveit" value="true"/>
+        <arg name="use_rviz" value="false"/>
+        <arg name="use_camera" value="false"/>
+    </include>
+
+
+</launch>
