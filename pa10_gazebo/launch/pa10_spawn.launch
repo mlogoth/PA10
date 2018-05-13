@@ -41,7 +41,7 @@
         />
         
         
-        <node pkg="tf" type="static_transform_publisher" name="$(arg robot_name)_bc" args="$(arg pose_x) $(arg pose_y) $(arg pose_z) $(arg roll) $(arg pitch) $(arg yaw) /map $(arg robot_name)/world 100"/>
+        <node pkg="tf" type="static_transform_publisher" name="$(arg robot_name)_bc" args="$(arg pose_x) $(arg pose_y) $(arg pose_z) $(arg yaw) $(arg pitch) $(arg roll) /map $(arg robot_name)/world 100"/>
         
         
         <!-- Robot state publisher -->
