@@ -139,7 +139,8 @@ public:
      host_info.ai_family = AF_UNSPEC;     // IP version not specified. Can be both.
      host_info.ai_socktype = SOCK_STREAM; // Use SOCK_STREAM for TCP or SOCK_DGRAM for UDP.
 
-     status = getaddrinfo("147.102.51.71", "4534", &host_info, &host_info_list);
+     //status = getaddrinfo("147.102.51.71", "4534", &host_info, &host_info_list);
+     status = getaddrinfo("192.168.1.71", "4534", &host_info, &host_info_list);
      
      if (status != 0){  
          std::cout << "getaddrinfo error" << gai_strerror(status) ;

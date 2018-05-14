@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
-	<!--<rosparam file="$(find pa10_hardware_interface)/config/joint_names.yaml" command="load"/> -->
-	<!--<rosparam file="$(find pa10_hardware_interface)/config/pids.yaml" command="load"/>-->
-	<rosparam file="$(find pa10_hardware_interface)/config/real_controllers.yaml" command="load"/>
-	
-	
-  <!-- The semantic description that corresponds to the URDF -->
-  <param name="robot_description_semantic" textfile="$(find pa10_moveit_config)/config/pa10.srdf" />
-  <rosparam command="load" file="$(find pa10_moveit_config)/config/kinematics.yaml"/>
-  
-	<param name="robot_description" command="$(find xacro)/xacro --inorder '$(find pa10_description)/urdf/pa10_csl.urdf.xacro'"/>
-  <!-- load the controllers -->
 
-	<node name="pa10_hardware_interface" pkg="pa10_hardware_interface" type="pa10_hardware_interface_node" output="screen"/>
+    <!-- If multiple robots set multiple=true and define the namespace -->
+    <arg name="robot_name" default="pa10"/>
+    <arg name="multiple" default="true"/>
+    <arg name="multi" value="multiple:=$(arg multiple) namespace:=$(arg robot_name)"/>
+    
+  <!-- The semantic description that corresponds to the URDF -->
+  <param name="/$(arg robot_name)/robot_description_semantic" textfile="$(find pa10_moveit_config)/config/pa10.srdf" />
+  <rosparam command="load" file="$(find pa10_moveit_config)/config/kinematics.yaml" ns="/$(arg robot_name)"/>
+  
+  	<rosparam file="$(find pa10_hardware_interface)/config/real_controllers.yaml" command="load" ns="/$(arg robot_name)"/>
+	
+	<param name="/$(arg robot_name)/robot_description" command="$(find xacro)/xacro --inorder '$(find pa10_description)/urdf/pa10_csl.urdf.xacro' $(arg multi)"/>
+
+  <!-- load the controllers -->
+	<node name="pa10_hardware_interface" pkg="pa10_hardware_interface" type="pa10_hardware_interface_node" ns="/$(arg robot_name)"/>
 
   <node name="pa10_trajectory_controller" pkg="controller_manager" type="spawner" respawn="false"
     output="screen" args="
+      --namespace=/$(arg robot_name)
       joint_state_controller 
       arm_controller
       gripper_controller "/>
       
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
-  <!-- Publish joint states for all the joints -->
+      
+      <node pkg="tf" type="static_transform_publisher" name="$(arg robot_name)_bc" args="0.0 0.0 0.0 0.0 0.0 0.0 /world $(arg robot_name)/world 100"/>
+      
+  <!-- Robot state publisher -->
+  <node pkg="robot_state_publisher" type="state_publisher" name="$(arg robot_name)_state_publisher">
+            <param name="publish_frequency" type="double" value="50.0"/>
+            <param name="tf_prefix" type="string" value="$(arg robot_name)"/>
+            <remap from="robot_description" to="$(arg robot_name)/robot_description" />
+            <remap from="joint_states" to="$(arg robot_name)/joint_states" />
+  </node>
   
-  <!--<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
-    <rosparam param="/source_list">[/joint_states]</rosparam>
-    <param name="use_gui" value="false"/>
-	</node>-->
+  <!-- Use MoveIt -->
+        <group ns="$(arg robot_name)">
+            <!-- Launch MoveIt -->
+            <include file="$(find pa10_moveit_config)/launch/pa10_moveit.launch">
+                <arg name="rviz" value="true" />
+                <arg name="camera" value="false"/>
+            </include>
+        </group>
+
 </launch>
 
