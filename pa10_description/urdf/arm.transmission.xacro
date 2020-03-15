@@ -9,13 +9,13 @@
       
       <actuator name="${name}_motor" >
         <!--hardwareInterface>EffortJointInterface</hardwareInterface-->
-        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        <hardwareInterface>VelocityJointInterface</hardwareInterface>
         <mechanicalReduction>${reduction}</mechanicalReduction>
       </actuator>
       
       <joint name="${name}">
         <!--hardwareInterface>EffortJointInterface</hardwareInterface-->
-        <hardwareInterface>PositionJointInterface</hardwareInterface>
+        <hardwareInterface>VelocityJointInterface</hardwareInterface>
       </joint>
     
     </transmission>

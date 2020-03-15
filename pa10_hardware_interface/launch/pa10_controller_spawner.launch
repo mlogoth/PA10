@@ -10,7 +10,7 @@
   <param name="/$(arg robot_name)/robot_description_semantic" textfile="$(find pa10_moveit_config)/config/pa10.srdf" />
   <rosparam command="load" file="$(find pa10_moveit_config)/config/kinematics.yaml" ns="/$(arg robot_name)"/>
   
-  	<rosparam file="$(find pa10_hardware_interface)/config/real_controllers.yaml" command="load" ns="/$(arg robot_name)"/>
+  <rosparam file="$(find pa10_hardware_interface)/config/real_controllers.yaml" command="load" ns="/$(arg robot_name)"/>
 	
 	<param name="/$(arg robot_name)/robot_description" command="$(find xacro)/xacro --inorder '$(find pa10_description)/urdf/pa10_csl.urdf.xacro' $(arg multi)"/>
 

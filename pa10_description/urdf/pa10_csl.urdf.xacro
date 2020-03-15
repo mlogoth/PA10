@@ -43,21 +43,21 @@
     <!-- JOINT DYNAMICS DAMPING + FRICTION-->
     <!-- >> !! Not Real Values !! << -->
     <!-- DAMPING -->
-	<xacro:property name="joint_1_damping" value="0.01"/> 
-	<xacro:property name="joint_2_damping" value="0.01"/>
-	<xacro:property name="joint_3_damping" value="0.01"/>
-	<xacro:property name="joint_4_damping" value="0.01"/>
-	<xacro:property name="joint_5_damping" value="0.01"/>
-	<xacro:property name="joint_6_damping" value="0.01"/>
-	<xacro:property name="joint_7_damping" value="0.01"/>
+	<xacro:property name="joint_1_damping" value="0.1"/> 
+	<xacro:property name="joint_2_damping" value="0.1"/>
+	<xacro:property name="joint_3_damping" value="0.1"/>
+	<xacro:property name="joint_4_damping" value="0.1"/>
+	<xacro:property name="joint_5_damping" value="0.1"/>
+	<xacro:property name="joint_6_damping" value="0.1"/>
+	<xacro:property name="joint_7_damping" value="0.1"/>
 	<!-- FRICTION -->
-	<xacro:property name="joint_1_friction" value="2.0"/> 
-	<xacro:property name="joint_2_friction" value="2.0"/>
-	<xacro:property name="joint_3_friction" value="2.0"/>
-	<xacro:property name="joint_4_friction" value="2.0"/>
-	<xacro:property name="joint_5_friction" value="2.0"/>
-	<xacro:property name="joint_6_friction" value="2.0"/>
-	<xacro:property name="joint_7_friction" value="2.0"/>
+	<xacro:property name="joint_1_friction" value="0.7"/> 
+	<xacro:property name="joint_2_friction" value="0.7"/>
+	<xacro:property name="joint_3_friction" value="0.7"/>
+	<xacro:property name="joint_4_friction" value="0.7"/>
+	<xacro:property name="joint_5_friction" value="0.7"/>
+	<xacro:property name="joint_6_friction" value="0.7"/>
+	<xacro:property name="joint_7_friction" value="0.7"/>
 
 
 	<!-- Import all Gazebo-customization elements, including Gazebo colors -->
