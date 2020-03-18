@@ -4,8 +4,10 @@
 
     <xacro:arg name="multiple" default="false"/> <!-- If multiple robots will be used -->
     <xacro:arg name="namespace" default=""/> <!-- namespace of the robot -->
+    <xacro:arg name="interface" default="velocity"/> <!-- namespace of the robot -->
     <xacro:property name="is_multiple" value="$(arg multiple)" />
     <xacro:property name="nsp" value="$(arg namespace)" />
+    <xacro:property name="HWInterface" value="$(arg interface)" />
 
 
 	<xacro:property name="pi" value="3.1415926535897931" />
@@ -43,21 +45,21 @@
     <!-- JOINT DYNAMICS DAMPING + FRICTION-->
     <!-- >> !! Not Real Values !! << -->
     <!-- DAMPING -->
-	<xacro:property name="joint_1_damping" value="0.1"/> 
-	<xacro:property name="joint_2_damping" value="0.1"/>
-	<xacro:property name="joint_3_damping" value="0.1"/>
-	<xacro:property name="joint_4_damping" value="0.1"/>
-	<xacro:property name="joint_5_damping" value="0.1"/>
-	<xacro:property name="joint_6_damping" value="0.1"/>
-	<xacro:property name="joint_7_damping" value="0.1"/>
+	<xacro:property name="joint_1_damping" value="0.8"/> 
+	<xacro:property name="joint_2_damping" value="0.8"/>
+	<xacro:property name="joint_3_damping" value="0.8"/>
+	<xacro:property name="joint_4_damping" value="0.8"/>
+	<xacro:property name="joint_5_damping" value="0.8"/>
+	<xacro:property name="joint_6_damping" value="0.8"/>
+	<xacro:property name="joint_7_damping" value="0.8"/>
 	<!-- FRICTION -->
-	<xacro:property name="joint_1_friction" value="0.7"/> 
-	<xacro:property name="joint_2_friction" value="0.7"/>
-	<xacro:property name="joint_3_friction" value="0.7"/>
-	<xacro:property name="joint_4_friction" value="0.7"/>
-	<xacro:property name="joint_5_friction" value="0.7"/>
-	<xacro:property name="joint_6_friction" value="0.7"/>
-	<xacro:property name="joint_7_friction" value="0.7"/>
+	<xacro:property name="joint_1_friction" value="0.1"/> 
+	<xacro:property name="joint_2_friction" value="0.1"/>
+	<xacro:property name="joint_3_friction" value="0.1"/>
+	<xacro:property name="joint_4_friction" value="0.1"/>
+	<xacro:property name="joint_5_friction" value="0.1"/>
+	<xacro:property name="joint_6_friction" value="0.1"/>
+	<xacro:property name="joint_7_friction" value="0.1"/>
 
 
 	<!-- Import all Gazebo-customization elements, including Gazebo colors -->
@@ -104,8 +106,7 @@
       <geometry>
         <mesh filename="package://pa10_description/pa10_stl/S1.stl" scale="1 1 1"/>
       </geometry>
-      <material name="">
-        <color rgba="0.34 0.35 0.36 1.0"/>
+      <material name="pa10_blue">
       </material>
     </visual>
 		<collision>
@@ -128,7 +129,7 @@
         <mesh filename="package://pa10_description/pa10_stl/S2.stl" scale="1 1 1"/>
       </geometry>
       <material name="">
-        <color rgba="0.33 0.96 0.53 1.5"/>
+        <color rgba="0.13 0.13 0.13 1.0"/>
       </material>
     </visual>
 		<collision>
@@ -152,8 +153,7 @@
       <geometry>
         <mesh filename="package://pa10_description/pa10_stl/S3.stl" scale="1 1 1"/>
       </geometry>
-      <material name="">
-        <color rgba="0.34 0.35 0.36 1.0"/>
+      <material name="pa10_blue">
       </material>
     </visual>
     <collision>
@@ -187,7 +187,7 @@
         <mesh filename="package://pa10_description/pa10_stl/E1.stl" scale="1 1 1"/>
       </geometry>
       <material name="">
-        <color rgba="0.33 0.96 0.53 1.5"/>
+        <color rgba="0.13 0.13 0.13 1.5"/>
       </material>
     </visual>
     <collision>
@@ -235,7 +235,7 @@
         <mesh filename="package://pa10_description/pa10_stl/W1.stl" scale="1 1 1"/>
       </geometry>
       <material name="">
-        <color rgba="0.33 0.96 0.53 1.5"/>
+        <color rgba="0.13 0.13 0.13 1.5"/>
       </material>
     </visual>
     <collision>
@@ -257,8 +257,7 @@
       <geometry>
         <mesh filename="package://pa10_description/pa10_stl/W2.stl"  scale="1 1 1"/>
       </geometry>
-      <material name="">
-        <color rgba="0.34 0.35 0.36 1.0"/>
+      <material name="pa10_blue">
       </material>
     </visual>
     <collision>
@@ -373,8 +372,8 @@
     <child link="base_link"/>
   </joint>
   
+  <!-- 
   <joint name="kinect" type="fixed">
-    <!-- origin rpy="${-15.0*pi/180.0} 0 0" xyz="0.148 -0.48 -0.05"/ -->
     <origin rpy="${-125.0*pi/180.0} 0 ${pi}" xyz="0.148 0.48 1.8"/>
     <parent link="base_link"/>
     <child link="kinect2_rgb_optical_frame"/>
@@ -385,8 +384,7 @@
     <parent link="kinect2_rgb_optical_frame"/>
     <child link="kinect2_ir_optical_frame"/>
   </joint>
-
-
+ -->
 
 
 
@@ -533,15 +531,15 @@
 	<!--    TRANSMITIONS     -->
 	<!-- ******************* -->
 
-	<xacro:arm_simple_transmission name="S1" reduction="10" />
-	<xacro:arm_simple_transmission name="S2" reduction="10" />
-	<xacro:arm_simple_transmission name="E1" reduction="10" />
-	<xacro:arm_simple_transmission name="E2" reduction="10" />
-	<xacro:arm_simple_transmission name="W1" reduction="10" />
-	<xacro:arm_simple_transmission name="W2" reduction="10" />
-	<xacro:arm_simple_transmission name="W3" reduction="10" />
-	<xacro:arm_simple_transmission name="finger_joint_1" reduction="1" />
-	<xacro:arm_simple_transmission name="finger_joint_2" reduction="1" />
+	<xacro:arm_simple_transmission name="S1" reduction="10" interface="${HWInterface}" />
+	<xacro:arm_simple_transmission name="S2" reduction="10" interface="${HWInterface}"/>
+	<xacro:arm_simple_transmission name="E1" reduction="10" interface="${HWInterface}"/>
+	<xacro:arm_simple_transmission name="E2" reduction="10" interface="${HWInterface}"/>
+	<xacro:arm_simple_transmission name="W1" reduction="10" interface="${HWInterface}"/>
+	<xacro:arm_simple_transmission name="W2" reduction="10" interface="${HWInterface}"/>
+	<xacro:arm_simple_transmission name="W3" reduction="10" interface="${HWInterface}"/>
+	<xacro:arm_simple_transmission name="finger_joint_1" reduction="1" interface="velocity"/>
+	<xacro:arm_simple_transmission name="finger_joint_2" reduction="1" interface="velocity"/>
 	
 
 </robot>

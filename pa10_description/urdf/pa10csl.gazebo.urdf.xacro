@@ -21,7 +21,9 @@
   <gazebo reference="base_link">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="pa10_blue">
+      Gazebo/Grey
+    </material>
   </gazebo>
 
 
@@ -34,7 +36,9 @@
   <gazebo reference="link_shoulder_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="pa10_blue">
+      Gazebo/Grey
+    </material>
   </gazebo>
 
   <!-- Link3 -->
@@ -48,7 +52,9 @@
   <gazebo reference="link_elbow_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="pa10_blue">
+      Gazebo/Grey
+    </material>
   </gazebo>
 
   <!-- Link5 -->
@@ -62,13 +68,17 @@
   <gazebo reference="link_wrist_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="pa10_blue">
+      Gazebo/Grey
+    </material>
   </gazebo>
 
 	<gazebo reference="link_wrist_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material>
+      Gazebo/Blue
+    </material>
   </gazebo>
 
 	<gazebo reference="link_gripper_base">

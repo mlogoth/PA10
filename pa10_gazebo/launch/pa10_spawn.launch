@@ -5,6 +5,9 @@
     <arg name="robot_name" default=""/>
     <arg name="multiple" default="false"/>
     <arg name="multi" value="multiple:=$(arg multiple) namespace:=$(arg robot_name)"/>
+    
+    <!-- select hardware interface among effort, velocity, position -->
+    <arg name="interface" default="velocity"/>
 
     <arg name="pose_x" default= "0" />
     <arg name="pose_y" default= "0" />
@@ -23,10 +26,17 @@
 
     <group if="$(arg multiple)">
 
-        <rosparam file="$(find pa10_hardware_interface)/config/gazebo_position_controllers.yaml"  command="load" ns="/$(arg robot_name)"/>
+        <group if="$(eval arg('interface') =='velocity')">
+            <rosparam file="$(find pa10_hardware_interface)/config/gazebo_position_controllers.yaml"  command="load" ns="/$(arg robot_name)"/>
+        </group>
+
+        <group if="$(eval arg('interface') =='effort')">
+            <rosparam file="$(find pa10_hardware_interface)/config/gazebo_effort_controllers.yaml"  command="load" ns="/$(arg robot_name)"/>
+        </group>
+        
 
         <!-- Robot Model -->
-        <param name="/$(arg robot_name)/robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/pa10_csl.urdf.xacro' $(arg multi)"/>
+        <param name="/$(arg robot_name)/robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/pa10_csl.urdf.xacro' $(arg multi) interface:=$(arg interface)"/>
 
         <!-- Spawn robot in Gazebo -->
         <node pkg="gazebo_ros" type="spawn_model" name="$(arg robot_name)_spawn_model"
@@ -70,10 +80,17 @@
 
 
     <group unless="$(arg multiple)">
-        <rosparam file="$(find pa10_hardware_interface)/config/gazebo_position_controllers.yaml"  command="load"/>
+        
+        <group if="$(eval arg('interface') =='velocity')">
+            <rosparam file="$(find pa10_hardware_interface)/config/gazebo_position_controllers.yaml"  command="load"/>
+        </group>
+
+        <group if="$(eval arg('interface') =='effort')">
+            <rosparam file="$(find pa10_hardware_interface)/config/gazebo_effort_controllers.yaml"  command="load"/>
+        </group>
 
         <!-- Robot Model -->
-        <param name="robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/pa10_csl.urdf.xacro'" />
+        <param name="robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/pa10_csl.urdf.xacro' interface:=$(arg interface)" />
 
         <!-- Spawn robot in Gazebo -->
         <node pkg="gazebo_ros" type="spawn_model" name="pa10_spawn_model"

@@ -2,20 +2,34 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="arm_simple_transmission" params="name reduction" >
+  <xacro:macro name="arm_simple_transmission" params="name reduction interface:=velocity" >
     
     <transmission name="${name}_trans">
       <type>transmission_interface/SimpleTransmission</type>
       
       <actuator name="${name}_motor" >
-        <!--hardwareInterface>EffortJointInterface</hardwareInterface-->
-        <hardwareInterface>VelocityJointInterface</hardwareInterface>
+        <xacro:if value="${interface == 'velocity'}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${interface == 'effort'}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${interface == 'position'}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
         <mechanicalReduction>${reduction}</mechanicalReduction>
       </actuator>
       
       <joint name="${name}">
-        <!--hardwareInterface>EffortJointInterface</hardwareInterface-->
-        <hardwareInterface>VelocityJointInterface</hardwareInterface>
+        <xacro:if value="${interface == 'velocity'}">
+          <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${interface == 'effort'}">
+          <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </xacro:if>
+        <xacro:if value="${interface == 'position'}">
+          <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </xacro:if>
       </joint>
     
     </transmission>
