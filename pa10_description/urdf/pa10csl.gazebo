@@ -15,60 +15,60 @@
   <gazebo reference="base_link">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="pa10_blue"/>
   </gazebo>
 
 
   <!-- Link1 -->
   <gazebo reference="link_shoulder_1">
-    <material>Gazebo/Blue</material>
+    <material name="grey"/>
   </gazebo>
 
   <!-- Link2 -->
   <gazebo reference="link_shoulder_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="pa10_blue"/>
   </gazebo>
 
   <!-- Link3 -->
   <gazebo reference="link_elbow_1">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Blue</material>
+    <material name="grey"/>
   </gazebo>
 
   <!-- Link4 -->
   <gazebo reference="link_elbow_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="pa10_blue"/>
   </gazebo>
 
   <!-- Link5 -->
   <gazebo reference="link_wrist_1">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Blue</material>
+    <material name="grey"/>
   </gazebo>
 
   <!-- Link6 -->
   <gazebo reference="link_wrist_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="pa10_blue"/>
   </gazebo>
 
-	<gazebo reference="link_wrist_2">
+	<gazebo reference="link_wrist_3">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="pa10_blue"/>
   </gazebo>
 
 	<gazebo reference="link_gripper_base">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <material name="grey"/>
   </gazebo>
 
 	<gazebo reference="link_finger_1">
