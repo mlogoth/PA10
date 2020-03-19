@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="world"  default="empty"/>
-    <arg name="paused" default="false"/>
+    <arg name="paused" default="true"/>
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
     
@@ -14,6 +14,7 @@
         <arg name="world_name" value="$(find pa10_gazebo)/worlds/$(arg world).world"/>
         <arg name="gui" value="$(arg gui)"/>
         <arg name="debug" value="$(arg debug)"/>
+        <arg name="paused" value="$(arg paused)"/>
     </include>
 
 
@@ -24,11 +25,12 @@
         <arg name="robot_name" value="pa10_1"/>
         <!-- robot pose wrt gazebo map frame -->
         <arg name="pose_x" value="0.0"/>
-        <arg name="pose_y" value="0.0"/>
+        <arg name="pose_y" value="-0.896"/> <!-- 0.0 -->
         <arg name="pose_z" value="0.5"/>
         <arg name="roll" value="0.0"/>
         <arg name="pitch" value="0.0"/>
         <arg name="yaw" value="0.0"/>
+        <arg name="joints_gazebo_spawn" value="-J S1 1.57 -J S2 0.39 -J E1 0.0 -J E2 0.54 -J W1 0.0 -J W2 0.64 -J W3 0.0"/>
         <!-- launch moveit framework -->
         <arg name="moveit" value="true"/>
         <arg name="use_rviz" value="false"/>
@@ -42,11 +44,12 @@
         <arg name="robot_name" value="pa10_2"/>
         <!-- robot pose wrt gazebo map frame -->
         <arg name="pose_x" value="0.0"/>
-        <arg name="pose_y" value="1.5"/>
+        <arg name="pose_y" value="0.896"/>  <!-- 1.5 -->
         <arg name="pose_z" value="0.5"/>
         <arg name="roll" value="0.0"/>
         <arg name="pitch" value="0.0"/>
         <arg name="yaw" value="0.0"/>
+        <arg name="joints_gazebo_spawn" value="-J S1 1.57 -J S2 -0.39 -J E1 0.0 -J E2 -0.54 -J W1 0.0 -J W2 -0.64 -J W3 0.0"/>
         <!-- launch moveit framework -->
         <arg name="moveit" value="true"/>
         <arg name="use_rviz" value="false"/>
