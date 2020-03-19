@@ -129,7 +129,7 @@
         <mesh filename="package://pa10_description/pa10_stl/S2.stl" scale="1 1 1"/>
       </geometry>
       <material name="">
-        <color rgba="0.13 0.13 0.13 1.0"/>
+        <color rgba="0.88 0.88 0.88 1.0"/>
       </material>
     </visual>
 		<collision>
@@ -172,7 +172,7 @@
 
 	<link name="link_shoulder_to_elbow">
 		<inertial>
-      <origin rpy="0 0 0" xyz="0 0 1"/>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
       <mass value="0.5"/>
       <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
     </inertial>
@@ -187,7 +187,7 @@
         <mesh filename="package://pa10_description/pa10_stl/E1.stl" scale="1 1 1"/>
       </geometry>
       <material name="">
-        <color rgba="0.13 0.13 0.13 1.5"/>
+        <color rgba="0.88 0.88 0.88 1.0"/>
       </material>
     </visual>
     <collision>
@@ -210,8 +210,7 @@
       <geometry>
         <mesh filename="package://pa10_description/pa10_stl/E2.stl" scale="1 1 1"/>
       </geometry>
-      <material name="">
-        <color rgba="0.34 0.35 0.36 1.0"/>
+      <material name="pa10_blue">
       </material>
     </visual>
     <collision>
@@ -235,7 +234,7 @@
         <mesh filename="package://pa10_description/pa10_stl/W1.stl" scale="1 1 1"/>
       </geometry>
       <material name="">
-        <color rgba="0.13 0.13 0.13 1.5"/>
+        <color rgba="0.88 0.88 0.88 1.0"/>
       </material>
     </visual>
     <collision>
@@ -372,7 +371,6 @@
     <child link="base_link"/>
   </joint>
   
-  <!-- 
   <joint name="kinect" type="fixed">
     <origin rpy="${-125.0*pi/180.0} 0 ${pi}" xyz="0.148 0.48 1.8"/>
     <parent link="base_link"/>
@@ -384,8 +382,6 @@
     <parent link="kinect2_rgb_optical_frame"/>
     <child link="kinect2_ir_optical_frame"/>
   </joint>
- -->
-
 
 
 	<joint name="S1" type="revolute">
