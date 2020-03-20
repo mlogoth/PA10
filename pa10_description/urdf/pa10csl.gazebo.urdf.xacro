@@ -17,6 +17,26 @@
   </gazebo>
 
 
+  <!-- Inertial of Cylinder -->
+  <xacro:macro name="inertia_cylinder" params="mass height radius axis:=0">
+    <xacro:property name="Ir" value="${0.0833*mass*(3.0*radius*radius + height*height)}" />
+    <xacro:property name="Ih" value="${0.5*mass*(radius*radius)}" />
+    <!-- z Axis -->
+    <xacro:unless value="${axis}">
+      <inertia ixx="${Ir}" ixy="0" ixz="0" iyy="${Ir}" iyz="0" izz="${Ih}" />
+    </xacro:unless>
+    <!-- y Axis -->
+    <xacro:unless value="${axis-1}">
+      <inertia ixx="${Ir}" ixy="0" ixz="0" iyy="${Ih}" izz="${Ir}" iyz="0" />
+    </xacro:unless>
+    <!-- x Axis -->
+    <xacro:unless value="${axis-2}">
+      <inertia ixx="${Ih}" iyy="${Ir}" iyz="0" izz="${Ir}" ixy="0" ixz="0" />
+    </xacro:unless>
+  </xacro:macro>
+
+
+
   <!-- base_link -->
   <gazebo reference="base_link">
     <mu1>0.5</mu1>

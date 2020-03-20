@@ -20,7 +20,13 @@
     <include file="$(find pa10_gazebo)/launch/pa10_spawn.launch">
         <arg name="robot_name" value="pa10"/>
         <arg name="multiple" value="true"/>
-        <arg name="gzpose" default="-x 0 -y 1.5 -z 0.5 -R 0.0 -P 0.0 -Y 0.0"/>
+        <arg name="interface" default="velocity"/>
+        <arg name="pose_x" default= "0" />
+        <arg name="pose_y" default= "0" />
+        <arg name="pose_z" default= "0.5" />        
+        <arg name="roll" default= "0" />
+        <arg name="pitch" default= "0" />
+        <arg name="yaw" default= "0" />
     </include>
 
 </launch>

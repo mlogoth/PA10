@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <!-- If multiple robots set multiple=true and define the namespace -->
+    <arg name="robot_name" default=""/>
+    <arg name="multiple" default="false"/>
+    <arg name="multi" value="multiple:=$(arg multiple) namespace:=$(arg robot_name)"/>
+
+    <!-- select hardware interface among effort, velocity, position -->
+    <arg name="interface" default="velocity"/>
+
+    <arg name="pose_x" default= "0" />
+    <arg name="pose_y" default= "0" />
+    <arg name="pose_z" default= "0.5" />
+
+    <arg name="roll" default= "0" />
+    <arg name="pitch" default= "0" />
+    <arg name="yaw" default= "0" />
+
+    <arg name="gzpose" value="-x $(arg pose_x) -y $(arg pose_y) -z $(arg pose_z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
+
+    <arg name="joints_gazebo_spawn" default="-J S1 0.0 -J S2 0.0 -J E1 0.0 -J E2 0.0 -J W1 0.0 -J W2 0.0 -J W3 0.0"/>
+
+    <!-- MoveIt Arguments -->
+    <arg name="moveit" default="false"/>
+    <arg name="use_rviz" default="false"/>
+    <!-- Open RViz with MoveIt-->
+    <arg name="use_camera" default="false"/>
+    <!-- Use MoveIt Camera -->
+
+
+    <!-- startup simulated world -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find pa10_gazebo)/worlds/empty.world"/>
+        <arg name="gui" value="true"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+
+    <group if="$(eval arg('interface') =='velocity')">
+        <rosparam file="$(find pa10_hardware_interface)/config/cooperative_gazebo_position_controllers.yaml" command="load"/>
+    </group>
+
+    <group if="$(eval arg('interface') =='effort')">
+        <rosparam file="$(find pa10_hardware_interface)/config/cooperative_gazebo_effort_controllers.yaml" command="load"/>
+    </group>
+
+    <!-- Robot Model -->
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/cooperative_pa10.urdf.xacro' interface:=$(arg interface)" />
+
+    <!-- Spawn robot in Gazebo -->
+    <node pkg="gazebo_ros" type="spawn_model" name="pa10_spawn_model" args="-urdf -param robot_description $(arg gzpose) -model pa10 $(arg joints_gazebo_spawn)"/>
+
+    <!-- Start Controllers -->
+    <node name="pa10_trajectory_controller" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="
+            joint_state_controller 
+            arm_controller
+            gripper_controller" />
+
+
+    <!-- <node pkg="tf" type="static_transform_publisher" name="$(arg robot_name)tf_bc" args="$(arg yaw) $(arg pitch) $(arg roll) /world $(arg robot_name)/world 100"/> -->
+
+    <!-- Robot state publisher -->
+    <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
+        <param name="publish_frequency" type="double" value="200.0"/>
+    </node>
+
+
+
+
+
+</launch>
