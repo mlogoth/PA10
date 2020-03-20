@@ -5,10 +5,10 @@
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <xacro:if value="${is_multiple}">
-          <robotNamespace>/${nsp}</robotNamespace>
+        <robotNamespace>/${nsp}</robotNamespace>
       </xacro:if>
       <xacro:unless value="${is_multiple}">
-          <robotNamespace></robotNamespace>
+        <robotNamespace></robotNamespace>
       </xacro:unless>
       <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
       <legacyModeNS>true</legacyModeNS>
@@ -17,77 +17,143 @@
   </gazebo>
 
 
-<!-- base_link -->
+  <!-- Inertial of Cylinder -->
+  <xacro:macro name="inertia_cylinder" params="mass height radius axis:=0">
+    <xacro:property name="Ir" value="${0.0833*mass*(3.0*radius*radius + height*height)}" />
+    <xacro:property name="Ih" value="${0.5*mass*(radius*radius)}" />
+    <!-- z Axis -->
+    <xacro:unless value="${axis}">
+      <inertia ixx="${Ir}" ixy="0" ixz="0" iyy="${Ir}" iyz="0" izz="${Ih}" />
+    </xacro:unless>
+    <!-- y Axis -->
+    <xacro:unless value="${axis-1}">
+      <inertia ixx="${Ir}" ixy="0" ixz="0" iyy="${Ih}" izz="${Ir}" iyz="0" />
+    </xacro:unless>
+    <!-- x Axis -->
+    <xacro:unless value="${axis-2}">
+      <inertia ixx="${Ih}" iyy="${Ir}" iyz="0" izz="${Ir}" ixy="0" ixz="0" />
+    </xacro:unless>
+  </xacro:macro>
+
+
+
+  <!-- base_link -->
   <gazebo reference="base_link">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <visual>
+      <material>
+        <ambient>0.55 0.85 0.89 1.0</ambient>
+        <diffuse>.7 .7 .7  1.0</diffuse>
+        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+      </material>
+    </visual>
   </gazebo>
 
 
   <!-- Link1 -->
   <gazebo reference="link_shoulder_1">
-    <material>Gazebo/Blue</material>
+    <visual>
+      <material>
+        <ambient>0.88 0.88 0.88 1.0</ambient>
+        <diffuse>.7 .7 .7  1.0</diffuse>
+        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+      </material>
+    </visual>
   </gazebo>
 
   <!-- Link2 -->
   <gazebo reference="link_shoulder_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <visual>
+      <material>
+        <ambient>0.55 0.85 0.89 1.0</ambient>
+        <diffuse>.7 .7 .7  1.0</diffuse>
+        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+      </material>
+    </visual>
   </gazebo>
 
   <!-- Link3 -->
   <gazebo reference="link_elbow_1">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Blue</material>
+    <visual>
+      <material>
+        <ambient>0.88 0.88 0.88 1.0</ambient>
+        <diffuse>.7 .7 .7  1.0</diffuse>
+        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+      </material>
+    </visual>
   </gazebo>
 
   <!-- Link4 -->
   <gazebo reference="link_elbow_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <visual>
+      <material>
+        <ambient>0.55 0.85 0.89 1.0</ambient>
+        <diffuse>.7 .7 .7  1.0</diffuse>
+        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+      </material>
+    </visual>
   </gazebo>
 
   <!-- Link5 -->
   <gazebo reference="link_wrist_1">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Blue</material>
+    <visual>
+      <material>
+        <ambient>0.88 0.88 0.88 1.0</ambient>
+        <diffuse>.7 .7 .7  1.0</diffuse>
+        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+      </material>
+    </visual>
   </gazebo>
 
   <!-- Link6 -->
   <gazebo reference="link_wrist_2">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
+    <visual>
+      <material>
+        <ambient>0.55 0.85 0.89 1.0</ambient>
+        <diffuse>.7 .7 .7  1.0</diffuse>
+        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+      </material>
+    </visual>
   </gazebo>
 
-	<gazebo reference="link_wrist_2">
+  <gazebo reference="link_wrist_3">
+    <mu1>0.5</mu1>
+    <mu2>0.5</mu2>
+    <visual>
+      <material>
+        <ambient>0.55 0.85 0.89 1.0</ambient>
+        <diffuse>.7 .7 .7  1.0</diffuse>
+        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+      </material>
+    </visual>
+  </gazebo>
+
+  <gazebo reference="link_gripper_base">
     <mu1>0.5</mu1>
     <mu2>0.5</mu2>
     <material>Gazebo/Grey</material>
   </gazebo>
 
-	<gazebo reference="link_gripper_base">
-    <mu1>0.5</mu1>
-    <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
-  </gazebo>
-
-	<gazebo reference="link_finger_1">
+  <gazebo reference="link_finger_1">
     <mu1>1000.5</mu1>
     <mu2>1000.5</mu2>
     <material>Gazebo/Orange</material>
   </gazebo>
 
-	<gazebo reference="link_finger_2">
+  <gazebo reference="link_finger_2">
     <mu1>1000.5</mu1>
     <mu2>1000.5</mu2>
     <material>Gazebo/Orange</material>
   </gazebo>
-
-
 </robot>
