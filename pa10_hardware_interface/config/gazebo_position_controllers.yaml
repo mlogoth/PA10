@@ -7,10 +7,7 @@ joint_state_controller:
 
 # Position Controllers ---------------------------------------
 arm_controller:
-  #type: position_controllers/JointGroupPositionController
   type: "velocity_controllers/JointTrajectoryController"
-  #type: "position_controllers/JointTrajectoryController"
-  #type: "position_controllers/JointTrajectoryController"
 
   joints:
      - S1
@@ -36,7 +33,6 @@ arm_controller:
      stop_trajectory_duration: 0 # Override default
 
 gripper_controller:
-  #type: "position_controllers/JointTrajectoryController"
   type: "velocity_controllers/JointTrajectoryController"
   joints:
      - finger_joint_1
