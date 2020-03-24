@@ -8,8 +8,12 @@
   <xacro:arg name="namespace" default=""/>
   <!-- namespace of the robot -->
   <xacro:arg name="interface" default="velocity"/>
-  <!-- namespace of the robot -->
+  <!-- camera -->
   <xacro:arg name="enable_camera" default="false"/>
+  <!-- color -->
+  <xacro:arg name="color" default="default"/>
+
+
   <xacro:property name="is_multiple" value="$(arg multiple)" />
   <xacro:property name="nsp" value="$(arg namespace)" />
   <xacro:property name="HWInterface" value="$(arg interface)" />
@@ -20,13 +24,13 @@
   <!-- JOINTS EFFORT LIMITS -->
   <!-- NOT THE ACTUAL VALUE -->
   <xacro:property name="arm_eps" value="0.02" />
-  <xacro:property name="joint_1_max_effort" value="150.0"/>
-  <xacro:property name="joint_2_max_effort" value="150.0"/>
-  <xacro:property name="joint_3_max_effort" value="150.0"/>
-  <xacro:property name="joint_4_max_effort" value="150.0"/>
-  <xacro:property name="joint_5_max_effort" value="150.0"/>
-  <xacro:property name="joint_6_max_effort" value="150.0"/>
-  <xacro:property name="joint_7_max_effort" value="150.0"/>
+  <xacro:property name="joint_1_max_effort" value="550.0"/>
+  <xacro:property name="joint_2_max_effort" value="550.0"/>
+  <xacro:property name="joint_3_max_effort" value="550.0"/>
+  <xacro:property name="joint_4_max_effort" value="550.0"/>
+  <xacro:property name="joint_5_max_effort" value="550.0"/>
+  <xacro:property name="joint_6_max_effort" value="550.0"/>
+  <xacro:property name="joint_7_max_effort" value="550.0"/>
 
   <!-- JOINTS POSITION LIMITS -->
   <!-- Real Values: [177, 94, 174, 137, 255, 165, 255] (deg)-->
@@ -40,8 +44,8 @@
 
   <!-- JOINTS VELOCITIE LIMITS-->
   <!-- Real Values: [1, 1, 2, 2, 2, 2*pi, 2*pi] (rad/sec)-->
-  <xacro:property name="joint_1_max_velocity" value="0.85"/>
-  <xacro:property name="joint_2_max_velocity" value="0.85"/>
+  <xacro:property name="joint_1_max_velocity" value="1.85"/>
+  <xacro:property name="joint_2_max_velocity" value="1.85"/>
   <xacro:property name="joint_3_max_velocity" value="1.85"/>
   <xacro:property name="joint_4_max_velocity" value="1.85"/>
   <xacro:property name="joint_5_max_velocity" value="1.85"/>
@@ -528,6 +532,10 @@
   <xacro:arm_simple_transmission name="W3" reduction="10" interface="${HWInterface}"/>
   <xacro:arm_simple_transmission name="finger_joint_1" reduction="10" interface="velocity"/>
   <xacro:arm_simple_transmission name="finger_joint_2" reduction="10" interface="velocity"/>
+
+
+  <!-- COLORS GAZEBO -->
+  <xacro:gazebo_materials prefix="" color="$(arg color)" />
 
 
 </robot>

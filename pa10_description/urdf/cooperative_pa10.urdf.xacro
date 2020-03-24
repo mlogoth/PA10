@@ -1,0 +1,167 @@
+<?xml version="1.0" ?>
+
+<robot name="pa10" 
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:arg name="interface" default="velocity"/>
+    <xacro:property name="HWInterface" value="$(arg interface)" />
+
+
+    <!-- Include PA10 CSL Namespace  -->
+    <xacro:include filename="$(find pa10_description)/urdf/pa10_csl_ns.urdf.xacro"/>
+
+    <link name="world"/>
+
+
+    <!-- PA10 1 Links - Joints -->
+    <link name="pa10_1_root_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="1.5"/>
+            <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+        </inertial>
+    </link>
+
+    <link name="pa10_1_link_ee_tool">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.1"/>
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+    </link>
+
+
+    <joint name="pa10_1_base_to_root" type="fixed">
+        <origin rpy="0 0 0" xyz="0 -1 0"/>
+        <parent link="world"/>
+        <child link="pa10_1_root_link"/>
+    </joint>
+
+    <xacro:pa10_arm prefix="pa10_1_" root_link="pa10_1_root_link" tool_link="pa10_1_link_ee_tool" interface="${HWInterface}" color="default"/>
+
+
+
+
+    <!-- PA10 2 Links - Joints -->
+    <link name="pa10_2_root_link">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="1.5"/>
+            <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+        </inertial>
+    </link>
+
+    <link name="pa10_2_link_ee_tool">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.1"/>
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+    </link>
+
+
+    <joint name="pa10_2_base_to_root" type="fixed">
+        <origin rpy="0 0 0" xyz="0 1 0"/>
+        <parent link="world"/>
+        <child link="pa10_2_root_link"/>
+    </joint> 
+
+
+    <xacro:pa10_arm prefix="pa10_2_" root_link="pa10_2_root_link" tool_link="pa10_2_link_ee_tool" interface="effort" color="red"/>
+
+
+
+    <link name="object_handle_2">
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.1"/>
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+    </link>
+
+
+
+    <!-- Object -->
+    <link name="common_object">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <box size="0.06 0.35 0.3" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.06 0.24 0.25" />
+            </geometry>
+        </collision>
+        <inertial>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <mass value="0.5"/>
+            <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+        </inertial>
+    </link>
+
+    <!-- <gazebo>
+        <joint name="constrainted_multi_robot_joint" type="fixed">
+            <parent>pa10_1_link_ee_tool</parent>
+            <child>pa10_2_link_ee_tool</child>
+            <pose>0.00 0.5 0 0 0 0</pose>
+        </joint>
+    </gazebo>  -->
+
+    <joint name="pa10_1_to_object" type="fixed">
+        <!-- <parent>pa10_1_link_ee_tool</parent>
+            <child>common_object</child> -->
+        <!-- <origin>0.00 0.0 0.151 1.579 0 -1.543</origin> -->
+        <origin rpy="1.579 0 -1.543" xyz=" 0.00 0.0 0.151"/>
+        <parent link="pa10_1_link_ee_tool"/>
+        <child link="common_object"/>
+    </joint>
+
+    <joint name="object_to_pa10_2" type="fixed">
+        <origin rpy="-1.868 -1.505 -2.812" xyz=" 0.00 0.12 0.0"/>
+        <parent link="common_object"/>
+        <child link="object_handle_2"/>
+    </joint>
+
+
+    <!-- <gazebo>
+        <joint name="pa10_2_to_object" type="fixed">
+            
+            <origin>0.00 0.0 0.121 -1.579 0.0 -1.633</origin>
+            <parent>pa10_2_link_ee_tool</parent>
+            <child>common_object</child>
+        </joint>
+    </gazebo> -->
+
+    <!-- <gazebo>
+        <joint name="pa10_2_to_object" type="fixed">
+            <parent>object_handle_2</parent>
+            <child>pa10_2_link_ee_tool</child>
+            <pose>0 0 0 0 0 0</pose>
+        </joint>
+    </gazebo>  -->
+    
+    <!-- <gazebo>
+        <plugin name="Myrobot_ClosedLoopPlugin" filename="libpegasus_gazebo_closed_loop_plugin.so">
+            <joint>add_joint</joint>
+            <child>pa10_1_link_wrist_3</child>
+            <parent>pa10_2_link_wrist_3</parent>
+            <position>-0.024, -0.003, 0.729</position>
+            <rotation>-3.114, 0.032, 3.109</rotation>
+        </plugin>
+    </gazebo> -->
+
+    <!-- <joint name="pa10_2_to_object" type="fixed">
+        <parent link="object_handle_2"/>
+        <child link="pa10_2_link_ee_tool"/>
+        <origin rpy="0.0 0.0 0.0" xyz=" 0.00 0.0 0.0"/>
+    </joint> -->
+
+
+</robot>

@@ -1,255 +1,291 @@
 <?xml version="1.0" ?>
 
-<robot name="pa10" 
+<root xmlns:xi="http://www.w3.org/2001/XInclude" 
+  xmlns:gazebo="http://playerstage.sourceforge.net/gazebo/xmlschema/#gz" 
+  xmlns:model="http://playerstage.sourceforge.net/gazebo/xmlschema/#model" 
+  xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor" 
+  xmlns:body="http://playerstage.sourceforge.net/gazebo/xmlschema/#body" 
+  xmlns:geom="http://playerstage.sourceforge.net/gazebo/xmlschema/#geom" 
+  xmlns:joint="http://playerstage.sourceforge.net/gazebo/xmlschema/#joint" 
+  xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" 
+  xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" 
+  xmlns:rendering="http://playerstage.sourceforge.net/gazebo/xmlschema/#rendering" 
+  xmlns:renderable="http://playerstage.sourceforge.net/gazebo/xmlschema/#renderable" 
+  xmlns:physics="http://playerstage.sourceforge.net/gazebo/xmlschema/#physics" 
   xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-  
+  <xacro:property name="is_multiple" value="false" />
+  <xacro:property name="nsp" value="" />
+  <xacro:property name="pi" value="3.1415926535897931" />
+
+  <!-- Import all Gazebo-customization elements, including Gazebo colors -->
+  <xacro:include filename="$(find pa10_description)/urdf/pa10csl.gazebo.urdf.xacro" />
+  <!-- Import Transmitions -->
+  <xacro:include filename="$(find pa10_description)/urdf/arm.transmission.xacro"/>
+
+  <xacro:macro name="pa10_arm" params="prefix root_link:=None tool_link:='link_ee_tool' interface:=velocity enable_camera:=false color:='default'">
+
+    <xacro:property name="HWInterface" value="${interface}" />
+    <xacro:property name="enable_camera_" value="${enable_camera}" />
+
+    <!-- JOINTS EFFORT LIMITS -->
+    <!-- NOT THE ACTUAL VALUE -->
+    <xacro:property name="arm_eps" value="0.02" />
+    <xacro:property name="joint_1_max_effort" value="550.0"/>
+    <xacro:property name="joint_2_max_effort" value="550.0"/>
+    <xacro:property name="joint_3_max_effort" value="550.0"/>
+    <xacro:property name="joint_4_max_effort" value="550.0"/>
+    <xacro:property name="joint_5_max_effort" value="550.0"/>
+    <xacro:property name="joint_6_max_effort" value="550.0"/>
+    <xacro:property name="joint_7_max_effort" value="550.0"/>
+
+    <!-- JOINTS POSITION LIMITS -->
+    <!-- Real Values: [177, 94, 174, 137, 255, 165, 255] (deg)-->
+    <xacro:property name="joint_1_max_position" value="${170.0 *pi/180.0}"/>
+    <xacro:property name="joint_2_max_position" value="${90.0 *pi/180.0}"/>
+    <xacro:property name="joint_3_max_position" value="${170.0 *pi/180.0}"/>
+    <xacro:property name="joint_4_max_position" value="${130.0 *pi/180.0}"/>
+    <xacro:property name="joint_5_max_position" value="${250.0 *pi/180.0}"/>
+    <xacro:property name="joint_6_max_position" value="${160.0 *pi/180.0}"/>
+    <xacro:property name="joint_7_max_position" value="${250.0 *pi/180.0}"/>
+
+    <!-- JOINTS VELOCITIE LIMITS-->
+    <!-- Real Values: [1, 1, 2, 2, 2, 2*pi, 2*pi] (rad/sec)-->
+    <xacro:property name="joint_1_max_velocity" value="1.85"/>
+    <xacro:property name="joint_2_max_velocity" value="1.85"/>
+    <xacro:property name="joint_3_max_velocity" value="2.85"/>
+    <xacro:property name="joint_4_max_velocity" value="2.85"/>
+    <xacro:property name="joint_5_max_velocity" value="2.85"/>
+    <xacro:property name="joint_6_max_velocity" value="${2.8*pi}"/>
+    <xacro:property name="joint_7_max_velocity" value="${2.8*pi}"/>
+
+    <!-- JOINT DYNAMICS DAMPING + FRICTION-->
+    <!-- >> !! Not Real Values !! << -->
+    <!-- DAMPING -->
+    <xacro:property name="joint_1_damping" value="0.8"/>
+    <xacro:property name="joint_2_damping" value="0.8"/>
+    <xacro:property name="joint_3_damping" value="0.8"/>
+    <xacro:property name="joint_4_damping" value="0.8"/>
+    <xacro:property name="joint_5_damping" value="0.8"/>
+    <xacro:property name="joint_6_damping" value="0.8"/>
+    <xacro:property name="joint_7_damping" value="0.8"/>
+    <xacro:property name="joint_finger_damping" value="0.8"/>
+    <!-- FRICTION -->
+    <xacro:property name="joint_1_friction" value="0.1"/>
+    <xacro:property name="joint_2_friction" value="0.1"/>
+    <xacro:property name="joint_3_friction" value="0.1"/>
+    <xacro:property name="joint_4_friction" value="0.1"/>
+    <xacro:property name="joint_5_friction" value="0.1"/>
+    <xacro:property name="joint_6_friction" value="0.1"/>
+    <xacro:property name="joint_7_friction" value="0.1"/>
+    <xacro:property name="joint_finger_friction" value="0.1"/>
 
 
 
 
-  <xacro:macro name="robotic_arm" params="name root_link tool_link interface:=velocity is_multiple:=false nsp:=''"/>
+    <xacro:if value="${enable_camera_}">
 
-
-      <xacro:property name="pi" value="3.1415926535897931" />
-      <!-- JOINTS EFFORT LIMITS -->
-      <!-- NOT THE ACTUAL VALUE -->
-      <xacro:property name="arm_eps" value="0.02" />
-      <xacro:property name="joint_1_max_effort" value="150.0"/>
-      <xacro:property name="joint_2_max_effort" value="150.0"/>
-      <xacro:property name="joint_3_max_effort" value="150.0"/>
-      <xacro:property name="joint_4_max_effort" value="150.0"/>
-      <xacro:property name="joint_5_max_effort" value="150.0"/>
-      <xacro:property name="joint_6_max_effort" value="150.0"/>
-      <xacro:property name="joint_7_max_effort" value="150.0"/>
-
-      <!-- JOINTS POSITION LIMITS -->
-      <!-- Real Values: [177, 94, 174, 137, 255, 165, 255] (deg)-->
-      <xacro:property name="joint_1_max_position" value="${170.0 *pi/180.0}"/>
-      <xacro:property name="joint_2_max_position" value="${90.0 *pi/180.0}"/>
-      <xacro:property name="joint_3_max_position" value="${170.0 *pi/180.0}"/>
-      <xacro:property name="joint_4_max_position" value="${130.0 *pi/180.0}"/>
-      <xacro:property name="joint_5_max_position" value="${250.0 *pi/180.0}"/>
-      <xacro:property name="joint_6_max_position" value="${160.0 *pi/180.0}"/>
-      <xacro:property name="joint_7_max_position" value="${250.0 *pi/180.0}"/>
-
-      <!-- JOINTS VELOCITIE LIMITS-->
-      <!-- Real Values: [1, 1, 2, 2, 2, 2*pi, 2*pi] (rad/sec)-->
-      <xacro:property name="joint_1_max_velocity" value="0.85"/>
-      <xacro:property name="joint_2_max_velocity" value="0.85"/>
-      <xacro:property name="joint_3_max_velocity" value="1.85"/>
-      <xacro:property name="joint_4_max_velocity" value="1.85"/>
-      <xacro:property name="joint_5_max_velocity" value="1.85"/>
-      <xacro:property name="joint_6_max_velocity" value="${1.8*pi}"/>
-      <xacro:property name="joint_7_max_velocity" value="${1.8*pi}"/>
-
-      <!-- JOINT DYNAMICS DAMPING + FRICTION-->
-      <!-- >> !! Not Real Values !! << -->
-      <!-- DAMPING -->
-      <xacro:property name="joint_1_damping" value="0.8"/>
-      <xacro:property name="joint_2_damping" value="0.8"/>
-      <xacro:property name="joint_3_damping" value="0.8"/>
-      <xacro:property name="joint_4_damping" value="0.8"/>
-      <xacro:property name="joint_5_damping" value="0.8"/>
-      <xacro:property name="joint_6_damping" value="0.8"/>
-      <xacro:property name="joint_7_damping" value="0.8"/>
-      <!-- FRICTION -->
-      <xacro:property name="joint_1_friction" value="0.1"/>
-      <xacro:property name="joint_2_friction" value="0.1"/>
-      <xacro:property name="joint_3_friction" value="0.1"/>
-      <xacro:property name="joint_4_friction" value="0.1"/>
-      <xacro:property name="joint_5_friction" value="0.1"/>
-      <xacro:property name="joint_6_friction" value="0.1"/>
-      <xacro:property name="joint_7_friction" value="0.1"/>
-
-
-      <!-- Import all Gazebo-customization elements, including Gazebo colors -->
-      <xacro:include filename="$(find pa10_description)/urdf/pa10csl.gazebo.urdf.xacro" />
-      <!-- Import Rviz colors -->
-      <xacro:include filename="$(find pa10_description)/urdf/materials.xacro" />
-      <!-- Import Transmitions -->
-      <xacro:include filename="$(find pa10_description)/urdf/arm.transmission.xacro"/>
-
-
-
-      
-
-      <link name="${name}base_link">
+      <link name="${prefix}kinect2_rgb_optical_frame">
         <visual>
-          <origin rpy="0 0 3.14" xyz="0 0 0"/>
+          <origin rpy="${pi} ${-pi/2.0} ${-pi/2.0}" xyz="0 0 0"/>
           <geometry>
-            <mesh filename="package://pa10_description/pa10_stl/S1.stl" scale="1 1 1"/>
-          </geometry>
-          <material name="pa10_blue">
-          </material>
-        </visual>
-        <collision>
-          <origin rpy="0 0 3.14" xyz="0 0 0"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl_collision/S1_collision.stl" scale="1 1 1"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <origin rpy="0 0 3.14" xyz="0 0 0"/>
-          <mass value="0.5"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
-
-      <link name="${name}link_shoulder_1">
-        <visual>
-          <origin rpy="0 0 0" xyz="0 0 0.117"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl/S2.stl" scale="1 1 1"/>
+            <mesh filename="package://pa10_description/sensors_3D_models/kinect.dae" scale="1 1 1"/>
           </geometry>
           <material name="">
-            <color rgba="0.13 0.13 0.13 1.0"/>
+            <color rgba="0.0 0.0 0.0 1.0"/>
           </material>
         </visual>
         <collision>
-          <origin rpy="0 0 0" xyz="0 0 0.117"/>
+          <origin rpy="${pi} ${-pi/2.0} ${-pi/2.0}" xyz="0 0 0"/>
           <geometry>
-            <mesh filename="package://pa10_description/pa10_stl_collision/S2_collision.stl" scale="1 1 1"/>
+            <mesh filename="package://pa10_description/sensors_3D_models/kinect.dae" scale="1 1 1"/>
           </geometry>
         </collision>
-        <inertial>
-          <origin rpy="0 0 0" xyz="0 0 0.117"/>
-          <mass value="0.5"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
-
-
-
-      <link name="${name}link_shoulder_2">
-        <visual>
-          <origin rpy="-1.57079 0 3.14159" xyz="0 0 0"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl/S3.stl" scale="1 1 1"/>
-          </geometry>
-          <material name="pa10_blue">
-          </material>
-        </visual>
-        <collision>
-          <origin rpy="-1.57079 0 3.14159" xyz="0 0 0"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl_collision/S3_collision.stl" scale="1 1 1"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <origin rpy="-1.57079 0 3.14159" xyz="0 0 0"/>
-          <mass value="0.5"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
-
-
-      <link name="${name}link_shoulder_to_elbow">
         <inertial>
           <origin rpy="0 0 0" xyz="0 0 1"/>
           <mass value="0.5"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
+          <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
         </inertial>
       </link>
 
+      <link name="${prefix}kinect2_ir_optical_frame"/>
+    </xacro:if>
+
+    <link name="${prefix}base_link">
+      <visual>
+        <origin rpy="0 0 3.14" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl/S1.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="pa10_blue">
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 0 3.14" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl_collision/S1_collision.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 3.14" xyz="0 0 0.1"/>
+        <mass value="0.5"/>
+        <xacro:inertia_cylinder height="0.2"  radius = "0.1" mass="0.5"/>
+      </inertial>
+    </link>
+
+    <link name="${prefix}link_shoulder_1">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0.117"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl/S2.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.88 0.88 0.88 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.117"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl_collision/S2_collision.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0.117"/>
+        <mass value="0.5"/>
+        <xacro:inertia_cylinder height="0.12"  radius = "0.08" mass="0.5"/>
+      </inertial>
+    </link>
 
 
-      <link name="${name}link_elbow_1">
-        <visual>
-          <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl/E1.stl" scale="1 1 1"/>
-          </geometry>
-          <material name="">
-            <color rgba="0.13 0.13 0.13 1.5"/>
-          </material>
-        </visual>
-        <collision>
-          <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl_collision/E1_collision.stl" scale="1 1 1"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
-          <mass value="0.5"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
+
+    <link name="${prefix}link_shoulder_2">
+      <visual>
+        <origin rpy="-1.57079 0 3.14159" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl/S3.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="pa10_blue">
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="-1.57079 0 3.14159" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl_collision/S3_collision.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="-1.57079 0 3.14159" xyz="0 -0.22 0.0"/>
+        <mass value="0.5"/>
+        <xacro:inertia_cylinder height="0.18"  radius = "0.05" mass="0.5" axis="0"/>
+      </inertial>
+    </link>
 
 
-      <link name="${name}link_elbow_2">
-        <visual>
-          <origin rpy="1.57079 0 0" xyz="0 0.003 0"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl/E2.stl" scale="1 1 1"/>
-          </geometry>
-          <material name="">
-            <color rgba="0.34 0.35 0.36 1.0"/>
-          </material>
-        </visual>
-        <collision>
-          <origin rpy="-1.57079 0 0" xyz="0 0.003 0"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl_collision/E2_collision.stl" scale="1 1 1"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <origin rpy="1.57079 0 0" xyz="0 0.003 0"/>
-          <mass value="0.5"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
+    <link name="${prefix}link_shoulder_to_elbow">
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0.22"/>
+        <mass value="0.5"/>
+        <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+      </inertial>
+    </link>
 
 
-      <link name="${name}link_wrist_1">
-        <visual>
-          <origin rpy="0 0 0" xyz="0 0 0.195"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl/W1.stl" scale="1 1 1"/>
-          </geometry>
-          <material name="">
-            <color rgba="0.13 0.13 0.13 1.5"/>
-          </material>
-        </visual>
-        <collision>
-          <origin rpy="0 0 0" xyz="0 0 0.195"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl_collision/W1_collision.stl" scale="1 1 1"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <origin rpy="0 0 0" xyz="0 0 0.195"/>
-          <mass value="0.5"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
 
-      <link name="${name}link_wrist_2">
-        <visual>
-          <origin rpy="1.57079 0 0" xyz="0 0 0"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl/W2.stl" scale="1 1 1"/>
-          </geometry>
-          <material name="pa10_blue">
-          </material>
-        </visual>
-        <collision>
-          <origin rpy="1.57079 0 0" xyz="0 0 0"/>
-          <geometry>
-            <mesh filename="package://pa10_description/pa10_stl_collision/W2_collision.stl" scale="1 1 1"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <origin rpy="1.57079 0 0" xyz="0 0 0"/>
-          <mass value="0.5"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
+    <link name="${prefix}link_elbow_1">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl/E1.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.88 0.88 0.88 1.5"/>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl_collision/E1_collision.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
+        <mass value="0.5"/>
+        <xacro:inertia_cylinder height="0.12"  radius = "0.08" mass="0.5"/>
+      </inertial>
+    </link>
 
-      <link name="${name}link_wrist_3"/>
 
-      <!-- <link name="link_ee_tool">
+    <link name="${prefix}link_elbow_2">
+      <visual>
+        <origin rpy="1.57079 0 0" xyz="0 0.003 0"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl/E2.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="pa10_blue">
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="1.57079 0 0" xyz="0 0.003 0"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl_collision/E2_collision.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="1.57079 0 0" xyz="0 -0.15 0"/>
+        <mass value="0.5"/>
+        <xacro:inertia_cylinder height="0.15"  radius = "0.05" mass="0.5" axis="0"/>
+      </inertial>
+    </link>
+
+
+    <link name="${prefix}link_wrist_1">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0.195"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl/W1.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.88 0.88 0.88 1.5"/>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0.195"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl_collision/W1_collision.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 0.195"/>
+        <mass value="0.5"/>
+        <xacro:inertia_cylinder height="0.15"  radius = "0.08" mass="0.5"/>
+      </inertial>
+    </link>
+
+    <link name="${prefix}link_wrist_2">
+      <visual>
+        <origin rpy="1.57079 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl/W2.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="pa10_blue">
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="1.57079 0 0" xyz="0 0 0"/>
+        <geometry>
+          <mesh filename="package://pa10_description/pa10_stl_collision/W2_collision.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="1.57079 0 0" xyz="0 0 0"/>
+        <mass value="0.5"/>
+        <xacro:inertia_cylinder height="0.05"  radius = "0.08" mass="0.5" axis="1"/>
+      </inertial>
+    </link>
+
+    <link name="${prefix}link_wrist_3"/>
+
+    <!-- <link name="link_ee_tool">
         <inertial>
           <origin rpy="0 0 0" xyz="0 0 0"/>
           <mass value="0.05"/>
@@ -257,238 +293,240 @@
         </inertial>
       </link> -->
 
-      <!-- GRIPPER LINKS -->
+    <!-- GRIPPER LINKS -->
 
 
-      <link name="${name}link_gripper_base">
-        <visual>
-          <origin rpy="0 0 0" xyz="0 0 -0.045"/>
-          <geometry>
-            <mesh filename="package://pa10_description/gripper_stl/pa10_gripper_base.stl" scale="1 1 1"/>
-          </geometry>
-          <material name="">
-            <color rgba="0.2 0.2 0.2 1.0"/>
-          </material>
-        </visual>
-        <collision>
-          <origin rpy="0 0 0" xyz="0 0 -0.045"/>
-          <geometry>
-            <mesh filename="package://pa10_description/gripper_stl/pa10_gripper_base.stl" scale="1 1 1"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <origin rpy="0 0 0" xyz="0 0 -0.045"/>
-          <mass value="0.001"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
+    <link name="${prefix}link_gripper_base">
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 -0.045"/>
+        <geometry>
+          <mesh filename="package://pa10_description/gripper_stl/pa10_gripper_base.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.2 0.2 0.2 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 -0.045"/>
+        <geometry>
+          <mesh filename="package://pa10_description/gripper_stl/pa10_gripper_base.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <origin rpy="0 0 0" xyz="0 0 -0.045"/>
+        <mass value="0.2"/>
+        <xacro:inertia_cylinder height="0.05"  radius = "0.03" mass="0.2"/>
+      </inertial>
+    </link>
 
 
 
-      <link name="${name}link_finger_1">
-        <visual>
-          <origin rpy="-3.14159 -1.57079 0" xyz="-0.0225 0.075 -0.01"/>
-          <geometry>
-            <mesh filename="package://pa10_description/gripper_stl/finger.STL" scale="0.001 0.001 0.001"/>
-          </geometry>
-          <material name="">
-            <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
-          </material>
-        </visual>
-        <collision>
-          <origin rpy="-3.14159 -1.57079 0" xyz="-0.0225 0.075 -0.01"/>
-          <geometry>
-            <mesh filename="package://pa10_description/gripper_stl/finger.STL" scale="0.001 0.001 0.001"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <origin rpy="0 0 0" xyz="0 0 0"/>
-          <mass value="0.1"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
+    <link name="${prefix}link_finger_1">
+      <visual>
+        <origin rpy="-3.14159 -1.57079 0" xyz="-0.0225 0.075 -0.01"/>
+        <geometry>
+          <mesh filename="package://pa10_description/gripper_stl/finger.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="">
+          <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="-3.14159 -1.57079 0" xyz="-0.0225 0.075 -0.01"/>
+        <geometry>
+          <mesh filename="package://pa10_description/gripper_stl/finger.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+      </inertial>
+    </link>
 
 
-      <link name="${name}link_finger_2">
-        <visual>
-          <origin rpy="0 1.57079 0" xyz="-0.0225 -0.075 0.07"/>
-          <geometry>
-            <mesh filename="package://pa10_description/gripper_stl/finger_left.STL" scale="0.001 0.001 0.001"/>
-          </geometry>
-          <material name="">
-            <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
-          </material>
-        </visual>
-        <collision>
-          <origin rpy="0 1.57079 0" xyz="-0.0225 -0.075 0.07"/>
-          <geometry>
-            <mesh filename="package://pa10_description/gripper_stl/finger_left.STL" scale="0.001 0.001 0.001"/>
-          </geometry>
-        </collision>
-        <inertial>
-          <origin rpy="0 0 0" xyz="0 0 0"/>
-          <mass value="0.1"/>
-          <inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>
-        </inertial>
-      </link>
+    <link name="${prefix}link_finger_2">
+      <visual>
+        <origin rpy="0 1.57079 0" xyz="-0.0225 -0.075 0.07"/>
+        <geometry>
+          <mesh filename="package://pa10_description/gripper_stl/finger_left.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+        <material name="">
+          <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
+        </material>
+      </visual>
+      <collision>
+        <origin rpy="0 1.57079 0" xyz="-0.0225 -0.075 0.07"/>
+        <geometry>
+          <mesh filename="package://pa10_description/gripper_stl/finger_left.STL" scale="0.001 0.001 0.001"/>
+        </geometry>
+      </collision>
+      <inertial>
+        <mass value="0.1"/>
+        <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+      </inertial>
+    </link>
 
 
-      <!-- *********** -->
-      <!--   JOINTS    -->
-      <!--************ -->
+    <!-- *********** -->
+    <!--   JOINTS    -->
+    <!--************ -->
 
 
-      <joint name="fixed" type="fixed">
-
+    <xacro:unless value = "${root_link == 'None'}">
+      <joint name="${prefix}fixed" type="fixed">
         <!-- origin rpy="${-pi/2.0} 0 0" xyz="0 0 1.35"/ -->
         <origin rpy="0 0 0" xyz="0 0 0.0"/>
         <parent link="${root_link}"/>
-        <child link="${name}base_link"/>
+        <child link="${prefix}base_link"/>
+      </joint>
+    </xacro:unless>
+
+    <xacro:if value="${enable_camera_}">
+      <joint name="${prefix}kinect" type="fixed">
+        <origin rpy="${-125.0*pi/180.0} 0 ${pi}" xyz="0.148 0.48 1.8"/>
+        <parent link="${prefix}base_link"/>
+        <child link="${prefix}kinect2_rgb_optical_frame"/>
       </joint>
 
-      <!-- <joint name="kinect" type="fixed">
-                <origin rpy="${-125.0*pi/180.0} 0 ${pi}" xyz="0.148 0.48 1.8"/>
-        <parent link="base_link"/>
-        <child link="kinect2_rgb_optical_frame"/>
-      </joint>
-
-      <joint name="kinect_ir" type="fixed">
+      <joint name="${prefix}kinect_ir" type="fixed">
         <origin rpy="0 0 0" xyz="0 0 0"/>
-        <parent link="kinect2_rgb_optical_frame"/>
-        <child link="kinect2_ir_optical_frame"/>
+        <parent link="${prefix}kinect2_rgb_optical_frame"/>
+        <child link="${prefix}kinect2_ir_optical_frame"/>
       </joint>
- -->
+    </xacro:if>
 
 
+    <joint name="${prefix}S1" type="revolute">
+      <origin rpy="0 0 0" xyz="0 0 0.2"/>
+      <parent link="${prefix}base_link"/>
+      <child link="${prefix}link_shoulder_1"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${joint_1_max_effort}" lower="${-joint_1_max_position}" upper="${joint_1_max_position}" velocity="${joint_1_max_velocity}"/>
+      <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_1_max_position + arm_eps}" soft_upper_limit="${ joint_1_max_position - arm_eps}" /> -->
+      <dynamics damping="${joint_1_damping}" friction="${joint_1_friction}" />
+    </joint>
+
+    <joint name="${prefix}S2" type="revolute">
+      <origin rpy="-1.57079 0 0" xyz="0 0 0.117"/>
+      <parent link="${prefix}link_shoulder_1"/>
+      <child link="${prefix}link_shoulder_2"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${joint_2_max_effort}" lower="${-joint_2_max_position}" upper="${joint_2_max_position}" velocity="${joint_2_max_velocity}"/>
+      <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_2_max_position + arm_eps}" soft_upper_limit="${ joint_2_max_position - arm_eps}" /> -->
+      <dynamics damping="${joint_2_damping}" friction="${joint_2_friction}" />
+
+    </joint>
+
+    <joint name="${prefix}soldier_to_elbow_joint" type="fixed">
+      <origin rpy="1.57079 0 0" xyz="0 0 0"/>
+      <parent link="${prefix}link_shoulder_2"/>
+      <child link="${prefix}link_shoulder_to_elbow"/>
+    </joint>
+
+    <joint name="${prefix}E1" type="revolute">
+      <origin rpy="0 0 0" xyz="0 0 0.317"/>
+      <parent link="${prefix}link_shoulder_to_elbow"/>
+      <child link="${prefix}link_elbow_1"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${joint_3_max_effort}" lower="${-joint_3_max_position}" upper="${joint_3_max_position}" velocity="${joint_3_max_velocity}"/>
+      <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_3_max_position + arm_eps}" soft_upper_limit="${ joint_3_max_position - arm_eps}" /> -->
+      <dynamics damping="${joint_3_damping}" friction="${joint_3_friction}" />
+    </joint>
+
+    <joint name="${prefix}E2" type="revolute">
+      <origin rpy="-1.57079  0 0" xyz="0 0 0.133"/>
+      <parent link="${prefix}link_elbow_1"/>
+      <child link="${prefix}link_elbow_2"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${joint_4_max_effort}" lower="${-joint_4_max_position}" upper="${joint_4_max_position}" velocity="${joint_4_max_velocity}"/>
+      <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_4_max_position + arm_eps}" soft_upper_limit="${ joint_4_max_position - arm_eps}" /> -->
+      <dynamics damping="${joint_4_damping}" friction="${joint_4_friction}" />
+    </joint>
+
+    <joint name="${prefix}W1" type="revolute">
+      <origin rpy="1.57079 0 0" xyz="0 -0.285 0 "/>
+      <parent link="${prefix}link_elbow_2"/>
+      <child link="${prefix}link_wrist_1"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${joint_5_max_effort}" lower="${-joint_5_max_position}" upper="${joint_5_max_position}" velocity="${joint_5_max_velocity}"/>
+      <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_5_max_position + arm_eps}" soft_upper_limit="${ joint_5_max_position - arm_eps}" /> -->
+      <dynamics damping="${joint_5_damping}" friction="${joint_5_friction}" />
+    </joint>
+
+    <joint name="${prefix}W2" type="revolute">
+      <origin rpy="-1.57079 0 0" xyz="0 0 0.195"/>
+      <parent link="${prefix}link_wrist_1"/>
+      <child link="${prefix}link_wrist_2"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${joint_6_max_effort}" lower="${-joint_6_max_position}" upper="${joint_6_max_position}" velocity="${joint_6_max_velocity}"/>
+      <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_6_max_position + arm_eps}" soft_upper_limit="${ joint_6_max_position - arm_eps}" /> -->
+      <dynamics damping="${joint_6_damping}" friction="${joint_6_friction}" />
+    </joint>
+
+    <joint name="${prefix}W3" type="revolute">
+      <origin rpy="1.57079 0 0" xyz="0 -0.07 0"/>
+      <parent link="${prefix}link_wrist_2"/>
+      <child link="${prefix}link_wrist_3"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${joint_7_max_effort}" lower="${-joint_7_max_position}" upper="${joint_7_max_position}" velocity="${joint_7_max_velocity}"/>
+      <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_7_max_position + arm_eps}" soft_upper_limit="${ joint_7_max_position - arm_eps}" /> -->
+      <dynamics damping="${joint_7_damping}" friction="${joint_7_friction}" />
+    </joint>
 
 
-      <joint name="${name}S1" type="revolute">
-        <origin rpy="0 0 0" xyz="0 0 0.2"/>
-        <parent link="${name}base_link"/>
-        <child link="${name}link_shoulder_1"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${joint_1_max_effort}" lower="${-joint_1_max_position}" upper="${joint_1_max_position}" velocity="${joint_1_max_velocity}"/>
-        <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_1_max_position + arm_eps}" soft_upper_limit="${ joint_1_max_position - arm_eps}" />
-        <dynamics damping="${joint_1_damping}" friction="${joint_1_friction}" />
-      </joint>
+    <!-- GRIPPER JOINTS -->
 
-      <joint name="${name}S2" type="revolute">
-        <origin rpy="-1.57079 0 0" xyz="0 0 0.117"/>
-        <parent link="${name}link_shoulder_1"/>
-        <child link="${name}link_shoulder_2"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${joint_2_max_effort}" lower="${-joint_2_max_position}" upper="${joint_2_max_position}" velocity="${joint_2_max_velocity}"/>
-        <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_2_max_position + arm_eps}" soft_upper_limit="${ joint_2_max_position - arm_eps}" />
-        <dynamics damping="${joint_2_damping}" friction="${joint_2_friction}" />
+    <joint name="${prefix}gripper_base" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 0.045"/>
+      <parent link="${prefix}link_wrist_3"/>
+      <child link="${prefix}link_gripper_base"/>
+    </joint>
 
-      </joint>
-
-      <joint name="${name}soldier_to_elbow_joint" type="fixed">
-        <origin rpy="1.57079 0 0" xyz="0 0 0"/>
-        <parent link="${name}link_shoulder_2"/>
-        <child link="${name}link_shoulder_to_elbow"/>
-      </joint>
-
-      <joint name="${name}E1" type="revolute">
-        <origin rpy="0 0 0" xyz="0 0 0.317"/>
-        <parent link="${name}link_shoulder_to_elbow"/>
-        <child link="${name}link_elbow_1"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${joint_3_max_effort}" lower="${-joint_3_max_position}" upper="${joint_3_max_position}" velocity="${joint_3_max_velocity}"/>
-        <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_3_max_position + arm_eps}" soft_upper_limit="${ joint_3_max_position - arm_eps}" />
-        <dynamics damping="${joint_3_damping}" friction="${joint_3_friction}" />
-      </joint>
-
-      <joint name="${name}E2" type="revolute">
-        <origin rpy="-1.57079  0 0" xyz="0 0 0.133"/>
-        <parent link="${name}link_elbow_1"/>
-        <child link="${name}link_elbow_2"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${joint_4_max_effort}" lower="${-joint_4_max_position}" upper="${joint_4_max_position}" velocity="${joint_4_max_velocity}"/>
-        <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_4_max_position + arm_eps}" soft_upper_limit="${ joint_4_max_position - arm_eps}" />
-        <dynamics damping="${joint_4_damping}" friction="${joint_4_friction}" />
-      </joint>
-
-      <joint name="${name}W1" type="revolute">
-        <origin rpy="1.57079 0 0" xyz="0 -0.285 0 "/>
-        <parent link="${name}link_elbow_2"/>
-        <child link="${name}link_wrist_1"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${joint_5_max_effort}" lower="${-joint_5_max_position}" upper="${joint_5_max_position}" velocity="${joint_5_max_velocity}"/>
-        <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_5_max_position + arm_eps}" soft_upper_limit="${ joint_5_max_position - arm_eps}" />
-        <dynamics damping="${joint_5_damping}" friction="${joint_5_friction}" />
-      </joint>
-
-      <joint name="${name}W2" type="revolute">
-        <origin rpy="-1.57079 0 0" xyz="0 0 0.195"/>
-        <parent link="${name}link_wrist_1"/>
-        <child link="${name}link_wrist_2"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${joint_6_max_effort}" lower="${-joint_6_max_position}" upper="${joint_6_max_position}" velocity="${joint_6_max_velocity}"/>
-        <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_6_max_position + arm_eps}" soft_upper_limit="${ joint_6_max_position - arm_eps}" />
-        <dynamics damping="${joint_6_damping}" friction="${joint_6_friction}" />
-      </joint>
-
-      <joint name="${name}W3" type="revolute">
-        <origin rpy="1.57079 0 0" xyz="0 -0.07 0"/>
-        <parent link="${name}link_wrist_2"/>
-        <child link="${name}link_wrist_3"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${joint_7_max_effort}" lower="${-joint_7_max_position}" upper="${joint_7_max_position}" velocity="${joint_7_max_velocity}"/>
-        <safety_controller k_position="20" k_velocity="20" soft_lower_limit="${-joint_7_max_position + arm_eps}" soft_upper_limit="${ joint_7_max_position - arm_eps}" />
-        <dynamics damping="${joint_7_damping}" friction="${joint_7_friction}" />
-      </joint>
+    <joint name="${prefix}finger_joint_1" type="prismatic">
+      <origin rpy="-1.57079 0 0" xyz="0 -0.03 0.11"/>
+      <parent link="${prefix}link_gripper_base"/>
+      <child link="${prefix}link_finger_1"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${joint_7_max_effort}" lower="-0.039" upper="0" velocity="1.0"/>
+      <dynamics damping="${joint_finger_damping}" friction="${joint_finger_friction}" />
+      <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="-0.035" soft_upper_limit="-0.002" /> -->
+    </joint>
 
 
-      <!-- GRIPPER JOINTS -->
+    <joint name="${prefix}finger_joint_2" type="prismatic">
+      <origin rpy="1.57079 0 0" xyz="0 0.03 0.11"/>
+      <parent link="${prefix}link_gripper_base"/>
+      <child link="${prefix}link_finger_2"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="${joint_7_max_effort}" lower="-0.039" upper="0" velocity="1.0"/>
+      <dynamics damping="${joint_finger_damping}" friction="${joint_finger_friction}" />
+      <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="-0.035" soft_upper_limit="-0.002" /> -->
+    </joint>
 
-      <joint name="${name}gripper_base" type="fixed">
-        <origin rpy="0 0 0" xyz="0 0 0.045"/>
-        <parent link="${name}link_wrist_3"/>
-        <child link="${name}link_gripper_base"/>
-      </joint>
-
-      <joint name="${name}finger_joint_1" type="prismatic">
-        <origin rpy="-1.57079 0 0" xyz="0 -0.03 0.11"/>
-        <parent link="${name}link_gripper_base"/>
-        <child link="${name}link_finger_1"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${joint_7_max_effort}" lower="-0.039" upper="0" velocity="1.0"/>
-        <safety_controller k_position="20" k_velocity="20" soft_lower_limit="-0.035" soft_upper_limit="-0.002" />
-      </joint>
-
-
-      <joint name="${name}finger_joint_2" type="prismatic">
-        <origin rpy="1.57079 0 0" xyz="0 0.03 0.11"/>
-        <parent link="${name}link_gripper_base"/>
-        <child link="${name}link_finger_2"/>
-        <axis xyz="0 0 1"/>
-        <limit effort="${joint_7_max_effort}" lower="-0.039" upper="0" velocity="1.0"/>
-        <safety_controller k_position="20" k_velocity="20" soft_lower_limit="-0.035" soft_upper_limit="-0.002" />
-      </joint>
-
-      <joint name="${name}ee_tool_frame" type="fixed">
-        <origin rpy="0 0 0" xyz="0 0 0.23"/>
-        <parent link="${name}link_wrist_3"/>
-        <child link="${tool_link}"/>
-      </joint>
+    <joint name="${prefix}ee_tool_frame" type="fixed">
+      <origin rpy="0 0 0" xyz="0 0 0.23"/>
+      <parent link="${prefix}link_wrist_3"/>
+      <child link="${tool_link}"/>
+    </joint>
 
 
-      <!-- ******************* -->
-      <!--    TRANSMITIONS     -->
-      <!-- ******************* -->
+    <!-- ******************* -->
+    <!--    TRANSMITIONS     -->
+    <!-- ******************* -->
 
-      <xacro:arm_simple_transmission name="${name}S1" reduction="10" interface="${HWInterface}" />
-      <xacro:arm_simple_transmission name="${name}S2" reduction="10" interface="${HWInterface}"/>
-      <xacro:arm_simple_transmission name="${name}E1" reduction="10" interface="${HWInterface}"/>
-      <xacro:arm_simple_transmission name="${name}E2" reduction="10" interface="${HWInterface}"/>
-      <xacro:arm_simple_transmission name="${name}W1" reduction="10" interface="${HWInterface}"/>
-      <xacro:arm_simple_transmission name="${name}W2" reduction="10" interface="${HWInterface}"/>
-      <xacro:arm_simple_transmission name="${name}W3" reduction="10" interface="${HWInterface}"/>
-      <xacro:arm_simple_transmission name="${name}finger_joint_1" reduction="1" interface="velocity"/>
-      <xacro:arm_simple_transmission name="${name}finger_joint_2" reduction="1" interface="velocity"/>
+    <xacro:arm_simple_transmission name="${prefix}S1" reduction="10" interface="${HWInterface}" />
+    <xacro:arm_simple_transmission name="${prefix}S2" reduction="10" interface="${HWInterface}"/>
+    <xacro:arm_simple_transmission name="${prefix}E1" reduction="10" interface="${HWInterface}"/>
+    <xacro:arm_simple_transmission name="${prefix}E2" reduction="10" interface="${HWInterface}"/>
+    <xacro:arm_simple_transmission name="${prefix}W1" reduction="10" interface="${HWInterface}"/>
+    <xacro:arm_simple_transmission name="${prefix}W2" reduction="10" interface="${HWInterface}"/>
+    <xacro:arm_simple_transmission name="${prefix}W3" reduction="10" interface="${HWInterface}"/>
+    <xacro:arm_simple_transmission name="${prefix}finger_joint_1" reduction="1" interface="velocity"/>
+    <xacro:arm_simple_transmission name="${prefix}finger_joint_2" reduction="1" interface="velocity"/>
 
-  <xacro:macro/>
+    <!-- COLORS GAZEBO -->
+    <xacro:gazebo_materials prefix="${prefix}" color="${color}" />
+  </xacro:macro>
 
 
-</robot>
+</root>

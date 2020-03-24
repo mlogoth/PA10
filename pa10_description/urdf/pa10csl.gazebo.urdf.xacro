@@ -35,125 +35,271 @@
     </xacro:unless>
   </xacro:macro>
 
+  <!-- Gazebo Colors Material -->
+  <xacro:macro name="gazebo_materials" params="prefix:='' color:='default'">
+    <!-- base_link -->
+    <gazebo reference="${prefix}base_link">
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <xacro:if value="${color == 'default'}">
+        <visual>
+          <material>
+            <ambient>0.55 0.85 0.89 1.0</ambient>
+            <diffuse>.7 .7 .7  1.0</diffuse>
+            <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+          </material>
+        </visual>
+      </xacro:if>
+      <xacro:if value="${color == 'red'}">
+        <material>
+            Gazebo/Red
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'green'}">
+        <material>
+            Gazebo/Green
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'orange'}">
+        <material>
+            Gazebo/Orange
+        </material>
+      </xacro:if>
+
+    </gazebo>
 
 
-  <!-- base_link -->
-  <gazebo reference="base_link">
-    <mu1>0.5</mu1>
-    <mu2>0.5</mu2>
-    <visual>
-      <material>
-        <ambient>0.55 0.85 0.89 1.0</ambient>
-        <diffuse>.7 .7 .7  1.0</diffuse>
-        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
-      </material>
-    </visual>
+    <!-- Link1 -->
+    <gazebo reference="${prefix}link_shoulder_1">
+      <visual>
+        <material>
+          <ambient>0.88 0.88 0.88 1.0</ambient>
+          <diffuse>.7 .7 .7  1.0</diffuse>
+          <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+        </material>
+      </visual>
+    </gazebo>
+
+    <!-- Link2 -->
+    <gazebo reference="${prefix}link_shoulder_2">
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <xacro:if value="${color == 'default'}">
+        <visual>
+          <material>
+            <ambient>0.55 0.85 0.89 1.0</ambient>
+            <diffuse>.7 .7 .7  1.0</diffuse>
+            <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+          </material>
+        </visual>
+      </xacro:if>
+      <xacro:if value="${color == 'red'}">
+        <material>
+            Gazebo/Red
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'green'}">
+        <material>
+            Gazebo/Green
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'orange'}">
+        <material>
+            Gazebo/Orange
+        </material>
+      </xacro:if>
+
+    </gazebo>
+
+    <!-- Link3 -->
+    <gazebo reference="${prefix}link_elbow_1">
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <visual>
+        <material>
+          <ambient>0.88 0.88 0.88 1.0</ambient>
+          <diffuse>.7 .7 .7  1.0</diffuse>
+          <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+        </material>
+      </visual>
+    </gazebo>
+
+    <!-- Link4 -->
+    <gazebo reference="${prefix}link_elbow_2">
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <xacro:if value="${color == 'default'}">
+        <visual>
+          <material>
+            <ambient>0.55 0.85 0.89 1.0</ambient>
+            <diffuse>.7 .7 .7  1.0</diffuse>
+            <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+          </material>
+        </visual>
+      </xacro:if>
+      <xacro:if value="${color == 'red'}">
+        <material>
+            Gazebo/Red
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'green'}">
+        <material>
+            Gazebo/Green
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'orange'}">
+        <material>
+            Gazebo/Orange
+        </material>
+      </xacro:if>
+    </gazebo>
+
+    <!-- Link5 -->
+    <gazebo reference="${prefix}link_wrist_1">
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <visual>
+        <material>
+          <ambient>0.88 0.88 0.88 1.0</ambient>
+          <diffuse>.7 .7 .7  1.0</diffuse>
+          <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+        </material>
+      </visual>
+    </gazebo>
+
+    <!-- Link6 -->
+    <gazebo reference="${prefix}link_wrist_2">
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <xacro:if value="${color == 'default'}">
+        <visual>
+          <material>
+            <ambient>0.55 0.85 0.89 1.0</ambient>
+            <diffuse>.7 .7 .7  1.0</diffuse>
+            <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+          </material>
+        </visual>
+      </xacro:if>
+      <xacro:if value="${color == 'red'}">
+        <material>
+            Gazebo/Red
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'green'}">
+        <material>
+            Gazebo/Green
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'orange'}">
+        <material>
+            Gazebo/Orange
+        </material>
+      </xacro:if>
+
+    </gazebo>
+
+    <gazebo reference="${prefix}link_wrist_3">
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+
+      <xacro:if value="${color == 'default'}">
+        <visual>
+          <material>
+            <ambient>0.55 0.85 0.89 1.0</ambient>
+            <diffuse>.7 .7 .7  1.0</diffuse>
+            <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
+          </material>
+        </visual>
+      </xacro:if>
+      <xacro:if value="${color == 'red'}">
+        <material>
+            Gazebo/Red
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'green'}">
+        <material>
+            Gazebo/Green
+        </material>
+      </xacro:if>
+      <xacro:if value="${color == 'orange'}">
+        <material>
+            Gazebo/Orange
+        </material>
+      </xacro:if>
+
+    </gazebo>
+
+    <gazebo reference="${prefix}link_gripper_base">
+      <mu1>0.5</mu1>
+      <mu2>0.5</mu2>
+      <material>Gazebo/Grey</material>
+    </gazebo>
+
+    <gazebo reference="${prefix}link_finger_1">
+      <mu1>1000.5</mu1>
+      <mu2>1000.5</mu2>
+      <material>Gazebo/Orange</material>
+    </gazebo>
+
+    <gazebo reference="${prefix}link_finger_2">
+      <mu1>1000.5</mu1>
+      <mu2>1000.5</mu2>
+      <material>Gazebo/Orange</material>
+    </gazebo>
+  </xacro:macro>
+
+
+  <gazebo>
+    <material name="pa10_blue">
+      <color rgba="${140/255} ${217/255} ${227/255} 1.0"/>
+    </material>
   </gazebo>
+  
 
 
-  <!-- Link1 -->
-  <gazebo reference="link_shoulder_1">
-    <visual>
-      <material>
-        <ambient>0.88 0.88 0.88 1.0</ambient>
-        <diffuse>.7 .7 .7  1.0</diffuse>
-        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
-      </material>
-    </visual>
-  </gazebo>
 
-  <!-- Link2 -->
-  <gazebo reference="link_shoulder_2">
-    <mu1>0.5</mu1>
-    <mu2>0.5</mu2>
-    <visual>
-      <material>
-        <ambient>0.55 0.85 0.89 1.0</ambient>
-        <diffuse>.7 .7 .7  1.0</diffuse>
-        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
-      </material>
-    </visual>
-  </gazebo>
+  <xacro:macro name="depth_sensor" params="link_name camera_name:='kinect' update_rate:=10">
+    <gazebo reference="${link_name}">
+      <sensor name="${link_name}_camera" type="depth">
+        <update_rate>${update_rate}</update_rate>
+        <camera>
+          <horizontal_fov>1.047198</horizontal_fov>
+          <image>
+            <width>640</width>
+            <height>480</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>3</far>
+          </clip>
+        </camera>
+        <plugin name="${link_name}_controller" filename="libgazebo_ros_openni_kinect.so">
+          <baseline>0.2</baseline>
+          <alwaysOn>true</alwaysOn>
+          <updateRate>1.0</updateRate>
+          <cameraName>${camera_name}_ir_${nsp}</cameraName>
+          <imageTopicName>${nsp}/${camera_name}/color/image_raw</imageTopicName>
+          <cameraInfoTopicName>${nsp}/${camera_name}/color/camera_info</cameraInfoTopicName>
+          <depthImageTopicName>${nsp}/${camera_name}/depth/image_raw</depthImageTopicName>
+          <depthImageInfoTopicName>${nsp}/${camera_name}/depth/camera_info</depthImageInfoTopicName>
+          <pointCloudTopicName>${nsp}/${camera_name}/depth/points</pointCloudTopicName>
+          <frameName>${camera_name}_${nsp}</frameName>
+          <pointCloudCutoff>0.5</pointCloudCutoff>
+          <pointCloudCutoffMax>3.0</pointCloudCutoffMax>
+          <distortionK1>0.00000001</distortionK1>
+          <distortionK2>0.00000001</distortionK2>
+          <distortionK3>0.00000001</distortionK3>
+          <distortionT1>0.00000001</distortionT1>
+          <distortionT2>0.00000001</distortionT2>
+          <CxPrime>0</CxPrime>
+          <Cx>0</Cx>
+          <Cy>0</Cy>
+          <focalLength>0</focalLength>
+          <hackBaseline>0</hackBaseline>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
 
-  <!-- Link3 -->
-  <gazebo reference="link_elbow_1">
-    <mu1>0.5</mu1>
-    <mu2>0.5</mu2>
-    <visual>
-      <material>
-        <ambient>0.88 0.88 0.88 1.0</ambient>
-        <diffuse>.7 .7 .7  1.0</diffuse>
-        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
-      </material>
-    </visual>
-  </gazebo>
-
-  <!-- Link4 -->
-  <gazebo reference="link_elbow_2">
-    <mu1>0.5</mu1>
-    <mu2>0.5</mu2>
-    <visual>
-      <material>
-        <ambient>0.55 0.85 0.89 1.0</ambient>
-        <diffuse>.7 .7 .7  1.0</diffuse>
-        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
-      </material>
-    </visual>
-  </gazebo>
-
-  <!-- Link5 -->
-  <gazebo reference="link_wrist_1">
-    <mu1>0.5</mu1>
-    <mu2>0.5</mu2>
-    <visual>
-      <material>
-        <ambient>0.88 0.88 0.88 1.0</ambient>
-        <diffuse>.7 .7 .7  1.0</diffuse>
-        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
-      </material>
-    </visual>
-  </gazebo>
-
-  <!-- Link6 -->
-  <gazebo reference="link_wrist_2">
-    <mu1>0.5</mu1>
-    <mu2>0.5</mu2>
-    <visual>
-      <material>
-        <ambient>0.55 0.85 0.89 1.0</ambient>
-        <diffuse>.7 .7 .7  1.0</diffuse>
-        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
-      </material>
-    </visual>
-  </gazebo>
-
-  <gazebo reference="link_wrist_3">
-    <mu1>0.5</mu1>
-    <mu2>0.5</mu2>
-    <visual>
-      <material>
-        <ambient>0.55 0.85 0.89 1.0</ambient>
-        <diffuse>.7 .7 .7  1.0</diffuse>
-        <specular>0.01 0.01 0.01 1.000000 1.500000</specular>
-      </material>
-    </visual>
-  </gazebo>
-
-  <gazebo reference="link_gripper_base">
-    <mu1>0.5</mu1>
-    <mu2>0.5</mu2>
-    <material>Gazebo/Grey</material>
-  </gazebo>
-
-  <gazebo reference="link_finger_1">
-    <mu1>1000.5</mu1>
-    <mu2>1000.5</mu2>
-    <material>Gazebo/Orange</material>
-  </gazebo>
-
-  <gazebo reference="link_finger_2">
-    <mu1>1000.5</mu1>
-    <mu2>1000.5</mu2>
-    <material>Gazebo/Orange</material>
-  </gazebo>
 </robot>

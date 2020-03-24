@@ -19,7 +19,8 @@
 
     <arg name="gzpose" value="-x $(arg pose_x) -y $(arg pose_y) -z $(arg pose_z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
 
-    <arg name="joints_gazebo_spawn" default="-J S1 0.0 -J S2 0.0 -J E1 0.0 -J E2 0.0 -J W1 0.0 -J W2 0.0 -J W3 0.0"/>
+    <arg name="joints_gazebo_spawn" default="-J pa10_1_S1 1.57 -J pa10_1_S2 0.39 -J pa10_1_E1 0.0 -J pa10_1_E2 0.54 -J pa10_1_W1 0.0 -J pa10_1_W2 0.64 -J pa10_1_W3 0.0
+    -J pa10_2_S1 1.57 -J pa10_2_S2 -0.39 -J pa10_2_E1 0.0 -J pa10_2_E2 -0.54 -J pa10_2_W1 0.0 -J pa10_2_W2 -0.64 -J pa10_2_W3 0.0"/>
 
     <!-- MoveIt Arguments -->
     <arg name="moveit" default="false"/>
@@ -34,6 +35,7 @@
         <arg name="world_name" value="$(find pa10_gazebo)/worlds/empty.world"/>
         <arg name="gui" value="true"/>
         <arg name="debug" value="false"/>
+        <arg name="paused" value="true"/>
     </include>
 
 

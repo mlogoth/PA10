@@ -9,6 +9,9 @@
     <!-- select hardware interface among effort, velocity, position -->
     <arg name="interface" default="velocity"/>
 
+    <!-- select color -->
+    <arg name="color" default="default"/>
+
     <arg name="pose_x" default= "0" />
     <arg name="pose_y" default= "0" />
     <arg name="pose_z" default= "0.5" />
@@ -38,7 +41,7 @@
         
 
         <!-- Robot Model -->
-        <param name="/$(arg robot_name)/robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/pa10_csl.urdf.xacro' $(arg multi) interface:=$(arg interface)"/>
+        <param name="/$(arg robot_name)/robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/pa10_csl.urdf.xacro' $(arg multi) interface:=$(arg interface) color:=$(arg color)"/>
 
         <!-- Spawn robot in Gazebo -->
         <node pkg="gazebo_ros" type="spawn_model" name="$(arg robot_name)_spawn_model"
@@ -93,7 +96,7 @@
         </group>
 
         <!-- Robot Model -->
-        <param name="robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/pa10_csl.urdf.xacro' interface:=$(arg interface)" />
+        <param name="robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/pa10_csl.urdf.xacro' interface:=$(arg interface) color:=$(arg color)" />
 
         <!-- Spawn robot in Gazebo -->
         <node pkg="gazebo_ros" type="spawn_model" name="pa10_spawn_model"
