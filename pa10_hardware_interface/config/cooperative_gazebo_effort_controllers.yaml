@@ -1,0 +1,108 @@
+pa10_1_arm_joint_names: &pa10_1_arm_joint_names pa10_1_S1, pa10_1_S2, pa10_1_E1, pa10_1_E2, pa10_1_W1, pa10_1_W2, pa10_1_W3
+pa10_1_gripper_joint_names: &pa10_1_gripper_joint_names pa10_1_finger_joint_1, pa10_1_finger_joint_2
+#  &pa10_1_joint_names pa10_1_S1, pa10_1_S2, pa10_1_E1, pa10_1_E2, pa10_1_W1, pa10_1_W2, pa10_1_W3, pa10_1_finger_joint_1, pa10_1_finger_joint_2
+pa10_2_arm_joint_names: &pa10_2_arm_joint_names pa10_2_S1, pa10_2_S2, pa10_2_E1, pa10_2_E2, pa10_2_W1, pa10_2_W2, pa10_2_W3
+pa10_2_gripper_joint_names: &pa10_2_gripper_joint_names pa10_2_finger_joint_1, pa10_2_finger_joint_2
+
+#joint_names: [*pa10_1_arm_joint_names, *pa10_1_gripper_joint_names] #, *pa10_2_arm_joint_names, *pa10_2_gripper_joint_names]
+joint_names: [pa10_1_S1, pa10_1_S2, pa10_1_E1, pa10_1_E2, pa10_1_W1, pa10_1_W2, pa10_1_W3, pa10_2_S1, pa10_2_S2, pa10_2_E1, pa10_2_E2, pa10_2_W1, pa10_2_W2, pa10_2_W3]
+# Publish all joint states -----------------------------------
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 500
+
+# Position Controllers ---------------------------------------
+pa10_1_arm_controller:
+  type: "effort_controllers/JointTrajectoryController"
+  joints:
+    - pa10_1_S1
+    - pa10_1_S2
+    - pa10_1_E1
+    - pa10_1_E2
+    - pa10_1_W1
+    - pa10_1_W2
+    - pa10_1_W3
+  gains:
+    pa10_1_S1: &pa10_joint_gains1 { p: 800.0, i: 5.2, d: 0.1, i_clamp: 0.3 } #{ p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1 }
+    pa10_1_S2: *pa10_joint_gains1
+    pa10_1_E1: &pa10_joint_gains2 { p: 800.0, i: 5.2, d: 0.1, i_clamp: 0.3 }
+    pa10_1_E2: *pa10_joint_gains2
+    pa10_1_W1: *pa10_joint_gains2
+    pa10_1_W2: *pa10_joint_gains2
+    pa10_1_W3: *pa10_joint_gains2 #{ p: 30.0, i: 1.2, d: 1.2, i_clamp: 0.1 }
+    # pa10_2_S1: *pa10_joint_gains
+    # pa10_2_S2: *pa10_joint_gains
+    # pa10_2_E1: *pa10_joint_gains
+    # pa10_2_E2: *pa10_joint_gains
+    # pa10_2_W1: *pa10_joint_gains
+    # pa10_2_W2: *pa10_joint_gains
+    # pa10_2_W3: *pa10_joint_gains
+
+  constraints:
+    goal_time: 0.5 # Override default
+    state_publish_rate: 500 # Override default
+    action_monitor_rate: 200 # Override default
+    stop_trajectory_duration: 0 # Override default
+
+pa10_2_arm_controller:
+  type: "effort_controllers/JointTrajectoryController"
+  joints:
+    - pa10_2_S1
+    - pa10_2_S2
+    - pa10_2_E1
+    - pa10_2_E2
+    - pa10_2_W1
+    - pa10_2_W2
+    - pa10_2_W3
+  gains:
+    pa10_2_S1: *pa10_joint_gains1 #${ p: 800.0, i: 5.2, d: 0.1, i_clamp: 0.3 } #{ p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1 }
+    pa10_2_S2: *pa10_joint_gains1
+    pa10_2_E1: *pa10_joint_gains2 #{ p: 800.0, i: 5.2, d: 0.1, i_clamp: 0.3 }
+    pa10_2_E2: *pa10_joint_gains2
+    pa10_2_W1: *pa10_joint_gains2
+    pa10_2_W2: *pa10_joint_gains2
+    pa10_2_W3: *pa10_joint_gains2 
+  constraints:
+    goal_time: 0.5 # Override default
+    state_publish_rate: 500 # Override default
+    action_monitor_rate: 200 # Override default
+    stop_trajectory_duration: 0 # Override default
+
+
+pa10_3_arm_controller:
+  type: "effort_controllers/JointTrajectoryController"
+  joints:
+    - pa10_3_S1
+    - pa10_3_S2
+    - pa10_3_E1
+    - pa10_3_E2
+    - pa10_3_W1
+    - pa10_3_W2
+    - pa10_3_W3
+  gains:
+    pa10_3_S1: *pa10_joint_gains1 #${ p: 800.0, i: 5.2, d: 0.1, i_clamp: 0.3 } #{ p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1 }
+    pa10_3_S2: *pa10_joint_gains1
+    pa10_3_E1: *pa10_joint_gains2 #{ p: 800.0, i: 5.2, d: 0.1, i_clamp: 0.3 }
+    pa10_3_E2: *pa10_joint_gains2
+    pa10_3_W1: *pa10_joint_gains2
+    pa10_3_W2: *pa10_joint_gains2
+    pa10_3_W3: *pa10_joint_gains2 
+  constraints:
+    goal_time: 0.5 # Override default
+    state_publish_rate: 500 # Override default
+    action_monitor_rate: 200 # Override default
+    stop_trajectory_duration: 0 # Override default
+
+
+gripper_controller:
+  type: "velocity_controllers/JointTrajectoryController"
+  joints: 
+    - pa10_1_finger_joint_1
+    - pa10_1_finger_joint_2
+    # - pa10_2_finger_joint_1
+    # - pa10_2_finger_joint_2
+  gains:
+    pa10_1_finger_joint_1: &gripper_finger_gains { p: 1.0, d: 0.05, i: 0.1, i_clamp: 1.0 }
+    pa10_1_finger_joint_2: *gripper_finger_gains
+    # pa10_2_finger_joint_1: *gripper_finger_gains
+    # pa10_2_finger_joint_2: *gripper_finger_gains

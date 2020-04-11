@@ -1,0 +1,1885 @@
+<sdf version='1.6'>
+  <world name='default'>
+    <physics name='default_physics' default='0' type='ode'>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>20</iters>
+          <sor>1</sor>
+          <use_dynamic_moi_rescaling>0</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>0</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>100</contact_max_correcting_vel>
+          <contact_surface_layer>0</contact_surface_layer>
+        </constraints>
+      </ode>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+    </physics>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose frame=''>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <gravity>0 0 -9.81</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <audio>
+      <device>default</device>
+    </audio>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name='pa10'>
+      <link name='pa10_1_root_link'>
+        <pose frame=''>0 -1 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0.025 0 -0 0</pose>
+          <mass>2</mass>
+          <inertia>
+            <ixx>1.00667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.00667</iyy>
+            <iyz>0</iyz>
+            <izz>1.0025</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_root_link_fixed_joint_lump__pa10_1_base_link_collision'>
+          <pose frame=''>0 0 0 0 -0 3.14</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/S1_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_root_link_fixed_joint_lump__pa10_1_base_link_visual'>
+          <pose frame=''>0 0 0 0 -0 3.14</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/S1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.55 0.85 0.89 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_base_to_root' type='fixed'>
+        <child>pa10_1_root_link</child>
+        <parent>world</parent>
+      </joint>
+      <link name='pa10_1_link_shoulder_1'>
+        <pose frame=''>0 -1 0.2 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0.117 0 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.00139944</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00139944</iyy>
+            <iyz>0</iyz>
+            <izz>0.0016</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_link_shoulder_1_collision'>
+          <pose frame=''>0 0 0.117 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/S2_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_link_shoulder_1_visual'>
+          <pose frame=''>0 0 0.117 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/S2.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.88 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_S1' type='revolute'>
+        <child>pa10_1_link_shoulder_1</child>
+        <parent>pa10_1_root_link</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-2.96706</lower>
+            <upper>2.96706</upper>
+            <effort>150</effort>
+            <velocity>0.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_1_link_shoulder_2'>
+        <pose frame=''>0 -1 0.317 -1.57079 0 0</pose>
+        <inertial>
+          <pose frame=''>0 -0.22 1e-06 -1.57079 -0 3.14159</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.00266184</ixx>
+            <ixy>4.06565e-24</ixy>
+            <ixz>-1.48893e-23</ixz>
+            <iyy>0.00266183</iyy>
+            <iyz>1.53224e-18</iyz>
+            <izz>0.001625</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_link_shoulder_2_collision'>
+          <pose frame=''>0 0 0 -1.57079 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/S3_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_link_shoulder_2_visual'>
+          <pose frame=''>0 0 0 -1.57079 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/S3.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.55 0.85 0.89 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_S2' type='revolute'>
+        <child>pa10_1_link_shoulder_2</child>
+        <parent>pa10_1_link_shoulder_1</parent>
+        <axis>
+          <xyz>0 1 6e-06</xyz>
+          <limit>
+            <lower>-1.5708</lower>
+            <upper>1.5708</upper>
+            <effort>150</effort>
+            <velocity>0.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_1_link_elbow_1'>
+        <pose frame=''>0 -1 0.634 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0.133 0 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.00139944</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00139944</iyy>
+            <iyz>0</iyz>
+            <izz>0.0016</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_link_elbow_1_collision'>
+          <pose frame=''>0 0 0.133 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/E1_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_link_elbow_1_visual'>
+          <pose frame=''>0 0 0.133 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/E1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.88 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_E1' type='revolute'>
+        <child>pa10_1_link_elbow_1</child>
+        <parent>pa10_1_link_shoulder_2</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-2.96706</lower>
+            <upper>2.96706</upper>
+            <effort>150</effort>
+            <velocity>1.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_1_link_elbow_2'>
+        <pose frame=''>0 -1 0.767 -1.57079 0 0</pose>
+        <inertial>
+          <pose frame=''>0 -0.15 0 1.57079 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.0012495</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0012495</iyy>
+            <iyz>0</iyz>
+            <izz>0.000625</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_link_elbow_2_collision'>
+          <pose frame=''>0 0.003 0 1.57079 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/E2_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_link_elbow_2_visual'>
+          <pose frame=''>0 0.003 0 1.57079 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/E2.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.55 0.85 0.89 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_E2' type='revolute'>
+        <child>pa10_1_link_elbow_2</child>
+        <parent>pa10_1_link_elbow_1</parent>
+        <axis>
+          <xyz>0 1 6e-06</xyz>
+          <limit>
+            <lower>-2.26893</lower>
+            <upper>2.26893</upper>
+            <effort>150</effort>
+            <velocity>1.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_1_link_wrist_1'>
+        <pose frame=''>0 -1 1.052 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0.195 0 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.0017368</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0017368</iyy>
+            <iyz>0</iyz>
+            <izz>0.0016</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_link_wrist_1_collision'>
+          <pose frame=''>0 0 0.195 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/W1_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_link_wrist_1_visual'>
+          <pose frame=''>0 0 0.195 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/W1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.88 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_W1' type='revolute'>
+        <child>pa10_1_link_wrist_1</child>
+        <parent>pa10_1_link_elbow_2</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-4.36332</lower>
+            <upper>4.36332</upper>
+            <effort>150</effort>
+            <velocity>1.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_1_link_wrist_2'>
+        <pose frame=''>0 -1 1.247 -1.57079 0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0 1.57079 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.000903805</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0016</iyy>
+            <iyz>0</iyz>
+            <izz>0.000903805</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_link_wrist_2_collision'>
+          <pose frame=''>0 0 0 1.57079 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/W2_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_link_wrist_2_visual'>
+          <pose frame=''>0 0 0 1.57079 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/W2.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.55 0.85 0.89 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_W2' type='revolute'>
+        <child>pa10_1_link_wrist_2</child>
+        <parent>pa10_1_link_wrist_1</parent>
+        <axis>
+          <xyz>0 1 6e-06</xyz>
+          <limit>
+            <lower>-2.79253</lower>
+            <upper>2.79253</upper>
+            <effort>150</effort>
+            <velocity>5.65487</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_1_link_wrist_3'>
+        <pose frame=''>0 -1 1.317 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>-0.000109 -3e-06 0.292888 0 -0 0</pose>
+          <mass>0.9</mass>
+          <inertia>
+            <ixx>0.127852</ixx>
+            <ixy>-2.39321e-09</ixy>
+            <ixz>2.04788e-05</ixz>
+            <iyy>0.127852</iyy>
+            <iyz>5.69382e-07</iyz>
+            <izz>0.10209</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_link_wrist_3_fixed_joint_lump__common_object_collision'>
+          <pose frame=''>0 0 0.381 1.579 -0 -1.543</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.24 0.25</size>
+            </box>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <collision name='pa10_1_link_wrist_3_fixed_joint_lump__pa10_1_link_gripper_base_collision_1'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/pa10_gripper_base.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_link_wrist_3_fixed_joint_lump__common_object_visual'>
+          <pose frame=''>0 0 0.381 1.579 -0 -1.543</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.35 0.3</size>
+            </box>
+          </geometry>
+        </visual>
+        <visual name='pa10_1_link_wrist_3_fixed_joint_lump__pa10_1_link_gripper_base_visual_1'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/pa10_gripper_base.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_W3' type='revolute'>
+        <child>pa10_1_link_wrist_3</child>
+        <parent>pa10_1_link_wrist_2</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-4.36332</lower>
+            <upper>4.36332</upper>
+            <effort>150</effort>
+            <velocity>5.65487</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_1_link_finger_1'>
+        <pose frame=''>0 -1.03 1.472 -1.57079 0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_link_finger_1_collision'>
+          <pose frame=''>-0.0225 0.075 -0.01 3.14159 -1.57079 3e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/finger.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1000.5</mu>
+                <mu2>1000.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_link_finger_1_visual'>
+          <pose frame=''>-0.0225 0.075 -0.01 3.14159 -1.57079 3e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/finger.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_finger_joint_1' type='prismatic'>
+        <child>pa10_1_link_finger_1</child>
+        <parent>pa10_1_link_wrist_3</parent>
+        <axis>
+          <xyz>0 1 6e-06</xyz>
+          <limit>
+            <lower>-0.039</lower>
+            <upper>0</upper>
+            <effort>150</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_1_link_finger_2'>
+        <pose frame=''>0 -0.970002 1.472 1.57079 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_1_link_finger_2_collision'>
+          <pose frame=''>-0.0225 -0.075 0.07 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/finger_left.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1000.5</mu>
+                <mu2>1000.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_1_link_finger_2_visual'>
+          <pose frame=''>-0.0225 -0.075 0.07 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/finger_left.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_1_finger_joint_2' type='prismatic'>
+        <child>pa10_1_link_finger_2</child>
+        <parent>pa10_1_link_wrist_3</parent>
+        <axis>
+          <xyz>0 -1 6e-06</xyz>
+          <limit>
+            <lower>-0.039</lower>
+            <upper>0</upper>
+            <effort>150</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_2_root_link'>
+        <pose frame=''>0 1 0 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0.025 0 -0 0</pose>
+          <mass>2</mass>
+          <inertia>
+            <ixx>1.00667</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1.00667</iyy>
+            <iyz>0</iyz>
+            <izz>1.0025</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_root_link_fixed_joint_lump__pa10_2_base_link_collision'>
+          <pose frame=''>0 0 0 0 -0 3.14</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/S1_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_root_link_fixed_joint_lump__pa10_2_base_link_visual'>
+          <pose frame=''>0 0 0 0 -0 3.14</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/S1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_base_to_root' type='fixed'>
+        <child>pa10_2_root_link</child>
+        <parent>world</parent>
+      </joint>
+      <link name='pa10_2_link_shoulder_1'>
+        <pose frame=''>0 1 0.2 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0.117 0 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.00139944</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00139944</iyy>
+            <iyz>0</iyz>
+            <izz>0.0016</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_link_shoulder_1_collision'>
+          <pose frame=''>0 0 0.117 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/S2_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode/>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_link_shoulder_1_visual'>
+          <pose frame=''>0 0 0.117 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/S2.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.88 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_S1' type='revolute'>
+        <child>pa10_2_link_shoulder_1</child>
+        <parent>pa10_2_root_link</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-2.96706</lower>
+            <upper>2.96706</upper>
+            <effort>150</effort>
+            <velocity>0.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_2_link_shoulder_2'>
+        <pose frame=''>0 1 0.317 -1.57079 0 0</pose>
+        <inertial>
+          <pose frame=''>0 -0.22 1e-06 -1.57079 -0 3.14159</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.00266184</ixx>
+            <ixy>4.06565e-24</ixy>
+            <ixz>-1.48893e-23</ixz>
+            <iyy>0.00266183</iyy>
+            <iyz>1.53224e-18</iyz>
+            <izz>0.001625</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_link_shoulder_2_collision'>
+          <pose frame=''>0 0 0 -1.57079 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/S3_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_link_shoulder_2_visual'>
+          <pose frame=''>0 0 0 -1.57079 -0 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/S3.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_S2' type='revolute'>
+        <child>pa10_2_link_shoulder_2</child>
+        <parent>pa10_2_link_shoulder_1</parent>
+        <axis>
+          <xyz>0 1 6e-06</xyz>
+          <limit>
+            <lower>-1.5708</lower>
+            <upper>1.5708</upper>
+            <effort>150</effort>
+            <velocity>0.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_2_link_elbow_1'>
+        <pose frame=''>0 1 0.634 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0.133 0 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.00139944</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.00139944</iyy>
+            <iyz>0</iyz>
+            <izz>0.0016</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_link_elbow_1_collision'>
+          <pose frame=''>0 0 0.133 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/E1_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_link_elbow_1_visual'>
+          <pose frame=''>0 0 0.133 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/E1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.88 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_E1' type='revolute'>
+        <child>pa10_2_link_elbow_1</child>
+        <parent>pa10_2_link_shoulder_2</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-2.96706</lower>
+            <upper>2.96706</upper>
+            <effort>150</effort>
+            <velocity>1.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_2_link_elbow_2'>
+        <pose frame=''>0 1 0.767 -1.57079 0 0</pose>
+        <inertial>
+          <pose frame=''>0 -0.15 0 1.57079 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.0012495</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0012495</iyy>
+            <iyz>0</iyz>
+            <izz>0.000625</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_link_elbow_2_collision'>
+          <pose frame=''>0 0.003 0 1.57079 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/E2_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_link_elbow_2_visual'>
+          <pose frame=''>0 0.003 0 1.57079 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/E2.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_E2' type='revolute'>
+        <child>pa10_2_link_elbow_2</child>
+        <parent>pa10_2_link_elbow_1</parent>
+        <axis>
+          <xyz>0 1 6e-06</xyz>
+          <limit>
+            <lower>-2.26893</lower>
+            <upper>2.26893</upper>
+            <effort>150</effort>
+            <velocity>1.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_2_link_wrist_1'>
+        <pose frame=''>0 0.999998 1.052 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0.195 0 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.0017368</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0017368</iyy>
+            <iyz>0</iyz>
+            <izz>0.0016</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_link_wrist_1_collision'>
+          <pose frame=''>0 0 0.195 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/W1_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_link_wrist_1_visual'>
+          <pose frame=''>0 0 0.195 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/W1.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <ambient>0.88 0.88 0.88 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <script>
+              <uri>__default__</uri>
+              <name>__default__</name>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_W1' type='revolute'>
+        <child>pa10_2_link_wrist_1</child>
+        <parent>pa10_2_link_elbow_2</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-4.36332</lower>
+            <upper>4.36332</upper>
+            <effort>150</effort>
+            <velocity>1.85</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_2_link_wrist_2'>
+        <pose frame=''>0 0.999998 1.247 -1.57079 0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0 1.57079 -0 0</pose>
+          <mass>0.5</mass>
+          <inertia>
+            <ixx>0.000903805</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0016</iyy>
+            <iyz>0</iyz>
+            <izz>0.000903805</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_link_wrist_2_collision'>
+          <pose frame=''>0 0 0 1.57079 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl_collision/W2_collision.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_link_wrist_2_visual'>
+          <pose frame=''>0 0 0 1.57079 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/pa10_stl/W2.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_W2' type='revolute'>
+        <child>pa10_2_link_wrist_2</child>
+        <parent>pa10_2_link_wrist_1</parent>
+        <axis>
+          <xyz>0 1 6e-06</xyz>
+          <limit>
+            <lower>-2.79253</lower>
+            <upper>2.79253</upper>
+            <effort>150</effort>
+            <velocity>5.65487</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_2_link_wrist_3'>
+        <pose frame=''>0 0.999998 1.317 0 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0.076667 0 -0 0</pose>
+          <mass>0.3</mass>
+          <inertia>
+            <ixx>0.0046133</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.0046133</iyy>
+            <iyz>0</iyz>
+            <izz>0.00109</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_link_wrist_3_fixed_joint_lump__pa10_2_link_gripper_base_collision'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/pa10_gripper_base.stl</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>0.5</mu>
+                <mu2>0.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_link_wrist_3_fixed_joint_lump__pa10_2_link_gripper_base_visual'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>1 1 1</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/pa10_gripper_base.stl</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <velocity_decay/>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_W3' type='revolute'>
+        <child>pa10_2_link_wrist_3</child>
+        <parent>pa10_2_link_wrist_2</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-4.36332</lower>
+            <upper>4.36332</upper>
+            <effort>150</effort>
+            <velocity>5.65487</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_2_link_finger_1'>
+        <pose frame=''>0 0.969998 1.472 -1.57079 0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_link_finger_1_collision'>
+          <pose frame=''>-0.0225 0.075 -0.01 3.14159 -1.57079 3e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/finger.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1000.5</mu>
+                <mu2>1000.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_link_finger_1_visual'>
+          <pose frame=''>-0.0225 0.075 -0.01 3.14159 -1.57079 3e-06</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/finger.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_finger_joint_1' type='prismatic'>
+        <child>pa10_2_link_finger_1</child>
+        <parent>pa10_2_link_wrist_3</parent>
+        <axis>
+          <xyz>0 1 6e-06</xyz>
+          <limit>
+            <lower>-0.039</lower>
+            <upper>0</upper>
+            <effort>150</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <link name='pa10_2_link_finger_2'>
+        <pose frame=''>0 1.03 1.472 1.57079 -0 0</pose>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>0.1</mass>
+          <inertia>
+            <ixx>0.01</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name='pa10_2_link_finger_2_collision'>
+          <pose frame=''>-0.0225 -0.075 0.07 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/finger_left.STL</uri>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>1000.5</mu>
+                <mu2>1000.5</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='pa10_2_link_finger_2_visual'>
+          <pose frame=''>-0.0225 -0.075 0.07 3.14159 1.57079 3.14159</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/michalis/iros_2020_ws/src/PA10/pa10_description/gripper_stl/finger_left.STL</uri>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Orange</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <gravity>1</gravity>
+        <velocity_decay/>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='pa10_2_finger_joint_2' type='prismatic'>
+        <child>pa10_2_link_finger_2</child>
+        <parent>pa10_2_link_wrist_3</parent>
+        <axis>
+          <xyz>0 -1 6e-06</xyz>
+          <limit>
+            <lower>-0.039</lower>
+            <upper>0</upper>
+            <effort>150</effort>
+            <velocity>1</velocity>
+          </limit>
+          <dynamics>
+            <damping>0.8</damping>
+            <friction>0.1</friction>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+          <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+      </joint>
+      <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
+        <robotNamespace/>
+        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        <legacyModeNS>1</legacyModeNS>
+        <controlPeriod>0.001</controlPeriod>
+      </plugin>
+      <static>0</static>
+      <pose frame=''>0 0 0.5 0 -0 0</pose>
+    </model>
+    <state world_name='default'>
+      <sim_time>51 604000000</sim_time>
+      <real_time>51 813430446</real_time>
+      <wall_time>1584871804 323137074</wall_time>
+      <iterations>51604</iterations>
+      <model name='ground_plane'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='pa10'>
+        <pose frame=''>0 0 0.5 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='pa10_1_link_elbow_1'>
+          <pose frame=''>9.3e-05 -0.874578 1.10818 -0.000544 0.405847 1.56886</pose>
+          <velocity>-0.006893 -1e-06 6e-06 -0.000405 -0.522648 -0.795489</velocity>
+          <acceleration>-57.969 0.050981 0.000619 -0.824108 0.877055 0.399001</acceleration>
+          <wrench>-28.9845 0.025491 0.000309 0 -0 0</wrench>
+        </link>
+        <link name='pa10_1_link_elbow_2'>
+          <pose frame=''>0.000112 -0.821989 1.23022 -1.57175 0.953945 1.56834</pose>
+          <velocity>-0.04911 6.2e-05 -8e-06 -0.000739 -0.639985 -0.698137</velocity>
+          <acceleration>-38.4326 0.033994 0.003486 -1.54374 -0.095743 0.736608</acceleration>
+          <wrench>-19.2163 0.016997 0.001743 0 -0 0</wrench>
+        </link>
+        <link name='pa10_1_link_finger_1'>
+          <pose frame=''>0.030804 -0.205412 1.50213 1.56144 1.54638 -1.58114</pose>
+          <velocity>-0.008051 -0.000238 0.000647 1.3e-05 -0.021682 -0.008553</velocity>
+          <acceleration>-16.1026 -0.474532 1.29112 0.017517 0.614374 1.78646</acceleration>
+          <wrench>-1.61026 -0.047453 0.129112 0 -0 0</wrench>
+        </link>
+        <link name='pa10_1_link_finger_2'>
+          <pose frame=''>-0.029193 -0.205353 1.50215 -1.58015 1.54638 -1.58112</pose>
+          <velocity>-0.00792 0.000256 -0.000641 -5.6e-05 -0.02184 -0.008225</velocity>
+          <acceleration>-15.8473 0.510357 -1.28497 -0.121231 0.299227 2.44134</acceleration>
+          <wrench>-1.58473 0.051036 -0.128497 0 -0 0</wrench>
+        </link>
+        <link name='pa10_1_link_shoulder_1'>
+          <pose frame=''>1.4e-05 -0.999807 0.699998 0 2e-06 1.57045</pose>
+          <velocity>0.028393 -2.2e-05 0 0 0.000457 0.850004</velocity>
+          <acceleration>56.8937 -0.044758 0.000203 0.000617 0.913067 -2.73464</acceleration>
+          <wrench>28.4468 -0.022379 0.000102 0 -0 0</wrench>
+        </link>
+        <link name='pa10_1_link_shoulder_2'>
+          <pose frame=''>2.5e-05 -0.999658 0.816916 -1.57069 0.405131 1.5705</pose>
+          <velocity>0.048924 -2.1e-05 -3e-06 0.00015 0.180799 0.853019</velocity>
+          <acceleration>23.0348 -0.019537 0.002467 0.298514 -1.3965 -2.41391</acceleration>
+          <wrench>23.0348 -0.019537 0.002467 0 -0 0</wrench>
+        </link>
+        <link name='pa10_1_link_wrist_1'>
+          <pose frame=''>0.000403 -0.589483 1.39497 0.001125 0.954874 1.57095</pose>
+          <velocity>-0.003597 1e-06 1e-05 0.000944 0.828252 0.436563</velocity>
+          <acceleration>40.4512 -0.040141 -0.002793 1.98371 -1.27107 -0.504102</acceleration>
+          <wrench>20.2256 -0.020071 -0.001397 0 -0 0</wrench>
+        </link>
+        <link name='pa10_1_link_wrist_2'>
+          <pose frame=''>0.000597 -0.430316 1.50762 1.54131 1.54665 -1.60113</pose>
+          <velocity>0.017623 -1.7e-05 -1e-06 0.000941 0.945095 0.280428</velocity>
+          <acceleration>35.254 -0.033549 -0.001595 1.99347 -1.03057 -2.65712</acceleration>
+          <wrench>17.627 -0.016775 -0.000798 0 -0 0</wrench>
+        </link>
+        <link name='pa10_1_link_wrist_3'>
+          <pose frame=''>0.000653 -0.360336 1.50592 3.13228 1.54638 -1.58109</pose>
+          <velocity>-0.007606 8e-06 1e-06 -2e-05 -0.023571 -0.004408</velocity>
+          <acceleration>-12.3061 0.014061 0.001241 -0.047132 -0.446842 2.10271</acceleration>
+          <wrench>-11.0755 0.012655 0.001117 0 -0 0</wrench>
+        </link>
+        <link name='pa10_1_root_link'>
+          <pose frame=''>0 -1 0.5 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 -0 -0 -0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_link_elbow_1'>
+          <pose frame=''>-8.7e-05 0.876934 1.10916 -0.004388 -0.39808 1.5813</pose>
+          <velocity>0.007792 0.000522 0.000153 -0.004213 -0.456174 0.952353</velocity>
+          <acceleration>1.93696 1.99778 0.701633 -2.07595 0.248651 -1.408</acceleration>
+          <wrench>0.96848 0.99889 0.350817 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_link_elbow_2'>
+          <pose frame=''>-0.000141 0.82533 1.23167 -1.57784 -0.940051 1.58525</pose>
+          <velocity>-0.023879 0.00054 0.000377 0.001253 -0.67748 0.874962</velocity>
+          <acceleration>44.3496 2.0733 1.39115 2.03154 -1.46709 0.751208</acceleration>
+          <wrench>22.1748 1.03665 0.695573 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_link_finger_1'>
+          <pose frame=''>0.038639 0.213605 1.51344 2.85567 -1.53725 -2.82638</pose>
+          <velocity>0.029713 -0.001232 -0.009503 -0.006285 0.297359 -0.058912</velocity>
+          <acceleration>59.346 -2.47124 -19.0089 3.14031 -1.02592 -1.74832</acceleration>
+          <wrench>5.93459 -0.247124 -1.90089 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_link_finger_2'>
+          <pose frame=''>-0.021311 0.211857 1.51151 -0.287862 -1.53747 -2.82441</pose>
+          <velocity>0.035774 0.000829 0.019453 -0.016618 0.756953 0.021095</velocity>
+          <acceleration>71.4664 1.66093 38.9076 -1.81715 -0.273656 -1.95599</acceleration>
+          <wrench>7.14664 0.166093 3.89076 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_link_shoulder_1'>
+          <pose frame=''>1e-05 0.999872 0.699998 -0 -2e-06 1.5696</pose>
+          <velocity>0.018482 -0.000374 -2.3e-05 1e-05 0.00018 -0.849904</velocity>
+          <acceleration>37.0067 -0.750426 -0.046118 0.019754 0.36009 2.93333</acceleration>
+          <wrench>18.5034 -0.375213 -0.023059 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_link_shoulder_2'>
+          <pose frame=''>2.1e-05 0.999778 0.816944 -1.57068 -0.397658 1.5696</pose>
+          <velocity>0.040539 -0.000202 -0.000128 -0.000761 0.188547 -0.783748</velocity>
+          <acceleration>24.019 0.027069 -0.096136 -1.28098 0.841365 1.02853</acceleration>
+          <wrench>24.019 0.027069 -0.096136 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_link_wrist_1'>
+          <pose frame=''>0.001146 0.595159 1.39968 -0.057045 -0.939373 1.64685</pose>
+          <velocity>-0.002359 -0.000411 0.000124 -3.12119 -0.512657 -1.45964</velocity>
+          <acceleration>-79.0624 -2.63851 -1.69038 1.80087 0.67836 -0.199548</acceleration>
+          <wrench>-39.5312 -1.31926 -0.845191 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_link_wrist_2'>
+          <pose frame=''>0.002002 0.437623 1.5146 2.87153 -1.5356 -2.84165</pose>
+          <velocity>-0.035561 -0.001179 -0.000736 -3.05105 0.015825 -2.00287</velocity>
+          <acceleration>-71.1656 -2.3583 -1.47248 -2.12676 -1.50731 0.870529</acceleration>
+          <wrench>-35.5828 -1.17915 -0.73624 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_link_wrist_3'>
+          <pose frame=''>0.004095 0.367658 1.51394 -1.86012 -1.53763 -2.82289</pose>
+          <velocity>0.027848 0.000717 -0.000829 -0.023836 1.0972 0.126624</velocity>
+          <acceleration>73.4424 1.97169 -2.97173 3.0248 -0.651688 -0.772172</acceleration>
+          <wrench>22.0327 0.591507 -0.891518 0 -0 0</wrench>
+        </link>
+        <link name='pa10_2_root_link'>
+          <pose frame=''>-0 1 0.5 0 -0 0</pose>
+          <velocity>0 -0 0 -0 -0 -0</velocity>
+          <acceleration>0 0 0 -0 -0 -0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose frame=''>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose frame=''>7.31703 -0.478775 2.70349 0 0.355643 2.91619</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>

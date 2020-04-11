@@ -6,12 +6,28 @@
     <arg name="multiple" default="false"/>
     <arg name="multi" value="multiple:=$(arg multiple) namespace:=$(arg robot_name)"/>
 
+    <!-- num of agents -->
+    <arg name="agents" default="2"/>
+    
     <!-- select hardware interface among effort, velocity, position -->
-    <arg name="interface" default="velocity"/>
+    <arg name="robot_1_interface" default="velocity"/>
+    <arg name="robot_2_interface" default="velocity"/>
+    <arg name="robot_3_interface" default="velocity"/>
+
+    <!-- select color among default, red, green, orange -->
+    <arg name="robot_1_color" default="velocity"/>
+    <arg name="robot_2_color" default="red"/>
+    <arg name="robot_3_color" default="green"/>
+
+    <!-- select object type between cylinder and box -->
+    <arg name="object_type" default="cylinder"/>
+
+
+    
 
     <arg name="pose_x" default= "0" />
     <arg name="pose_y" default= "0" />
-    <arg name="pose_z" default= "0.5" />
+    <arg name="pose_z" default= "0.0" />
 
     <arg name="roll" default= "0" />
     <arg name="pitch" default= "0" />
@@ -19,8 +35,8 @@
 
     <arg name="gzpose" value="-x $(arg pose_x) -y $(arg pose_y) -z $(arg pose_z) -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)"/>
 
-    <arg name="joints_gazebo_spawn" default="-J S1 0.0 -J S2 0.0 -J E1 0.0 -J E2 0.0 -J W1 0.0 -J W2 0.0 -J W3 0.0"/>
-
+    <arg name="joints_gazebo_spawn" default="-J pa10_1_S1 0.0 -J pa10_1_S2 0.0 -J pa10_1_E1 0.0 -J pa10_1_E2 0.0 -J pa10_1_W1 0.0 -J pa10_1_W2 0.0 -J pa10_1_W3 0.0"/>
+    
     <!-- MoveIt Arguments -->
     <arg name="moveit" default="false"/>
     <arg name="use_rviz" default="false"/>
@@ -30,34 +46,55 @@
 
 
     <!-- startup simulated world -->
-    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!-- <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="world_name" value="$(find pa10_gazebo)/worlds/empty.world"/>
         <arg name="gui" value="true"/>
         <arg name="debug" value="false"/>
-    </include>
+        <arg name="paused" value="false"/>
+    </include> -->
 
 
-    <group if="$(eval arg('interface') =='velocity')">
+    <group if="$(eval arg('robot_1_interface') =='velocity')">
         <rosparam file="$(find pa10_hardware_interface)/config/cooperative_gazebo_position_controllers.yaml" command="load"/>
     </group>
 
-    <group if="$(eval arg('interface') =='effort')">
+    <group if="$(eval arg('robot_1_interface') =='effort')">
         <rosparam file="$(find pa10_hardware_interface)/config/cooperative_gazebo_effort_controllers.yaml" command="load"/>
     </group>
 
     <!-- Robot Model -->
-    <param name="robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/cooperative_pa10.urdf.xacro' interface:=$(arg interface)" />
-
+    <param name="robot_description" command="$(find xacro)/xacro.py '$(find pa10_description)/urdf/cooperative_pa10.urdf.xacro' robot_1_interface:=$(arg robot_1_interface)
+    robot_2_interface:=$(arg robot_2_interface) robot_3_interface:=$(arg robot_3_interface) robot_1_color:=$(arg robot_1_color) robot_2_color:=$(arg robot_2_color)
+    robot_3_color:=$(arg robot_3_color) num_of_agents:=$(arg agents) type_of_object:=$(arg object_type)" />
+    
     <!-- Spawn robot in Gazebo -->
     <node pkg="gazebo_ros" type="spawn_model" name="pa10_spawn_model" args="-urdf -param robot_description $(arg gzpose) -model pa10 $(arg joints_gazebo_spawn)"/>
 
+
     <!-- Start Controllers -->
+    <!-- Start Controllers -->
+    <group if="$(eval arg('agents') == 1)">
+        <node name="pa10_trajectory_controller" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="
+            joint_state_controller 
+            pa10_1_arm_controller" />
+    </group>
+
+    <group if="$(eval arg('agents') == 2)">
+        <node name="pa10_trajectory_controller" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="
+            joint_state_controller 
+            pa10_1_arm_controller
+            pa10_2_arm_controller" />
+    </group>
+
+    <group if="$(eval arg('agents') == 3)">
     <node name="pa10_trajectory_controller" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="
             joint_state_controller 
-            arm_controller
-            gripper_controller" />
+            pa10_1_arm_controller
+            pa10_2_arm_controller
+            pa10_3_arm_controller" />
+    </group>
 
-
+    
     <!-- <node pkg="tf" type="static_transform_publisher" name="$(arg robot_name)tf_bc" args="$(arg yaw) $(arg pitch) $(arg roll) /world $(arg robot_name)/world 100"/> -->
 
     <!-- Robot state publisher -->

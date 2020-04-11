@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+
+<xacro:macro name="depth_sensor" params="prefix:='' camera_name:='kinect' update_rate:=30">
+        
+    <link name="${prefix}kinect2_rgb_optical_frame">
+        <visual>
+          <origin rpy="${pi} ${-pi/2.0} ${-pi/2.0}" xyz="0 0 0"/>
+          <geometry>
+            <mesh filename="package://pa10_description/sensors_3D_models/kinect.dae" scale="1 1 1"/>
+          </geometry>
+          <material name="">
+            <color rgba="0.0 0.0 0.0 1.0"/>
+          </material>
+        </visual>
+        <collision>
+          <origin rpy="${pi} ${-pi/2.0} ${-pi/2.0}" xyz="0 0 0"/>
+          <geometry>
+            <mesh filename="package://pa10_description/sensors_3D_models/kinect.dae" scale="1 1 1"/>
+          </geometry>
+        </collision>
+        <inertial>
+          <origin rpy="0 0 0" xyz="0 0 1"/>
+          <mass value="0.5"/>
+          <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+      </link>
+
+      <link name="${prefix}kinect2_ir_optical_frame"/>
+
+      <joint name="${prefix}kinect2_ir" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="${prefix}kinect2_rgb_optical_frame"/>
+        <child link="${prefix}kinect2_ir_optical_frame"/>
+      </joint>
+
+
+        <gazebo reference="${prefix}kinect2_rgb_optical_frame">
+          <sensor name="${prefix}kinect2" type="depth">
+            <always_on>1</always_on>
+                <visualize>true</visualize>             
+                <camera>
+                    <horizontal_fov>1.047</horizontal_fov>  
+                    <image>
+                        <width>640</width>
+                        <height>480</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <depth_camera>
+        
+                    </depth_camera>
+                    <clip>
+                        <near>0.1</near>
+                        <far>100</far>
+                    </clip>
+                </camera>
+            <plugin name="${prefix}kinect2_ir_controller" filename="libgazebo_ros_openni_kinect.so">
+              <!-- <baseline>0.2</baseline> -->
+              <alwaysOn>true</alwaysOn>
+              <updateRate>10</updateRate>
+              <cameraName>${prefix}kinect2</cameraName>
+              <imageTopicName>${prefix}/${camera_name}/color/image_raw</imageTopicName>
+              <cameraInfoTopicName>${prefix}/${camera_name}/color/camera_info</cameraInfoTopicName>
+              <depthImageTopicName>${prefix}/${camera_name}/depth/image_raw</depthImageTopicName>
+              <depthImageInfoTopicName>${prefix}/${camera_name}/depth/camera_info</depthImageInfoTopicName>
+              <pointCloudTopicName>${prefix}/${camera_name}/depth/points</pointCloudTopicName>
+              <frameName>${prefix}kinect2_ir_optical_frame</frameName>
+              <pointCloudCutoff>0.0</pointCloudCutoff>
+              <!-- <pointCloudCutoffMax>3.0</pointCloudCutoffMax> -->
+              <hackBaseline>0.07</hackBaseline>
+              <distortionK1>0.0000000</distortionK1>
+              <distortionK2>0.0000000</distortionK2>
+              <distortionK3>0.0000000</distortionK3>
+              <distortionT1>0.0000000</distortionT1>
+              <distortionT2>0.0000000</distortionT2>
+              <CxPrime>0</CxPrime>
+              <Cx>0</Cx>
+              <Cy>0</Cy>
+              <focalLength>0</focalLength>
+              <hackBaseline>0</hackBaseline>
+            </plugin>
+          </sensor>
+        </gazebo>
+</xacro:macro>
+
+
+<xacro:macro name="ft_sensor_plugin" params="name joint_name noise:=0.03 rate:=500">
+  <gazebo>
+    <plugin name="${name}_ft_sensor" filename="libgazebo_ros_ft_sensor.so">
+      <updateRate>${rate}</updateRate>
+      <topicName>${name}/ft_sensor</topicName> 
+      <jointName>${joint_name}</jointName>
+      <always_on>true</always_on>
+      <noise>
+        <type>gaussian</type>
+        <mean>0.0</mean>
+        <stddev>${noise}</stddev>  
+      </noise>
+    </plugin>
+  </gazebo>
+
+  <gazebo reference="${joint_name}">
+    <provideFeedback>true</provideFeedback>
+  </gazebo>
+</xacro:macro>
+
+</robot>

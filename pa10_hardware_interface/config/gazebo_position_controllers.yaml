@@ -1,5 +1,15 @@
 joint_names: [S1,S2,E1,E2,W1,W2,W3,finger_joint_1,finger_joint_2]
 
+
+# gazebo_ros_control:
+#    pid_gains:
+#       S1: &gains_gazebo {p: 10.0, i: 1.2, d: 2.2, i_clamp: 0.1}
+#       S2: *gains_gazebo
+#       E1: *gains_gazebo
+#       E2: *gains_gazebo
+#       W1: *gains_gazebo
+#       W2: *gains_gazebo
+#       W3: *gains_gazebo
 # Publish all joint states -----------------------------------
 joint_state_controller:
   type: joint_state_controller/JointStateController
@@ -7,10 +17,7 @@ joint_state_controller:
 
 # Position Controllers ---------------------------------------
 arm_controller:
-  #type: position_controllers/JointGroupPositionController
   type: "velocity_controllers/JointTrajectoryController"
-  #type: "position_controllers/JointTrajectoryController"
-  #type: "position_controllers/JointTrajectoryController"
 
   joints:
      - S1
@@ -21,13 +28,13 @@ arm_controller:
      - W2
      - W3
   gains: 
-     S1: {p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1}
-     S2: {p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1}
-     E1: {p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1}
-     E2: {p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1}
-     W1: {p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1}
-     W2: {p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1}
-     W3: {p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1}
+     S1: &pa10_joint_gains1 { p: 800.0, i: 5.2, d: 0.1, i_clamp: 0.3 } #{p: 15.0, i: 1.2, d: 1.2, i_clamp: 0.1}
+     S2: *pa10_joint_gains1
+     E1: &pa10_joint_gains2 { p: 800.0, i: 5.2, d: 0.1, i_clamp: 0.3 }
+     E2: *pa10_joint_gains2
+     W1: *pa10_joint_gains2
+     W2: *pa10_joint_gains2
+     W3: *pa10_joint_gains2
 
   constraints:
      goal_time: 0.5                    # Override default
@@ -36,7 +43,6 @@ arm_controller:
      stop_trajectory_duration: 0 # Override default
 
 gripper_controller:
-  #type: "position_controllers/JointTrajectoryController"
   type: "velocity_controllers/JointTrajectoryController"
   joints:
      - finger_joint_1

@@ -8,109 +8,34 @@
   <xacro:arg name="namespace" default=""/>
   <!-- namespace of the robot -->
   <xacro:arg name="interface" default="velocity"/>
-  <!-- namespace of the robot -->
+  <!-- camera -->
   <xacro:arg name="enable_camera" default="false"/>
+  <!-- color -->
+  <xacro:arg name="color" default="default"/>
+
+
   <xacro:property name="is_multiple" value="$(arg multiple)" />
   <xacro:property name="nsp" value="$(arg namespace)" />
   <xacro:property name="HWInterface" value="$(arg interface)" />
   <xacro:property name="enable_camera_" value="$(arg enable_camera)" />
 
 
-  <xacro:property name="pi" value="3.1415926535897931" />
-  <!-- JOINTS EFFORT LIMITS -->
-  <!-- NOT THE ACTUAL VALUE -->
-  <xacro:property name="arm_eps" value="0.02" />
-  <xacro:property name="joint_1_max_effort" value="150.0"/>
-  <xacro:property name="joint_2_max_effort" value="150.0"/>
-  <xacro:property name="joint_3_max_effort" value="150.0"/>
-  <xacro:property name="joint_4_max_effort" value="150.0"/>
-  <xacro:property name="joint_5_max_effort" value="150.0"/>
-  <xacro:property name="joint_6_max_effort" value="150.0"/>
-  <xacro:property name="joint_7_max_effort" value="150.0"/>
-
-  <!-- JOINTS POSITION LIMITS -->
-  <!-- Real Values: [177, 94, 174, 137, 255, 165, 255] (deg)-->
-  <xacro:property name="joint_1_max_position" value="${170.0 *pi/180.0}"/>
-  <xacro:property name="joint_2_max_position" value="${90.0 *pi/180.0}"/>
-  <xacro:property name="joint_3_max_position" value="${170.0 *pi/180.0}"/>
-  <xacro:property name="joint_4_max_position" value="${130.0 *pi/180.0}"/>
-  <xacro:property name="joint_5_max_position" value="${250.0 *pi/180.0}"/>
-  <xacro:property name="joint_6_max_position" value="${160.0 *pi/180.0}"/>
-  <xacro:property name="joint_7_max_position" value="${250.0 *pi/180.0}"/>
-
-  <!-- JOINTS VELOCITIE LIMITS-->
-  <!-- Real Values: [1, 1, 2, 2, 2, 2*pi, 2*pi] (rad/sec)-->
-  <xacro:property name="joint_1_max_velocity" value="0.85"/>
-  <xacro:property name="joint_2_max_velocity" value="0.85"/>
-  <xacro:property name="joint_3_max_velocity" value="1.85"/>
-  <xacro:property name="joint_4_max_velocity" value="1.85"/>
-  <xacro:property name="joint_5_max_velocity" value="1.85"/>
-  <xacro:property name="joint_6_max_velocity" value="${1.8*pi}"/>
-  <xacro:property name="joint_7_max_velocity" value="${1.8*pi}"/>
-
-  <!-- JOINT DYNAMICS DAMPING + FRICTION-->
-  <!-- >> !! Not Real Values !! << -->
-  <!-- DAMPING -->
-  <xacro:property name="joint_1_damping" value="0.8"/>
-  <xacro:property name="joint_2_damping" value="0.8"/>
-  <xacro:property name="joint_3_damping" value="0.8"/>
-  <xacro:property name="joint_4_damping" value="0.8"/>
-  <xacro:property name="joint_5_damping" value="0.8"/>
-  <xacro:property name="joint_6_damping" value="0.8"/>
-  <xacro:property name="joint_7_damping" value="0.8"/>
-  <xacro:property name="joint_finger_damping" value="0.8"/>
-
-  <!-- FRICTION -->
-  <xacro:property name="joint_1_friction" value="0.1"/>
-  <xacro:property name="joint_2_friction" value="0.1"/>
-  <xacro:property name="joint_3_friction" value="0.1"/>
-  <xacro:property name="joint_4_friction" value="0.1"/>
-  <xacro:property name="joint_5_friction" value="0.1"/>
-  <xacro:property name="joint_6_friction" value="0.1"/>
-  <xacro:property name="joint_7_friction" value="0.1"/>
-  <xacro:property name="joint_finger_friction" value="0.1"/>
-
-
+  <!-- PA10 Properties -->
+  <xacro:include filename="$(find pa10_description)/urdf/pa10properties.xacro"/>
   <!-- Import all Gazebo-customization elements, including Gazebo colors -->
   <xacro:include filename="$(find pa10_description)/urdf/pa10csl.gazebo.urdf.xacro" />
   <!-- Import Rviz colors -->
   <xacro:include filename="$(find pa10_description)/urdf/materials.xacro" />
   <!-- Import Transmitions -->
   <xacro:include filename="$(find pa10_description)/urdf/arm.transmission.xacro"/>
+  <!-- Import sensors -->
+  <xacro:include filename="$(find pa10_description)/urdf/sensors.urdf.xacro"/>
+
 
 
   <!-- LINKS -->
 
   <link name="world"/>
-
-  <xacro:if value="${enable_camera_}">
-
-    <link name="kinect2_rgb_optical_frame">
-      <visual>
-        <origin rpy="${pi} ${-pi/2.0} ${-pi/2.0}" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="package://pa10_description/sensors_3D_models/kinect.dae" scale="1 1 1"/>
-        </geometry>
-        <material name="">
-          <color rgba="0.0 0.0 0.0 1.0"/>
-        </material>
-      </visual>
-      <collision>
-        <origin rpy="${pi} ${-pi/2.0} ${-pi/2.0}" xyz="0 0 0"/>
-        <geometry>
-          <mesh filename="package://pa10_description/sensors_3D_models/kinect.dae" scale="1 1 1"/>
-        </geometry>
-      </collision>
-      <inertial>
-        <origin rpy="0 0 0" xyz="0 0 1"/>
-        <mass value="0.5"/>
-        <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
-      </inertial>
-    </link>
-
-    <link name="kinect2_ir_optical_frame"/>
-  </xacro:if>
-
 
 
   <link name="base_link">
@@ -129,9 +54,12 @@
       </geometry>
     </collision>
     <inertial>
-      <origin rpy="0 0 3.14" xyz="0 0 0.1"/>
-      <mass value="0.5"/>
-      <xacro:inertia_cylinder height="0.2"  radius = "0.1" mass="0.5"/>
+      <origin rpy="0 0 3.14" xyz="0 0 0.0"/>
+      <mass value="${mass_shoulder}"/>
+      <!-- <xacro:inertia_box height="${inertia_height_shoulder}" mass="${mass_shoulder}"/> -->
+      <!-- <xacro:inertia_cylinder height="0.2"  radius = "0.1" mass="0.5"/> -->
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+
     </inertial>
   </link>
 
@@ -152,9 +80,12 @@
       </geometry>
     </collision>
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0.117"/>
-      <mass value="0.5"/>
-      <xacro:inertia_cylinder height="0.12"  radius = "0.08" mass="0.5"/>
+      <!-- <origin rpy="0 0 0" xyz="0 0 0.117"/> -->
+      <mass value="${mass_shoulder}"/>
+      <!-- <xacro:inertia_cylinder height="0.12"  radius = "0.08" mass="0.5"/> -->
+      <!-- <xacro:inertia_box height="${inertia_height_shoulder}" mass="${mass_shoulder}"/> -->
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+
     </inertial>
   </link>
 
@@ -176,18 +107,21 @@
       </geometry>
     </collision>
     <inertial>
-      <origin rpy="-1.57079 0 3.14159" xyz="0 -0.22 0.0"/>
-      <mass value="0.5"/>
-      <xacro:inertia_cylinder height="0.18"  radius = "0.05" mass="0.5" axis="0"/>
+      <origin rpy="-1.57079 0 3.14159" xyz="0 -0.0 0.0"/>
+      <mass value="${mass_shoulder}"/>
+      <!-- <xacro:inertia_cylinder height="0.18"  radius = "0.05" mass="0.5" axis="0"/> -->
+      <!-- <xacro:inertia_box height="${inertia_height_shoulder}" mass="${mass_shoulder}"/> -->
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
 
 
   <link name="link_shoulder_to_elbow">
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0.22"/>
+      <origin rpy="0 0 0" xyz="0 0 0.0"/>
       <mass value="0.5"/>
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+      <!-- <xacro:inertia_box height="${inertia_height}" mass="${mass_shoulder}"/> -->
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
 
@@ -210,9 +144,11 @@
       </geometry>
     </collision>
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0.0 0.133"/>
-      <mass value="0.5"/>
-      <xacro:inertia_cylinder height="0.12"  radius = "0.08" mass="0.5"/>
+      <!-- <origin rpy="0 0 0" xyz="0 0.0 0.133"/> -->
+      <mass value="${mass_elbow}"/>
+      <!-- <xacro:inertia_cylinder height="0.12"  radius = "0.08" mass="0.5"/> -->
+      <!-- <xacro:inertia_box height="${inertia_height_elbow}" mass="${mass_elbow}"/> -->
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
 
@@ -233,9 +169,12 @@
       </geometry>
     </collision>
     <inertial>
-      <origin rpy="1.57079 0 0" xyz="0 -0.15 0"/>
-      <mass value="0.5"/>
-      <xacro:inertia_cylinder height="0.15"  radius = "0.05" mass="0.5" axis="0"/>
+      <origin rpy="1.57079 0 0" xyz="0 -0.0 0"/>
+      <mass value="${mass_elbow}"/>
+      <!-- <xacro:inertia_cylinder height="0.15"  radius = "0.05" mass="0.5" axis="0"/> -->
+      <!-- <xacro:inertia_box height="${inertia_height_elbow}" mass="${mass_elbow}"/> -->
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+
     </inertial>
   </link>
 
@@ -256,9 +195,11 @@
       </geometry>
     </collision>
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0 0.195"/>
-      <mass value="0.5"/>
-      <xacro:inertia_cylinder height="0.15"  radius = "0.08" mass="0.5"/>
+      <!-- <origin rpy="0 0 0" xyz="0 0 0.195"/> -->
+      <mass value="${mass_wrist}"/>
+      <!-- <xacro:inertia_cylinder height="0.15"  radius = "0.08" mass="0.5"/> -->
+      <!-- <xacro:inertia_box height="${inertia_height_wrist}" mass="${mass_wrist}"/> -->
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
 
@@ -279,18 +220,28 @@
     </collision>
     <inertial>
       <origin rpy="1.57079 0 0" xyz="0 0 0"/>
-      <mass value="0.5"/>
-      <xacro:inertia_cylinder height="0.05"  radius = "0.08" mass="0.5" axis="1"/>
+      <mass value="${mass_wrist}"/>
+      <!-- <xacro:inertia_cylinder height="0.05"  radius = "0.08" mass="0.5" axis="1"/> -->
+      <!-- <xacro:inertia_box height="${inertia_height_wrist}" mass="${mass_wrist}"/> -->
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
 
-  <link name="link_wrist_3"/>
+  <link name="link_wrist_3">
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="0.01"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+      <!-- <xacro:inertia_box height="${inertia_height}" mass="${mass_wrist}"/> -->
+    </inertial>
+  </link>
 
   <link name="link_ee_tool">
     <inertial>
       <origin rpy="0 0 0" xyz="0 0 0"/>
-      <mass value="0.1"/>
-      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+      <mass value="0.01"/>
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+      <!-- <xacro:inertia_box height="${inertia_height}" mass="${mass_2}"/> -->
     </inertial>
   </link>
 
@@ -314,9 +265,11 @@
       </geometry>
     </collision>
     <inertial>
-      <origin rpy="0 0 0" xyz="0 0 -0.045"/>
-      <mass value="0.2"/>
-      <xacro:inertia_cylinder height="0.05"  radius = "0.03" mass="0.2"/>
+      <!-- <origin rpy="0 0 0" xyz="0 0 -0.045"/> -->
+      <mass value="${mass_gripper}"/>
+      <!-- <xacro:inertia_cylinder height="0.05"  radius = "0.03" mass="0.5"/> -->
+      <!-- <xacro:inertia_box height="${inertia_height_gripper}" mass="${mass_gripper}"/> -->
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
 
@@ -339,7 +292,9 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.1"/>
+      <mass value="${mass_gripper}"/>
+      <!-- <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/> -->
+      <!-- <xacro:inertia_box height="${inertia_height_gripper}" mass="${mass_gripper}"/> -->
       <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
     </inertial>
   </link>
@@ -362,8 +317,11 @@
       </geometry>
     </collision>
     <inertial>
-      <mass value="0.1"/>
+      <mass value="${mass_gripper}"/>
+      <!-- <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/> -->
+      <!-- <xacro:inertia_box height="${inertia_height_gripper}" mass="${mass_gripper}"/> -->
       <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+
     </inertial>
   </link>
 
@@ -380,21 +338,6 @@
     <parent link="world"/>
     <child link="base_link"/>
   </joint>
-
-
-  <xacro:if value="${enable_camera_}">
-    <joint name="kinect" type="fixed">
-      <origin rpy="${-125.0*pi/180.0} 0 ${pi}" xyz="0.148 0.48 1.8"/>
-      <parent link="base_link"/>
-      <child link="kinect2_rgb_optical_frame"/>
-    </joint>
-
-    <joint name="kinect_ir" type="fixed">
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <parent link="kinect2_rgb_optical_frame"/>
-      <child link="kinect2_ir_optical_frame"/>
-    </joint>
-  </xacro:if>
 
 
   <joint name="S1" type="revolute">
@@ -476,7 +419,7 @@
   </joint>
 
   <joint name="ee_tool_frame" type="fixed">
-		<origin rpy="0 0 0" xyz="0 0 0.23"/>
+    <origin rpy="0 0 0" xyz="0 0 0.23"/>
     <parent link="link_wrist_3"/>
     <child link="link_ee_tool"/>
   </joint>
@@ -498,7 +441,7 @@
     <limit effort="${joint_7_max_effort}" lower="-0.039" upper="0" velocity="1.0"/>
     <dynamics damping="${joint_finger_damping}" friction="${joint_finger_friction}" />
 
-    <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="-0.035" soft_upper_limit="-0.002" /> -->
+    <safety_controller k_position="20" k_velocity="20" soft_lower_limit="-0.035" soft_upper_limit="-0.002" />
 
   </joint>
 
@@ -510,7 +453,7 @@
     <axis xyz="0 0 1"/>
     <limit effort="${joint_7_max_effort}" lower="-0.039" upper="0" velocity="1.0"/>
     <dynamics damping="${joint_finger_damping}" friction="${joint_finger_friction}" />
-    <!-- <safety_controller k_position="20" k_velocity="20" soft_lower_limit="-0.035" soft_upper_limit="-0.002" /> -->
+    <safety_controller k_position="20" k_velocity="20" soft_lower_limit="-0.035" soft_upper_limit="-0.002" />
   </joint>
 
 
@@ -519,15 +462,32 @@
   <!--    TRANSMITIONS     -->
   <!-- ******************* -->
 
-  <xacro:arm_simple_transmission name="S1" reduction="10" interface="${HWInterface}" />
-  <xacro:arm_simple_transmission name="S2" reduction="10" interface="${HWInterface}"/>
-  <xacro:arm_simple_transmission name="E1" reduction="10" interface="${HWInterface}"/>
-  <xacro:arm_simple_transmission name="E2" reduction="10" interface="${HWInterface}"/>
-  <xacro:arm_simple_transmission name="W1" reduction="10" interface="${HWInterface}"/>
-  <xacro:arm_simple_transmission name="W2" reduction="10" interface="${HWInterface}"/>
-  <xacro:arm_simple_transmission name="W3" reduction="10" interface="${HWInterface}"/>
+  <xacro:arm_simple_transmission name="S1" reduction="1" interface="${HWInterface}" />
+  <xacro:arm_simple_transmission name="S2" reduction="1" interface="${HWInterface}"/>
+  <xacro:arm_simple_transmission name="E1" reduction="1" interface="${HWInterface}"/>
+  <xacro:arm_simple_transmission name="E2" reduction="1" interface="${HWInterface}"/>
+  <xacro:arm_simple_transmission name="W1" reduction="1" interface="${HWInterface}"/>
+  <xacro:arm_simple_transmission name="W2" reduction="1" interface="${HWInterface}"/>
+  <xacro:arm_simple_transmission name="W3" reduction="1" interface="${HWInterface}"/>
   <xacro:arm_simple_transmission name="finger_joint_1" reduction="10" interface="velocity"/>
   <xacro:arm_simple_transmission name="finger_joint_2" reduction="10" interface="velocity"/>
+
+
+  <!-- COLORS GAZEBO -->
+  <xacro:gazebo_materials prefix="" color="$(arg color)" />
+  <xacro:ft_sensor_plugin name="" joint_name="W3" noise="0.02" />
+
+  <xacro:if value="$(arg enable_camera)">
+
+    <xacro:depth_sensor prefix=""/>
+
+    <joint name="kinect" type="fixed">
+      <origin rpy="${-125.0*pi/180.0} 0 ${pi}" xyz="0.148 0.48 1.8"/>
+      <parent link="base_link"/>
+      <child link="kinect2_rgb_optical_frame"/>
+    </joint>
+
+  </xacro:if>
 
 
 </robot>

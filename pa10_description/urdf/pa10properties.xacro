@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+    <!-- Not used yet -->
+    <xacro:property name="inertia_height_shoulder" value="500"/>
+    <xacro:property name="inertia_height_elbow" value="300"/>
+    <xacro:property name="inertia_height_wrist" value="100"/>
+    <xacro:property name="inertia_height_gripper" value="100"/>
+    
+    <!-- Mass -->
+    <xacro:property name="mass_shoulder" value="0.5"/>
+    <xacro:property name="mass_elbow" value="0.5"/>
+    <xacro:property name="mass_wrist" value="0.01"/>
+    <xacro:property name="mass_gripper" value="0.01"/>
+
+ 
+    <xacro:property name="pi" value="3.1415926535897931" />
+    <!-- JOINTS EFFORT LIMITS -->
+    <!-- NOT THE ACTUAL VALUE -->
+    <xacro:property name="arm_eps" value="0.02" />
+    <xacro:property name="joint_1_max_effort" value="550.0"/>
+    <xacro:property name="joint_2_max_effort" value="550.0"/>
+    <xacro:property name="joint_3_max_effort" value="550.0"/>
+    <xacro:property name="joint_4_max_effort" value="550.0"/>
+    <xacro:property name="joint_5_max_effort" value="550.0"/>
+    <xacro:property name="joint_6_max_effort" value="550.0"/>
+    <xacro:property name="joint_7_max_effort" value="550.0"/>
+  
+    <!-- JOINTS POSITION LIMITS -->
+    <!-- Real Values: [177, 94, 174, 137, 255, 165, 255] (deg)-->
+    <xacro:property name="joint_1_max_position" value="${170.0 *pi/180.0}"/>
+    <xacro:property name="joint_2_max_position" value="${90.0 *pi/180.0}"/>
+    <xacro:property name="joint_3_max_position" value="${170.0 *pi/180.0}"/>
+    <xacro:property name="joint_4_max_position" value="${130.0 *pi/180.0}"/>
+    <xacro:property name="joint_5_max_position" value="${250.0 *pi/180.0}"/>
+    <xacro:property name="joint_6_max_position" value="${160.0 *pi/180.0}"/>
+    <xacro:property name="joint_7_max_position" value="${250.0 *pi/180.0}"/>
+  
+    <!-- JOINTS VELOCITIE LIMITS-->
+    <!-- Real Values: [1, 1, 2, 2, 2, 2*pi, 2*pi] (rad/sec)-->
+    <xacro:property name="joint_1_max_velocity" value="1.1"/>
+    <xacro:property name="joint_2_max_velocity" value="1.1"/>
+    <xacro:property name="joint_3_max_velocity" value="1.1"/>
+    <xacro:property name="joint_4_max_velocity" value="1.1"/>
+    <xacro:property name="joint_5_max_velocity" value="1.1"/>
+    <xacro:property name="joint_6_max_velocity" value="${1.8*pi}"/>
+    <xacro:property name="joint_7_max_velocity" value="${1.8*pi}"/>
+  
+    <!-- JOINT DYNAMICS DAMPING + FRICTION-->
+    <!-- >> !! Not Real Values !! << -->
+    <!-- DAMPING -->
+    <xacro:property name="joint_1_damping" value="0.8"/>
+    <xacro:property name="joint_2_damping" value="0.8"/>
+    <xacro:property name="joint_3_damping" value="0.8"/>
+    <xacro:property name="joint_4_damping" value="0.8"/>
+    <xacro:property name="joint_5_damping" value="0.8"/>
+    <xacro:property name="joint_6_damping" value="0.8"/>
+    <xacro:property name="joint_7_damping" value="0.8"/>
+    <xacro:property name="joint_finger_damping" value="0.8"/>
+  
+    <!-- FRICTION -->
+    <xacro:property name="joint_1_friction" value="0.1"/>
+    <xacro:property name="joint_2_friction" value="0.1"/>
+    <xacro:property name="joint_3_friction" value="0.1"/>
+    <xacro:property name="joint_4_friction" value="0.1"/>
+    <xacro:property name="joint_5_friction" value="0.1"/>
+    <xacro:property name="joint_6_friction" value="0.1"/>
+    <xacro:property name="joint_7_friction" value="0.1"/>
+    <xacro:property name="joint_finger_friction" value="0.2"/>
+  
+
+
+
+</robot>
