@@ -1,6 +1,7 @@
 ## Synopsis
 
-ROS packages for the integration of MoveIt framework, ros_control and Gazebo for the Mitsubishi PA10 7-DOF Arm.
+ROS packages for the Mitsubishi PA10 7-DOF Arm developed by Control Systems Lab, National Technical University of Athens.
+The package contains the configuration and description files for the static manipulator and for multiple cooperative manipulators.
 
 ## Dependences
 * **ROS Packages:**
@@ -13,69 +14,37 @@ ROS packages for the integration of MoveIt framework, ros_control and Gazebo for
     * [controller_manager](http://wiki.ros.org/controller_manager)
     * [gazebo ros control](http://wiki.ros.org/gazebo_ros_control)
 
-*Installation*:
-```sh
-$ sudo apt-get install ros-indigo-moveit-ros-full ros-indigo-moveit-ros-control-interface ros-indigo-moveit-planners* ros-indigo-ompl
-```
-```sh
-$ sudo apt-get install ros-indigo-joint-state-publisher ros-indigo-robot-state-publisher ros-indigo-joint-limits-interface 
-```
-```sh
-$ sudo apt-get install ros-indigo-ros-control ros-indigo-ros-controllers ros-indigo-gazebo-ros-control
-```
-* **Controllers to be used:**
-    * velocity controllers
-    * effort controllers
-    * position controllers
-    * [joint trajectory controller](http://wiki.ros.org/joint_trajectory_controller)
-    * [joint state controller](http://wiki.ros.org/joint_state_controller)
 
-*Installation*:
-```sh
-$ sudo apt-get install ros-indigo-velocity-controllers ros-indigo-position-controllers ros-indigo-effort-controllers ros-indigo-joint-trajectory-controller ros-indigo-joint-state-controller
-```
-## Install
+## Installation
 ```sh
 $ roscd && cd ../src
 $ git clone https://github.com/mlogoth/PA10.git
 $ cd .. && catkin_make
 ```
-
-## Demo
-Visualization of PA10 running MoveIt framework.
-```sh
-roslaunch pa10_moveit_config demo.launch
-```
-Fake controllers are used.
-
-## Real Robot Experiment
-1) run the ```tcpcontrol``` script on __PA10 controller computer__:
-```sh
-./Desktop/TCPModes/tcpvelocities/tcpcontrol
-```
-2) run the hardware interface and the moveit framework on your computer:
-```sh
-roslaunch pa10_moveit_config demo_velocity.launch
-```
-3) Move the robot end effector using MoveIt framework.
-
 ## Gazebo
-You can launch Gazebo using the launch file- 
+For single robot gazebo simulation:
 
 ```sh
 roslaunch pa10_gazebo pa10.launch
 ```
-
-The launch file :
-1. Launches Gazebo
-2. Loads the robot model in Gazebo
-3. Launched ros_control controller for the robot
-
-The controller is set to launch a joint trajectory controller.
-
 ## Gazebo + MoveIt
 To run the Gazebo + Pa10 Controllers + MoveIt :
 ```sh
 roslaunch pa10_gazebo pa10_moveit.launch rviz:=true
 ```
 Set the argument ```rviz := true``` to launch RViz. 
+
+##  Multiple Robots
+To launch multiple static manipulators on Gazebo run the following:
+```sh
+roslaunch pa10_gazebo pa10_multi.launch
+```
+If you like to simulate the robots as they are rigidly connected with an object
+```sh
+roslaunch pa10_gazebo pa10_multi.launch cooperative:="true"
+```
+Then you can choose between 2 or 3 agents and box or cylinder object
+```sh
+roslaunch pa10_gazebo pa10_multi.launch cooperative:="true" object_type:="box|cylinder" agents:="2|3"
+```
+![](res/box_3_agnets.gif) ![](res/cylinder_3_agents.gif) 

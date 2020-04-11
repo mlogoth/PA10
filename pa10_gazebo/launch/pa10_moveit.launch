@@ -3,7 +3,6 @@
     <arg name="world"  value="empty"/> <!-- Gazebo World -->
     <arg name="paused" value="false"/> <!-- Open gazebo paused-->
     <arg name="gui" value="true"/> <!-- Gui -->
-    <arg name="pose" value="-x 0 -y 0 -z 0.5 -R 0.0 -P 0.0 -Y 0.0"/> <!-- Robot Pose -->
     <arg name="debug" value="false"/> 
     <arg name="rviz" value="false"/> <!-- Open RViz with MoveIt-->
     <arg name="camera" value="false"/> <!-- Use MoveIt Camera -->
@@ -12,7 +11,6 @@
     <include file="$(find pa10_gazebo)/launch/pa10.launch">
         <arg name="world" value="$(arg world)"/>
         <arg name="gui" value="$(arg gui)"/>
-        <arg name="gzpose" value="$(arg pose)"/>
         <arg name="debug" value="$(arg debug)"/>
         <arg name="paused" value="false"/>
     </include>

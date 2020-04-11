@@ -1,10 +1,14 @@
 <?xml version="1.0"?>
 <launch>
-    <arg name="world"  default="empty"/>
+    <arg name="world" default="empty"/>
     <arg name="paused" default="true"/>
     <arg name="gui" default="true"/>
     <arg name="debug" default="false"/>
-    
+
+    <arg name="cooperative" default="false"/>
+    <arg name="agents" default="2"/>
+    <arg name="object_type" default="cylinder"/>
+
     <env name="LC_NUMERIC" value="C" />
 
     <env name="GAZEBO_MODEL_PATH" value="$(find pa10_gazebo)/models:$(optenv GAZEBO_MODEL_PATH)"/>
@@ -17,54 +21,73 @@
         <arg name="paused" value="$(arg paused)"/>
     </include>
 
+    <group if="$(arg cooperative)">
+        <include file="$(find pa10_gazebo)/launch/pa10_cooperative.launch">
+            <!-- Number of Agents 1,2 or 3 -->
+            <arg name="agents" value="$(arg agents)"/>
+            <!-- Robots interface: velocity, effort-->
+            <arg name="robot_1_interface" value="velocity"/>
+            <arg name="robot_2_interface" value="velocity"/>
+            <arg name="robot_3_interface" value="velocity"/>
+            <!-- select color among default, red, green, orange -->
+            <arg name="robot_1_color" default="velocity"/>
+            <arg name="robot_2_color" default="red"/>
+            <arg name="robot_3_color" default="green"/>
+            <!-- select object type between cylinder and box -->
+            <arg name="object_type" default="$(arg object_type)"/>
+        </include>
+    </group>
 
-    <!-- spawn 1st pa10 -->
-    <include file="$(find pa10_gazebo)/launch/pa10_spawn.launch">
-        <!-- if it is multiple set it true and define the robot name -->
-        <arg name="multiple" value="true"/>
-        <arg name="robot_name" value="pa10_1"/>
-        <!-- color -->
-        <arg name="color" value="default"/>
-        <!-- Gazebo HW Interface -->
-        <arg name="interface" value="velocity"/>
-        <!-- robot pose wrt gazebo map frame -->
-        <arg name="pose_x" value="0.0"/>
-        <arg name="pose_y" value="-1.0"/> <!-- 0.0 -->
-        <arg name="pose_z" value="0.5"/>
-        <arg name="roll" value="0.0"/>
-        <arg name="pitch" value="0.0"/>
-        <arg name="yaw" value="0.0"/>
-        <!-- define initial joint displacements -->
-        <arg name="joints_gazebo_spawn" value="-J S1 1.57 -J S2 0.39 -J E1 0.0 -J E2 0.54 -J W1 0.0 -J W2 0.64 -J W3 0.0"/>
-        <!-- launch moveit framework -->
-        <arg name="moveit" value="true"/>
-        <arg name="use_rviz" value="false"/>
-        <arg name="use_camera" value="false"/>
-    </include>
-    
-    <!-- spawn 2nd pa10 -->
-    <include file="$(find pa10_gazebo)/launch/pa10_spawn.launch">
-        <!-- if it is multiple set it true and define the robot name -->
-        <arg name="multiple" value="true"/>
-        <arg name="robot_name" value="pa10_2"/>
-        <!-- color -->
-        <arg name="color" value="green"/>
-        <!-- Gazebo HW Interface -->
-        <arg name="interface" value="velocity"/>
-        <!-- robot pose wrt gazebo map frame -->
-        <arg name="pose_x" value="0.0"/>
-        <arg name="pose_y" value="1.0"/>  <!-- 1.5 -->
-        <arg name="pose_z" value="0.5"/>
-        <arg name="roll" value="0.0"/>
-        <arg name="pitch" value="0.0"/>
-        <arg name="yaw" value="0.0"/>
-        <!-- define initial joint displacements -->
-        <arg name="joints_gazebo_spawn" value="-J S1 1.57 -J S2 -0.39 -J E1 0.0 -J E2 -0.54 -J W1 0.0 -J W2 -0.64 -J W3 0.0"/>
-        <!-- launch moveit framework -->
-        <arg name="moveit" value="true"/>
-        <arg name="use_rviz" value="false"/>
-        <arg name="use_camera" value="false"/>
-    </include>
+    <group unless="$(arg cooperative)">
+        <!-- spawn 1st pa10 -->
+        <include file="$(find pa10_gazebo)/launch/pa10_spawn.launch">
+            <!-- if it is multiple set it true and define the robot name -->
+            <arg name="multiple" value="true"/>
+            <arg name="robot_name" value="pa10_1"/>
+            <!-- color -->
+            <arg name="color" value="default"/>
+            <!-- Gazebo HW Interface -->
+            <arg name="interface" value="velocity"/>
+            <!-- robot pose wrt gazebo map frame -->
+            <arg name="pose_x" value="0.0"/>
+            <arg name="pose_y" value="-1.0"/>
+            <!-- 0.0 -->
+            <arg name="pose_z" value="0.5"/>
+            <arg name="roll" value="0.0"/>
+            <arg name="pitch" value="0.0"/>
+            <arg name="yaw" value="0.0"/>
+            <!-- define initial joint displacements -->
+            <arg name="joints_gazebo_spawn" value="-J S1 1.57 -J S2 0.39 -J E1 0.0 -J E2 0.54 -J W1 0.0 -J W2 0.64 -J W3 0.0"/>
+            <!-- launch moveit framework -->
+            <arg name="moveit" value="true"/>
+            <arg name="use_rviz" value="false"/>
+            <arg name="use_camera" value="false"/>
+        </include>
 
+        <!-- spawn 2nd pa10 -->
+        <include file="$(find pa10_gazebo)/launch/pa10_spawn.launch">
+            <!-- if it is multiple set it true and define the robot name -->
+            <arg name="multiple" value="true"/>
+            <arg name="robot_name" value="pa10_2"/>
+            <!-- color -->
+            <arg name="color" value="green"/>
+            <!-- Gazebo HW Interface -->
+            <arg name="interface" value="velocity"/>
+            <!-- robot pose wrt gazebo map frame -->
+            <arg name="pose_x" value="0.0"/>
+            <arg name="pose_y" value="1.0"/>
+            <!-- 1.5 -->
+            <arg name="pose_z" value="0.5"/>
+            <arg name="roll" value="0.0"/>
+            <arg name="pitch" value="0.0"/>
+            <arg name="yaw" value="0.0"/>
+            <!-- define initial joint displacements -->
+            <arg name="joints_gazebo_spawn" value="-J S1 1.57 -J S2 -0.39 -J E1 0.0 -J E2 -0.54 -J W1 0.0 -J W2 -0.64 -J W3 0.0"/>
+            <!-- launch moveit framework -->
+            <arg name="moveit" value="true"/>
+            <arg name="use_rviz" value="false"/>
+            <arg name="use_camera" value="false"/>
+        </include>
+    </group>
 
 </launch>

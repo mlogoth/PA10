@@ -1,6 +1,17 @@
 joint_names: [S1,S2,E1,E2,W1,W2,W3,finger_joint_1,finger_joint_2]
 
 pa10:
+
+# gazebo_ros_control:
+#    pid_gains:
+#       S1: &gains_gazebo {p: 5.0, i: 1.2, d: 0.2, i_clamp: 0.1}
+#       S2: *gains_gazebo
+#       E1: *gains_gazebo
+#       E2: *gains_gazebo
+#       W1: *gains_gazebo
+#       W2: *gains_gazebo
+#       W3: *gains_gazebo
+
 # Publish all joint states -----------------------------------
 joint_state_controller:
   type: joint_state_controller/JointStateController
